@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSS CLUB - Verification Levels Story</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/inter-ui/inter.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+            --vip: #facc15;
+            --bg: #0b1120;
+            --card-bg: rgba(255, 255, 255, 0.04);
+            --text: #f1f5f9;
+            --success: #10b981;
+            --error: #ef4444;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); overflow-x: hidden; scroll-behavior: smooth; }
+
+        /* --- Layout --- */
+        .story-section { padding: 100px 20px; border-bottom: 1px solid var(--border); }
+        .container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 400px; gap: 80px; align-items: center; }
+        @media (max-width: 1000px) { .container { grid-template-columns: 1fr; } .container > div:nth-child(2) { order: -1; } }
+
+        h1 { font-size: 3.5rem; font-weight: 900; background: linear-gradient(135deg, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; }
+        h2 { font-size: 2.2rem; color: var(--primary); margin-bottom: 20px; }
+        .step-label { font-size: 0.8rem; font-weight: 800; color: var(--vip); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; display: block; }
+
+        /* --- Phone Mockup --- */
+        .phone {
+            width: 320px; height: 650px; background: #000; border: 12px solid #1e293b; border-radius: 45px;
+            position: relative; box-shadow: 0 50px 100px rgba(0,0,0,0.7); overflow: hidden; margin: 0 auto;
+        }
+        .phone::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 140px; height: 30px; background: #1e293b; border-bottom-left-radius: 18px; border-bottom-right-radius: 18px; z-index: 10; }
+        
+        .screen { width: 100%; height: 100%; background: #0f172a; display: flex; flex-direction: column; }
+
+        /* --- App Screens --- */
+        .app-view { padding: 40px 20px; flex: 1; display: flex; flex-direction: column; }
+        .p-card { background: var(--card-bg); border-radius: 15px; padding: 15px; border: 1px solid var(--border); margin-bottom: 15px; }
+        .btn { width: 100%; padding: 15px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; transition: 0.2s; margin-top: auto; }
+
+        /* --- Level Badges --- */
+        .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 15px; font-size: 0.65rem; font-weight: 800; }
+        .badge-l1 { background: #334155; color: #fff; }
+        .badge-l2 { background: rgba(58, 123, 213, 0.2); color: var(--primary); border: 1px solid var(--primary); }
+        .badge-l3 { background: rgba(250, 204, 21, 0.2); color: var(--vip); border: 1px solid var(--vip); }
+
+        /* --- Tech Panels --- */
+        .tech-sidebar { background: var(--card-bg); border-radius: 24px; padding: 30px; border: 1px solid var(--border); }
+        .mermaid-box { margin-top: 50px; padding: 30px; background: rgba(255,255,255,0.02); border-radius: 30px; }
+
+        /* --- Map Simulation --- */
+        .map-sim { width: 100%; height: 200px; background: #1e293b; border-radius: 15px; position: relative; overflow: hidden; }
+        .pin { position: absolute; width: 20px; height: 20px; background: var(--vip); border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(250, 204, 21, 0); } 100% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0); } }
+
+        .footer { padding: 100px; text-align: center; opacity: 0.3; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+    <!-- Intro -->
+    <section class="story-section" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <span class="step-label">VERIFICATION LEVELS</span>
+        <h1>Phân Cấp Đặc Quyền</h1>
+        <p style="max-width: 600px; text-align: center; opacity: 0.7; margin: 30px 0;">Chứng kiến hành trình từ một tài khoản cơ bản trở thành Đại diện VIP Độc quyền của DSS CLUB thông qua hệ thống xác thực bằng AI và Geofencing.</p>
+        
+        <div style="display: flex; gap: 40px; margin-top: 40px;">
+            <div style="text-align: center;">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Bentley" width="90" style="border-radius: 50%; border: 4px solid var(--vip);">
+                <p style="margin-top: 10px;"><b>Anh Minh Tâm</b><br><small>Hành trình Đại lý VIP</small></p>
+            </div>
+            <div style="text-align: center;">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Mia" width="90" style="border-radius: 50%; border: 4px solid var(--primary);">
+                <p style="margin-top: 10px;"><b>Chị Thư</b><br><small>Admin Phê duyệt DSS</small></p>
+            </div>
+        </div>
+        <div style="margin-top: 80px; animation: bounce 2s infinite;">▼ Cuộn xuống để xem câu chuyện</div>
+    </section>
+
+    <!-- Step 1: Restricted -->
+    <section class="story-section">
+        <div class="container">
+            <div class="story-text">
+                <span class="step-label">Giai đoạn 1</span>
+                <h2>Sự Giới Hạn Của Level 1</h2>
+                <p>Anh Minh Tâm vừa đăng ký tài khoản qua Zalo. Anh hồ hởi định đổi điểm lấy chiếc Tivi Sony 55 inch, nhưng hệ thống lập tức chặn lại vì tài khoản chưa đủ độ tin cậy.</p>
+                <div class="tech-sidebar" style="margin-top: 40px;">
+                    <h3>Logic Chặn Redeem (FR-01)</h3>
+                    <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 10px;">Để bảo vệ kho quà, Level 1 bị khóa chức năng đổi hiện vật giá trị lớn. Hệ thống yêu cầu nâng cấp Level để mở khóa quyền lợi.</p>
+                </div>
+            </div>
+            <div class="phone">
+                <div class="screen">
+                    <div class="app-view">
+                        <div style="font-size: 0.7rem; font-weight: 800; margin-bottom: 20px; display: flex; justify-content: space-between;">
+                            <span>USER PROFILE</span>
+                            <span class="badge badge-l1">LV1 BASIC</span>
+                        </div>
+                        <div class="p-card">
+                            <h4 style="font-size: 0.8rem; color: var(--vip);">CỬA HÀNG ĐỔI QUÀ</h4>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;">
+                                <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; opacity: 0.4;">
+                                    <div style="font-size: 1.5rem;">📺</div>
+                                    <div style="font-size: 0.5rem;">Tivi Sony 55"</div>
+                                    <div style="font-size: 1.5rem; position: absolute; top:50%; left:50%; transform: translate(-50%,-50%);">🔒</div>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; text-align: center;">
+                                    <div style="font-size: 1.5rem;">🧢</div>
+                                    <div style="font-size: 0.5rem;">Mũ DSS</div>
+                                    <div style="color: var(--vip); font-size: 0.6rem; margin-top: 5px;">2k pts</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Popup -->
+                        <div style="background: #1e293b; border: 1px solid var(--error); border-radius: 15px; padding: 20px; text-align: center; margin-top: 30px; animation: slideUp 0.5s;">
+                            <span style="font-size: 1.5rem;">⚠️</span>
+                            <h4 style="font-size: 0.8rem; margin: 10px 0;">Yêu cầu Nâng Cấp</h4>
+                            <p style="font-size: 0.6rem; opacity: 0.7;">Vật phẩm này chỉ dành cho Level 3 VIP. Vui lòng định danh tài khoản.</p>
+                            <button class="btn" style="background: var(--primary); color: #000; font-size: 0.65rem; margin-top: 15px;">XÁC THỰC NGAY</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Step 2: Verification Process -->
+    <section class="story-section">
+        <div class="container">
+            <div class="phone">
+                <div class="screen">
+                    <div class="app-view">
+                        <h4 style="margin-bottom: 20px; text-align: center;">XÁC THỰC CCCD (FR-02)</h4>
+                        <div style="flex: 1; border: 2px dashed var(--primary); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #000;">
+                            <div style="width: 220px; height: 140px; border: 1px solid var(--primary); border-radius: 10px; position: relative; overflow: hidden;">
+                                <div style="position: absolute; top: 30%; left: 10%; width: 40px; height: 50px; background: rgba(0,210,255,0.2);"></div>
+                                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--primary); animation: scanline 2s infinite;"></div>
+                            </div>
+                            <p style="font-size: 0.6rem; margin-top: 20px; color: var(--primary);">[ ĐANG NHẬN DIỆN CCCD ]</p>
+                        </div>
+                        <div style="margin-top: 20px; font-size: 0.6rem; opacity: 0.6;">
+                            • Đảm bảo đủ ánh sáng<br>
+                            • Không mất góc CCCD
+                        </div>
+                        <button class="btn" style="background: var(--primary); color: #000; margin-top: 20px;">CHỤP MẶT TRƯỚC</button>
+                    </div>
+                </div>
+            </div>
+            <div class="story-text">
+                <span class="step-label">Giai đoạn 2</span>
+                <h2>Xác Thực AI & Selfie</h2>
+                <p>Anh Minh Tâm thực hiện chụp 2 mặt CCCD và ảnh Selfie. Công nghệ AI của app sẽ tự động quét và bóc tách thông tin thô để gửi lên hệ thống phê duyệt.</p>
+                <div class="tech-sidebar" style="margin-top: 40px;">
+                    <h3>Bảo mật Dữ liệu (Sec-4.2)</h3>
+                    <p style="font-size: 0.9rem; opacity: 0.8;">Mọi hình ảnh định danh được mã hóa và chuyển lên S3 bucket riêng tư, chỉ Admin có quyền truy cập mới xem được.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Step 3: Admin Review -->
+    <section class="story-section">
+        <div class="container">
+            <div class="story-text">
+                <span class="step-label">Giai đoạn 3</span>
+                <h2>Sức Mạnh Kiểm Soát Của Admin</h2>
+                <p>Tại văn phòng DSS, Chị Thư (Admin) nhận được hồ sơ của Anh Minh Tâm. Chị đối chiếu thông tin và ảnh selfie khớp với CCCD. Chị nhấn nút <b>"Approve"</b>.</p>
+                <div class="tech-sidebar" style="margin-top: 40px;">
+                    <h3>Luồng Phê Duyệt (FR-10, FR-11)</h3>
+                    <p style="font-size: 0.9rem;">Hệ thống hỗ trợ Admin so sánh song song dữ liệu. Trạng thái Level của User được cập nhật Realtime ngay khi Admin thao tác.</p>
+                </div>
+            </div>
+            <div class="phone" style="width: 450px; height: 400px; background: #1e293b; border-radius: 20px; border: 2px solid var(--border);">
+                 <div style="padding: 20px;">
+                    <div style="font-size: 0.6rem; opacity: 0.5; margin-bottom: 20px;">ADMIN CMS • APPROVAL WORKFLOW</div>
+                    <div class="p-card" style="background: #000; display: flex; gap: 20px;">
+                        <div style="width: 100px; text-align: center;">
+                            <div style="width: 100%; height: 80px; background: #334155; border-radius: 10px;"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Bentley" width="100%"></div>
+                            <p style="font-size: 0.5rem; margin-top: 5px;">ẢNH SELFIE</p>
+                        </div>
+                        <div style="flex: 1;">
+                            <h4 style="font-size: 0.7rem; color: var(--primary);">Hồ sơ: TRẦN MINH TÂM</h4>
+                            <p style="font-size: 0.6rem; opacity: 0.7; border-bottom: 1px solid #334155; padding-bottom: 5px;">CCCD: 079xxxxxxxxx</p>
+                            <div style="display: flex; gap: 5px; margin-top: 15px;">
+                                <button style="flex: 1; background: var(--success); color: #fff; border: none; padding: 10px; border-radius: 5px; font-size: 0.6rem; font-weight: 800;">APPROVE</button>
+                                <button style="flex: 1; background: var(--error); color: #fff; border: none; padding: 10px; border-radius: 5px; font-size: 0.6rem;">REJECT</button>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Step 4: Level 3 VIP Benefits -->
+    <section class="story-section">
+        <div class="container">
+            <div class="phone">
+                <div class="screen">
+                    <div class="app-view">
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 30px;">
+                             <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Bentley" width="50" style="border-radius: 50%; border: 2px solid var(--vip);">
+                             <div>
+                                <h4 style="color: var(--vip); font-size: 0.9rem;">MINH TÂM AGENCY</h4>
+                                <span class="badge badge-l3">LV3 VIP GOLD ✓</span>
+                             </div>
+                        </div>
+                        
+                        <div class="p-card">
+                            <h5 style="font-size: 0.6rem; opacity: 0.6;">ĐẶC QUYỀN VIP (FR-05)</h5>
+                            <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                                <div style="text-align: center; background: rgba(250, 204, 21, 0.1); padding: 10px; border-radius: 10px;">
+                                    <div style="font-size: 0.8rem; color: var(--vip);">∞</div>
+                                    <div style="font-size: 0.4rem;">SCAN LIMIT</div>
+                                </div>
+                                <div style="text-align: center; background: rgba(16, 185, 129, 0.1); padding: 10px; border-radius: 10px;">
+                                    <div style="font-size: 0.8rem; color: var(--success);">FULL</div>
+                                    <div style="font-size: 0.4rem;">GIFT SHOP</div>
+                                </div>
+                                <div style="text-align: center; background: rgba(0, 210, 255, 0.1); padding: 10px; border-radius: 10px;">
+                                    <div style="font-size: 0.8rem; color: var(--primary);">TOP</div>
+                                    <div style="font-size: 0.4rem;">PRIORITY</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5 style="font-size: 0.6rem; opacity: 0.6; margin-bottom: 10px;">ANH EM QUANH ĐÂY (FR-06)</h5>
+                        <div class="map-sim">
+                            <div class="pin" style="top: 40%; left: 30%;"></div>
+                            <div style="position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.7); padding: 5px; border-radius: 5px; font-size: 0.45rem;">
+                                Đại lý Minh Tâm (VIP)<br>📍 Quận 1, HCM
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="story-text">
+                <span class="step-label">Giai đoạn cuối</span>
+                <h2>Đỉnh Cao Thăng Hạng & Tích Vàng VIP</h2>
+                <p>Sau khi nộp thêm Giấy phép kinh doanh và được duyệt, Anh Minh Tâm chính thức trở thành <b>Level 3 VIP</b>. </p>
+                <ul style="padding-left: 20px; font-size: 0.9rem; margin-top: 20px;">
+                    <li><b>Không giới hạn quét mã:</b> Quét bao nhiêu mã cũng được tích điểm.</li>
+                    <li><b>Đổi quà không giới hạn:</b> Đổi được cả Vàng và Xe.</li>
+                    <li><b>Hiển thị Bản đồ:</b> Khách hàng dễ dàng tìm thấy đại lý uy tín nhất xung quanh.</li>
+                </ul>
+                <div class="tech-sidebar" style="margin-top: 30px; border-color: var(--vip);">
+                    <h3>Giá trị Thương Hiệu (FR-06)</h3>
+                    <p style="font-size: 0.85rem;">Hệ thống định vị (Location-based) gắn liền với Tích Vàng sẽ ưu tiên hiển thị các tài khoản Level 3 đầu tiên trên bản đồ cộng đồng.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Deep Dive: Flowcharts -->
+    <section class="story-section" style="background: rgba(255,255,255,0.02);">
+        <h2 style="margin-bottom: 50px; text-align: center;">Bản thiết kế kỹ thuật (Technical Logic)</h2>
+        
+        <div class="mermaid-box">
+             <h3 style="margin-bottom: 25px; color: var(--primary);">1. Quy trình thăng cấp đa tầng (Multi-tier Flow)</h3>
+             <div class="mermaid">
+                flowchart TD
+                    A[Zalo OTP] --> B(("LEVEL 1"))
+                    B --> C{Check Active Rule: Y days?}
+                    C -- No --> D[Chế độ TRIAL]
+                    C -- Yes --> E[Mở khóa Social/Game]
+                    E --> F[Nộp CCCD + Selfie]
+                    F --> G[Admin Review]
+                    G --> H(("LEVEL 2"))
+                    H --> I[Nới lỏng Hạn mức Quét]
+                    I --> J[Nộp GPKD]
+                    J --> K[Admin Review]
+                    K --> L(("LEVEL 3 VIP"))
+                    L --> M[UNLIMITED & GOLD BADGE]
+             </div>
+        </div>
+
+        <div class="mermaid-box">
+             <h3 style="margin-bottom: 25px; color: var(--primary);">2. Cơ chế phân quyền & Thuật toán chặn (Threshold Logic)</h3>
+             <div class="mermaid">
+                flowchart LR
+                    subgraph Permissions
+                        P1[Redeem Gift > X points]
+                        P2[Scan Limit > Threshold]
+                    end
+                    User[Tài khoản User] --> G{Level Check}
+                    G -- 1 --> BLock[Block P1/P2]
+                    G -- 2 --> Limit[Allow partial P1/P2]
+                    G -- 3 --> Uncapped[Allow ALL]
+             </div>
+        </div>
+    </section>
+
+    <div class="footer">
+        POWERED BY ANTIGRAVITY AI • DAHUA DSS CLUB SHOWCASE CENTER
+    </div>
+
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+    </script>
+    <style>
+        @keyframes scanline { 0% { top: 0; } 100% { top: 140px; } }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    </style>
+</body>
+</html>
