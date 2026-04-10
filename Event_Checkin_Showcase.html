@@ -3,217 +3,373 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DSS CLUB - Event Check-in Showcase</title>
+    <title>DSS CLUB - Pro Event Check-in Showcase</title>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <style>
         :root {
             --primary: #00d2ff;
             --secondary: #3a7bd5;
             --accent: #ffeb3b;
-            --bg: #0f172a;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --text: #f8fafc;
+            --bg: #0b0f1a;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --text: #e2e8f0;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
             --success: #10b981;
-            --error: #ef4444;
+            --error: #f43f5e;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: var(--bg); color: var(--text); overflow-x: hidden; }
-
-        header {
-            padding: 30px; text-align: center;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        body { 
+            background: radial-gradient(circle at top right, #1e293b, #0b0f1a);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1100px;
-            margin: 30px auto;
-            padding: 20px;
-            display: grid;
-            grid-template-columns: 320px 1fr;
-            gap: 40px;
-        }
+        /* --- Layout --- */
+        .wrapper { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+        
+        header { text-align: center; margin-bottom: 60px; }
+        h1 { font-size: 3rem; font-weight: 800; background: linear-gradient(to right, #00d2ff, #3a7bd5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
+        .tagline { opacity: 0.6; font-size: 1.1rem; letter-spacing: 1px; }
 
-        @media (max-width: 850px) { .container { grid-template-columns: 1fr; } }
+        .main-grid { display: grid; grid-template-columns: 400px 1fr; gap: 60px; align-items: start; }
+        @media (max-width: 1000px) { .main-grid { grid-template-columns: 1fr; } }
 
-        /* --- Phone Mockup --- */
-        .phone {
-            width: 280px; height: 560px;
-            background: #000; border: 12px solid #334155; border-radius: 40px;
-            position: sticky; top: 20px; overflow: hidden;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.6);
-        }
-        .phone::before {
-            content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-            width: 120px; height: 25px; background: #334155; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; z-index: 10;
-        }
+        /* --- Nav Tabs --- */
+        .nav-tabs { display: flex; gap: 10px; margin-bottom: 30px; background: var(--glass); padding: 5px; border-radius: 12px; border: 1px solid var(--border); }
+        .tab-btn { flex: 1; padding: 12px; border: none; background: transparent; color: #fff; border-radius: 8px; cursor: pointer; font-weight: 600; opacity: 0.6; transition: 0.3s; }
+        .tab-btn.active { background: var(--primary); color: #000; opacity: 1; box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3); }
 
-        .screen {
-            width: 100%; height: 100%;
-            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-            display: flex; flex-direction: column; padding: 25px 15px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* --- Device Mockup --- */
+        .device-container { position: sticky; top: 40px; display: flex; justify-content: center; }
+        .iphone {
+            width: 320px; height: 650px; background: #000; border: 12px solid #1e293b; border-radius: 50px;
+            position: relative; box-shadow: 0 50px 100px rgba(0,0,0,0.8); overflow: hidden;
         }
+        .iphone::after { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 140px; height: 35px; background: #1e293b; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; z-index: 100; }
+        
+        .screen { width: 100%; height: 100%; position: relative; background: #000; overflow-y: auto; scrollbar-width: none; }
+        .screen::-webkit-scrollbar { display: none; }
 
-        /* --- UI Components --- */
-        .invitation-card {
-            background: rgba(255,255,255,0.1); border-radius: 20px; padding: 15px;
-            border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px);
-            margin-top: 40px;
-        }
-        .qr-placeholder {
-            width: 160px; height: 160px; background: #fff; margin: 15px auto;
-            border-radius: 10px; display: flex; align-items: center; justify-content: center;
-            padding: 10px; border: 4px solid var(--primary);
-        }
-        .qr-placeholder img { width: 100%; height: 100%; }
+        /* --- UI Screens --- */
+        .app-view { min-height: 100%; padding: 40px 20px 20px; display: flex; flex-direction: column; animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .btn-checkin {
-            background: var(--primary); color: #000; border: none; padding: 12px;
-            border-radius: 25px; font-weight: bold; width: 100%; cursor: pointer;
-            margin-top: 20px; transition: 0.2s;
-        }
+        /* --- Common UI Components --- */
+        .p-btn { width: 100%; padding: 15px; border-radius: 14px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; margin-top: auto; }
+        .p-btn-primary { background: var(--primary); color: #000; }
+        .p-btn-primary:active { transform: scale(0.95); opacity: 0.9; }
 
-        /* --- Control Panel --- */
-        .card {
-            background: var(--card-bg); padding: 25px; border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px;
-        }
-        h2 { color: var(--primary); margin-bottom: 15px; font-size: 1.3rem; }
-        .s-btn {
-            display: block; width: 100%; padding: 14px; text-align: left;
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            color: #fff; border-radius: 12px; margin-bottom: 10px; cursor: pointer;
-        }
-        .s-btn.active { background: var(--primary); color: #000; font-weight: bold; }
+        .glass-card { background: var(--glass); border: 1px solid var(--border); border-radius: 20px; padding: 20px; backdrop-filter: blur(10px); margin-bottom: 15px; }
 
-        footer { text-align: center; padding: 40px; opacity: 0.4; }
+        /* --- Specific Screen Styles --- */
+        .notch-msg { background: rgba(0, 210, 255, 0.2); border: 1px solid var(--primary); padding: 10px; border-radius: 10px; font-size: 0.75rem; margin-bottom: 20px; animation: bounceIn 0.5s; }
+        @keyframes bounceIn { 0% { transform: scale(0.8); opacity: 0; } 70% { transform: scale(1.05); } 100% { transform: scale(1); opacity: 1; } }
+
+        .cam-overlay { width: 100%; height: 200px; background: #334155; border-radius: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .cam-guideline { border: 2px dashed var(--primary); border-radius: 50%; width: 140px; height: 140px; }
+        
+        .invitation { background: linear-gradient(135deg, #3a7bd5, #00d2ff); color: #fff; padding: 25px; border-radius: 25px; text-align: center; }
+        .avatar-box { width: 70px; height: 70px; border-radius: 50%; border: 3px solid #fff; margin: 0 auto 15px; overflow: hidden; }
+
+        .qr-section { background: #fff; padding: 15px; border-radius: 15px; margin: 20px 0; display: flex; flex-direction: column; align-items: center; }
+        .qr-timer { width: 100%; height: 4px; background: #eee; margin-top: 10px; border-radius: 2px; position: relative; }
+        .qr-timer-bar { position: absolute; left: 0; top: 0; height: 100%; background: var(--primary); transition: width 1s linear; }
+
+        /* --- Analysis Panel --- */
+        .analysis-panel { display: flex; flex-direction: column; gap: 30px; }
+        .tech-badge { display: inline-block; padding: 4px 10px; background: rgba(0, 210, 255, 0.1); border: 1px solid var(--primary); color: var(--primary); border-radius: 6px; font-size: 0.7rem; font-weight: 700; margin-bottom: 8px; }
+        
+        .spec-item { margin-bottom: 20px; }
+        .spec-item h4 { color: var(--accent); margin-bottom: 5px; font-size: 1rem; }
+        .spec-item p { font-size: 0.9rem; opacity: 0.7; }
+
+        .mermaid-card { background: #000; border-radius: 20px; padding: 20px; border: 1px solid var(--border); overflow-x: auto; }
+
+        /* --- Success/Error State --- */
+        .status-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 0.8rem; margin: 10px 0; }
+        .status-success { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid var(--success); }
+        .status-error { background: rgba(244, 63, 94, 0.1); color: var(--error); border: 1px solid var(--error); }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1 style="color: var(--primary);">EVENT CHECK-IN SYSTEM</h1>
-        <p style="opacity: 0.7;">AI Face Recognition & Dynamic QR Simulation</p>
-    </header>
+    <div class="wrapper">
+        <header>
+            <h1>PRO EVENT CHECK-IN</h1>
+            <p class="tagline">AI Face Recognition • Dynamic TOTP QR • Geofencing Validation</p>
+        </header>
 
-    <div class="container">
-        <!-- Phone View -->
-        <div class="phone" id="device">
-            <div class="screen" id="app">
-                <div style="font-size: 0.8rem; opacity: 0.6; margin-bottom: 20px;">DSS CLUB • Invitation</div>
-                <div class="invitation-card">
-                    <div style="width: 50px; height: 50px; background: #ccc; border-radius: 50%; margin: 0 auto 10px; overflow: hidden; border: 2px solid var(--primary);">
-                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Avatar" style="width: 100%;">
-                    </div>
-                    <div style="font-size: 0.9rem; font-weight: bold; text-align: center;">Nguyễn Văn A</div>
-                    <div style="font-size: 0.6rem; text-align: center; opacity: 0.7;">Workshop: AI in Smart Home</div>
-                    
-                    <div class="qr-placeholder">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=DSSCLUB-EVENT-2026-TOKEN-XYZ" alt="QR">
-                    </div>
-                    <div style="font-size: 0.5rem; text-align: center; color: var(--accent);">Đổi mã sau: 24s</div>
+        <div class="main-grid">
+            <!-- Part 1: Device Presentation -->
+            <div class="presentation-column">
+                <div class="nav-tabs">
+                    <button class="tab-btn active" onclick="switchRole('user')">Guest Experience</button>
+                    <button class="tab-btn" onclick="switchRole('staff')">Staff Verification</button>
                 </div>
-                <button class="btn-checkin">QUÉT MÃ TẠI QUẦY</button>
-            </div>
-        </div>
 
-        <!-- Controls View -->
-        <div class="controls">
-            <div class="card">
-                <h2>Kịch bản mô phỏng</h2>
-                <button class="s-btn active" onclick="sim('normal', 0)">Kịch bản 1: Nhận thiệp & Lấy QR</button>
-                <button class="s-btn" onclick="sim('error', 1)">Kịch bản 2: Sai vị trí (GPS Geofence)</button>
-                <button class="s-btn" onclick="sim('staff', 2)">Kịch bản 3: Nhân viên quét mã & Face AI</button>
-                <button class="s-btn" onclick="sim('success', 3)">Kịch bản 4: Check-in Thành công (Nhận điểm)</button>
+                <div class="device-container">
+                    <div class="iphone">
+                        <!-- Controls for Simulation -->
+                        <div id="screen-user" class="screen">
+                            <!-- Injected by JS -->
+                        </div>
+                        <div id="screen-staff" class="screen" style="display: none;">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scenario Selector -->
+                <div class="glass-card" style="margin-top: 30px;">
+                    <h3 style="margin-bottom: 15px; font-size: 0.9rem; color: var(--primary);">SCENARIO SELECTOR</h3>
+                    <div id="user-scenarios">
+                        <button class="s-btn-mini" onclick="renderUserStep(1)">1. Nhận thông báo mời</button>
+                        <button class="s-btn-mini" onclick="renderUserStep(2)">2. Chụp Avatar sự kiện</button>
+                        <button class="s-btn-mini" onclick="renderUserStep(3)">3. Xem thiệp mời & GPS</button>
+                        <button class="s-btn-mini" onclick="renderUserStep(4)">4. QR Code động (TOTP)</button>
+                    </div>
+                    <div id="staff-scenarios" style="display: none;">
+                        <button class="s-btn-mini" onclick="renderStaffStep(1)">1. Chế độ quét QR</button>
+                        <button class="s-btn-mini" onclick="renderStaffStep(2)">2. Phân tích Face AI</button>
+                        <button class="s-btn-mini" onclick="renderStaffStep(3)">3. Xác nhận & Cộng điểm</button>
+                    </div>
+                </div>
             </div>
 
-            <div class="card">
-                <h2>Phân tích cho sếp</h2>
-                <ul style="padding-left: 20px; font-size: 0.95rem; line-height: 1.8;">
-                    <li><b>Dynamic QR:</b> Chống chụp màn hình gửi cho người khác đi hộ.</li>
-                    <li><b>GPS Geofence:</b> Chỉ hiện mã khi khách đã đứng đúng sảnh hội trường.</li>
-                    <li><b>AI Face:</b> Đối soát ảnh thực tế tại quầy với ảnh KYC của tài khoản.</li>
-                    <li><b>Gamification:</b> Tự động cộng điểm thưởng ngay khi vừa qua cửa.</li>
-                </ul>
-            </div>
+            <!-- Part 2: Technical Breakdown -->
+            <div class="analysis-panel">
+                <div class="glass-card">
+                    <h2>Đặc tả kỹ thuật (Technical Brief)</h2>
+                    <div class="grid-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                        <div class="spec-item">
+                            <span class="tech-badge">DYNAMIC QR</span>
+                            <h4>TOTP Algorithm</h4>
+                            <p>Sử dụng thuật toán Time-based One-Time Password. Mã QR tự động làm mới mỗi 30s. Chống gian lận chụp ảnh màn hình (FR-04, FR-10).</p>
+                        </div>
+                        <div class="spec-item">
+                            <span class="tech-badge">GEOFENCE</span>
+                            <h4>GPS Validation</h4>
+                            <p>Xác thực tọa độ người dùng theo thời gian thực. Nút check-in chỉ mở khi bán kính < 50m quanh điểm sự kiện (FR-05).</p>
+                        </div>
+                        <div class="spec-item">
+                            <span class="tech-badge">FACE AI</span>
+                            <h4>Biometric Matching</h4>
+                            <p>So sánh Probe Image (Cam quầy) với Reference Image (KYC Level 2). Đảm bảo chính chủ 99.9% (FR-07, FR-08).</p>
+                        </div>
+                        <div class="spec-item">
+                            <span class="tech-badge">POINTS</span>
+                            <h4>Reward Hook</h4>
+                            <p>Hệ thống tự động kích hoạt API cộng điểm cống hiến ngay sau khi Staff nhấn duyệt (FR-8.2).</p>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="card" style="padding: 10px;">
-                <div class="mermaid">
-                    flowchart LR
-                        A[Quét QR] --> B{Face AI OK?}
-                        B -- Yes --> C[Vào Cửa]
-                        B -- No --> D[Check CCCD]
-                        C --> E[+100 Points]
+                <div class="mermaid-card">
+                    <h3 style="color: var(--primary); margin-bottom: 20px;">Hệ thống & Dòng dữ liệu (Flowcharts)</h3>
+                    <div class="mermaid">
+                        flowchart TD
+                            subgraph Guest["GUEST APP"]
+                                A[Push Notify] --> B[Selfie FR-02]
+                                B --> C[Invitation FR-03]
+                                C --> D{Geofence OK?}
+                                D -- Yes --> E[Dynamic QR FR-04]
+                                D -- No --> F[Warning View]
+                            end
+                            subgraph Staff["STAFF APP"]
+                                G[Scan QR] --> H[Probe PhotoCam]
+                                H --> I{Face AI Match?}
+                                I -- >80% --> J[Approve ✅]
+                                I -- Low --> K[Manual Verify ⚠️]
+                            end
+                            E --> G
+                            J --> L[POINTS + CMS REW]
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h2>Giá trị mang lại cho sếp</h2>
+                    <ul style="padding-left: 20px; margin-top: 15px;">
+                        <li><b>Uy tín thương hiệu:</b> Khách hàng ấn tượng bởi quy trình kKYC/Check-in hiện đại.</li>
+                        <li><b>Tiết kiệm nhân lực:</b> Giảm 70% thời gian soát vé/thẻ so với cách làm thủ công.</li>
+                        <li><b>Dữ liệu sạch:</b> 100% người tham dự là "Người thực - Việc thực", không có acc ảo.</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer>&copy; 2026 DSS CLUB - AI Powered Showcase</footer>
+    <style>
+        .grid-2 { gap: 20px; }
+        .s-btn-mini { padding: 8px 12px; font-size: 0.75rem; border: 1px solid var(--border); background: var(--glass); color: #fff; border-radius: 8px; margin: 4px; cursor: pointer; transition: 0.2s; }
+        .s-btn-mini:hover { border-color: var(--primary); }
+        .s-btn-mini.active { background: var(--primary); color: #000; font-weight: 700; }
+    </style>
 
     <script>
-        function sim(type, idx) {
-            const app = document.getElementById('app');
-            const dev = document.getElementById('device');
-            document.querySelectorAll('.s-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
-
-            if(type === 'normal') {
-                app.innerHTML = `<div style="font-size: 0.8rem; opacity: 0.6; margin-bottom: 20px;">DSS CLUB • Invitation</div>
-                <div class="invitation-card">
-                    <div style="width: 50px; height: 50px; background: #ccc; border-radius: 50%; margin: 0 auto 10px; overflow: hidden; border: 2px solid var(--primary);">
-                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Avatar" style="width: 100%;">
-                    </div>
-                    <div style="font-size: 0.9rem; font-weight: bold; text-align: center;">Nguyễn Văn A</div>
-                    <div style="qr-placeholder"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=DSS" style="width:160px"></div>
-                </div><button class="btn-checkin">QUÉT MÃ TẠI QUẦY</button>`;
-            } 
-            else if(type === 'error') {
-                app.innerHTML = `<div style="margin-top: 100px; text-align: center;">
-                    <div style="font-size: 4rem;">📍</div>
-                    <h3 style="color: var(--error); margin: 20px 0;">Sai vị trí</h3>
-                    <p style="font-size: 0.8rem; opacity: 0.7;">Vui lòng di chuyển đến sảnh khách sạn Marriott để nhận mã Check-in.</p>
-                    <div style="margin-top: 30px; font-size: 0.7rem; color: var(--accent);">GPS: 21.0102, 105.7834 (Bạn cách 450m)</div>
-                </div>`;
-            }
-            else if(type === 'staff') {
-                app.innerHTML = `<div style="text-align: center;">
-                    <div style="font-size: 0.7rem; margin-bottom: 10px;">STAFF VIEW - FACE MATCHING</div>
-                    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 15px;">
-                        <div style="border: 1px solid #fff; border-radius: 8px; padding: 5px;">
-                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" width="80"><br><small>KYC</small>
+        const UserStages = {
+            1: {
+                render: () => `
+                    <div class="app-view">
+                        <div class="notch-msg">
+                            <b>DSS CLUB:</b> 🏛️ Bạn có lời mời tham dự Hội nghị Khách hàng 2026! Nhấn để xem thiệp mời.
                         </div>
-                        <div style="border: 2px solid var(--primary); border-radius: 8px; padding: 5px; position: relative;">
-                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" width="80" style="filter: grayscale(0.5);"><br><small>LIVE</small>
-                            <div style="position: absolute; top:0; left:0; width:100%; height:2px; background:var(--primary); animation: scan 2s infinite;"></div>
+                        <div style="flex: 1; display: flex; align-items: center; justify-content: center; opacity: 0.3;">
+                            <div style="font-size: 4rem;">🔒</div>
+                        </div>
+                        <p style="text-align:center; font-size:0.7rem; opacity:0.5;">Mở thông báo để bắt đầu quy trình</p>
+                    </div>
+                `
+            },
+            2: {
+                render: () => `
+                    <div class="app-view">
+                        <h3 style="margin-bottom: 5px;">FR-02: Self-Photo</h3>
+                        <p style="font-size: 0.7rem; opacity: 0.6; margin-bottom: 20px;">Vui lòng chụp ảnh chân dung mới để làm Avatar trên thiệp mời điện tử.</p>
+                        <div class="cam-overlay">
+                            <div class="cam-guideline"></div>
+                        </div>
+                        <button class="p-btn p-btn-primary" style="margin-top:20px;">CHỤP ẢNH</button>
+                    </div>
+                `
+            },
+            3: {
+                render: () => `
+                    <div class="app-view">
+                        <div class="invitation">
+                            <div class="avatar-box"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" width="100%"></div>
+                            <h4 style="font-size: 1.2rem;">DSS WORKSHOP 2026</h4>
+                            <p style="font-size: 0.7rem; margin-top: 5px;">Chào mừng: <b>Nguyễn Văn A</b></p>
+                            <div style="margin-top: 15px; font-size: 0.6rem; background: rgba(255,255,255,0.2); padding: 5px; border-radius: 5px;">
+                                Địa điểm: JW Marriott Hanoi<br>Thời gian: 08:30 - Ngày 15/04
+                            </div>
+                        </div>
+                        <div class="status-badge status-error" style="margin-top: 20px; width: 100%; justify-content: center;">
+                            📍 Bạn chưa ở khu vực sự kiện
+                        </div>
+                        <p style="font-size: 0.6rem; text-align: center; opacity: 0.5;">Mã QR Check-in chỉ hiện khi bạn cách sự kiện < 50m.</p>
+                        <button class="p-btn" disabled style="background:#334155; color:#fff; cursor: not-allowed;">CHƯA THỂ LẤY MÃ</button>
+                    </div>
+                `
+            },
+            4: {
+                render: () => `
+                    <div class="app-view">
+                        <div class="status-badge status-success" style="width: 100%; justify-content: center;">
+                            📍 Đã đến khu vực sự kiện
+                        </div>
+                        <div class="qr-section">
+                            <h4 style="color: #000; font-size: 0.8rem; margin-bottom: 5px;">MÃ CHECK-IN ĐỘNG</h4>
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=DSSCLUB-EVENT-2026-TOKEN" width="120">
+                            <div class="qr-timer"><div class="qr-timer-bar" id="t-bar"></div></div>
+                            <p style="color: #666; font-size: 0.6rem; margin-top: 8px;">Mã tự đổi mới mỗi 30s</p>
+                        </div>
+                        <div class="glass-card" style="padding: 10px; border-color: var(--primary);">
+                            <p style="font-size: 0.6rem; text-align: center;">Vui lòng đưa mã này cho nhân viên để được quét và xác thực khuôn mặt.</p>
                         </div>
                     </div>
-                    <div style="color: var(--primary); font-weight: bold; font-size: 1.2rem;">98.4% MATCH</div>
-                    <button class="btn-checkin" style="background: var(--success); color: #fff; margin-top: 20px;">XÁC NHẬN VÀO CỬA</button>
-                </div>`;
+                `
             }
-            else if(type === 'success') {
-                app.innerHTML = `<div style="text-align: center; margin-top: 50px; animation: bounce 0.6s ease-out;">
-                    <div style="font-size: 4rem;">🎉</div>
-                    <h2 style="color: var(--success); margin: 20px 0;">THÀNH CÔNG!</h2>
-                    <p style="font-size: 0.9rem;">Chào mừng Nguyễn Văn A<br>đến với sự kiện.</p>
-                    <div style="background: rgba(255,235,59,0.1); border: 1px dashed var(--accent); padding: 15px; border-radius: 12px; margin-top: 30px;">
-                        <span style="color: var(--accent); font-weight: bold; font-size: 1.5rem;">+100</span><br>
-                        <span style="font-size: 0.7rem;">ĐIỂM CỐNG HIẾN ĐÃ NHẬN</span>
-                    </div>
-                </div>`;
-            }
+        };
 
-            dev.style.transform = 'scale(1.05)';
-            setTimeout(() => dev.style.transform = 'scale(1)', 150);
+        const StaffStages = {
+            1: {
+                render: () => `
+                    <div class="app-view">
+                        <div class="glass-card" style="background: #000; height: 300px; border-color: var(--primary); position: relative; display: flex; align-items: center; justify-content: center;">
+                             <div style="width: 200px; height: 200px; border: 2px solid var(--primary); border-radius: 10px; position: relative; overflow: hidden;">
+                                <div style="position: absolute; top:0; left:0; width:100%; height:2px; background:var(--primary); animation: scanLine 2s infinite;"></div>
+                             </div>
+                             <p style="position: absolute; bottom: 20px; font-size: 0.6rem;">[QUÉT QR KHÁCH HÀNG / FR-06]</p>
+                        </div>
+                    </div>
+                    <style>@keyframes scanLine { 0%{top:0} 100%{top:100%} }</style>
+                `
+            },
+            2: {
+                render: () => `
+                    <div class="app-view">
+                        <h4 style="color: var(--primary); margin-bottom: 15px;">FR-07: FACE AI MATCHING</h4>
+                        <div style="display: flex; gap: 10px;">
+                            <div style="flex: 1; text-align: center;">
+                                <div class="glass-card" style="padding: 5px;"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" width="100%"></div>
+                                <p style="font-size: 0.5rem; margin-top: 5px;">ẢNH KYC (REF)</p>
+                            </div>
+                            <div style="flex: 1; text-align: center;">
+                                <div class="glass-card" style="padding: 5px; border-color: var(--success);"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" width="100%"></div>
+                                <p style="font-size: 0.5rem; margin-top: 5px;">CAM TRỰC TIẾP</p>
+                            </div>
+                        </div>
+                        <div style="background: rgba(16, 185, 129, 0.2); padding: 15px; border-radius: 15px; margin-top: 20px; text-align: center;">
+                            <div style="font-size: 1.5rem; font-weight: 800; color: var(--success);">98.4%</div>
+                            <p style="font-size: 0.6rem; color: var(--success);">KHUÔN MẶT TRÙNG KHỚP</p>
+                        </div>
+                    </div>
+                `
+            },
+            3: {
+                render: () => `
+                    <div class="app-view">
+                        <div style="text-align: center;">
+                             <div style="font-size: 3rem; margin-top: 30px;">✅</div>
+                             <h3 style="color: var(--success); margin: 15px 0;">CHECK-IN XONG</h3>
+                             <p style="font-size: 0.75rem; opacity: 0.7;">Người dùng: <b>Nguyễn Văn A</b></p>
+                             <div class="glass-card" style="margin-top: 20px; border-color: var(--accent);">
+                                <span style="color: var(--accent); font-weight: 800;">+100 ĐIỂM THƯỞNG</span><br>
+                                <p style="font-size: 0.5rem; margin-top: 5px;">Cơ chế: FR-8.2 Reward Points Auto-Hook</p>
+                             </div>
+                        </div>
+                        <button class="p-btn p-btn-primary" onclick="renderStaffStep(1)" style="margin-top: 40px;">TIẾP TỤC QUÉT</button>
+                    </div>
+                `
+            }
+        };
+
+        function switchRole(role) {
+            const userView = document.getElementById('screen-user');
+            const staffView = document.getElementById('screen-staff');
+            const userScenarios = document.getElementById('user-scenarios');
+            const staffScenarios = document.getElementById('staff-scenarios');
+            
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.innerText.toLowerCase().includes(role)));
+
+            if(role === 'user') {
+                userView.style.display = 'block';
+                staffView.style.display = 'none';
+                userScenarios.style.display = 'block';
+                staffScenarios.style.display = 'none';
+                renderUserStep(1);
+            } else {
+                userView.style.display = 'none';
+                staffView.style.display = 'block';
+                userScenarios.style.display = 'none';
+                staffScenarios.style.display = 'block';
+                renderStaffStep(1);
+            }
         }
 
+        function renderUserStep(step) {
+            document.getElementById('screen-user').innerHTML = UserStages[step].render();
+            document.querySelectorAll('#user-scenarios .s-btn-mini').forEach((b, i) => b.classList.toggle('active', i === step - 1));
+            
+            if(step === 4) {
+                setTimeout(() => {
+                    const bar = document.getElementById('t-bar');
+                    if(bar) bar.style.width = '100%';
+                }, 100);
+            }
+        }
+
+        function renderStaffStep(step) {
+            document.getElementById('screen-staff').innerHTML = StaffStages[step].render();
+            document.querySelectorAll('#staff-scenarios .s-btn-mini').forEach((b, i) => b.classList.toggle('active', i === step - 1));
+        }
+
+        // Init
         mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+        renderUserStep(1);
     </script>
-    <style>
-        @keyframes scan { 0% { top: 0; } 100% { top: 100px; } }
-        @keyframes bounce { 0% { transform: scale(0.5); } 80% { transform: scale(1.1); } 100% { transform: scale(1); } }
-    </style>
 </body>
 </html>

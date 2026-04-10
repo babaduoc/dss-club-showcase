@@ -3,77 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DSS CLUB - Showcase Portal</title>
+    <title>DSS CLUB - Presentation Center</title>
     <style>
         :root {
             --primary: #00d2ff;
+            --secondary: #3a7bd5;
             --bg: #0f172a;
-            --text: #f8fafc;
             --card-bg: rgba(255, 255, 255, 0.05);
+            --text: #f8fafc;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        
         body {
             background-color: var(--bg);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(58, 123, 213, 0.15) 0, transparent 50%), 
+                radial-gradient(at 50% 0%, rgba(0, 210, 255, 0.1) 0, transparent 50%);
             color: var(--text);
-            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 50px 20px;
         }
-        h1 { color: var(--primary); margin-bottom: 40px; }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            width: 100%;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            text-align: center;
+            margin-bottom: 80px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .logo-text {
+            font-size: 0.9rem;
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- Grid Section --- */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            width: 100%;
-            max-width: 900px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
         }
+
         .card {
             background: var(--card-bg);
-            padding: 25px;
-            border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
             text-decoration: none;
             color: inherit;
-            transition: transform 0.2s, border-color 0.2s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(0, 210, 255, 0.05));
+            opacity: 0;
+            transition: 0.4s;
+        }
+
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
             border-color: var(--primary);
-            background: rgba(0, 210, 255, 0.05);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
-        .card h3 { margin: 0 0 10px 0; color: var(--primary); }
-        .card p { margin: 0; font-size: 0.9rem; opacity: 0.7; }
-        .footer { margin-top: 100px; opacity: 0.3; font-size: 0.8rem; }
+
+        .card:hover::before { opacity: 1; }
+
+        .card .status {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            display: inline-block;
+            margin-bottom: 20px;
+            width: fit-content;
+        }
+
+        .card.active .status { background: var(--primary); color: #000; }
+        .card.coming-soon { opacity: 0.6; cursor: default; }
+        .card.coming-soon .status { background: rgba(255,255,255,0.1); color: #fff; }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+
+        .card p {
+            color: #94a3b8;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+            flex-grow: 1;
+        }
+
+        .card .arrow {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .card:hover .arrow {
+            background: var(--primary);
+            color: #000;
+            transform: translateX(5px);
+        }
+
+        /* --- Footer --- */
+        footer {
+            margin-top: auto;
+            padding: 40px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        footer p {
+            font-size: 0.8rem;
+            color: #64748b;
+            letter-spacing: 1px;
+        }
+
     </style>
 </head>
 <body>
 
-    <h1>🚀 DSS CLUB - Презентации</h1>
+    <div class="container">
+        <div class="hero">
+            <span class="logo-text">DAHUA DSS CLUB</span>
+            <h1>Showcase Center</h1>
+            <p>Hệ thống trình diễn các tính năng công nghệ mới nhất dành cho hệ điều hành DSS CLUB v2.0</p>
+        </div>
 
-    <div class="grid">
-        <!-- Dashboard Card -->
-        <a href="App_Update_Showcase.html" class="card">
-            <h3>App Auto Update System</h3>
-            <p>Mô phỏng cơ chế Cập nhật bắt buộc & Chế độ bảo trì hệ thống.</p>
-        </a>
+        <div class="grid">
+            <!-- Event Check-in -->
+            <a href="Event_Checkin_Showcase.html" class="card active">
+                <span class="status">Kịch bản High-Fidelity</span>
+                <h3>AI Event Check-in</h3>
+                <p>Quy trình xác thực khách mời tự động bằng AI Face Recognition, Dynamic QR TOTP và Geofencing thông minh.</p>
+                <div class="arrow">→</div>
+            </a>
 
-        <!-- Event Check-in Card -->
-        <a href="Event_Checkin_Showcase.html" class="card">
-            <h3>AI Event Check-in</h3>
-            <p>Xác thực khách mời bằng mã QR động, GPS Geofencing và Face AI matching.</p>
-        </a>
+            <!-- App Update -->
+            <a href="App_Update_Showcase.html" class="card">
+                <span class="status">Đã sẵn sàng</span>
+                <h3>Smart App Auto Update</h3>
+                <p>Mô phỏng cơ chế cập nhật bắt buộc và thông báo bảo trì hệ thống linh hoạt trên nền tảng di động.</p>
+                <div class="arrow">→</div>
+            </a>
 
-        <!-- Placeholder cho tinh nang tiep theo -->
-        <div class="card" style="opacity: 0.5; cursor: not-allowed;">
-            <h3>Coming Soon...</h3>
-            <p>Social Community & Contribution Points System.</p>
+            <!-- Verification Levels -->
+            <a href="#" class="card coming-soon">
+                <span class="status">Đang phát triển</span>
+                <h3>Tiered Verification</h3>
+                <p>Hệ thống nâng cấp tài khoản phân cấp từ Level 0 đến Level 3 dành cho thợ kỹ thuật và đại diện cửa hàng.</p>
+                <div class="arrow">→</div>
+            </a>
         </div>
     </div>
 
-    <div class="footer">
-        Powered by Antigravity AI - babaduoc.github.io
-    </div>
+    <footer>
+        <p>POWERED BY ANTIGRAVITY AI • BABADUOC.GITHUB.IO</p>
+    </footer>
 
 </body>
 </html>
