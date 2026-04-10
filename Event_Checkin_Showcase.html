@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSS CLUB - Event Check-in Showcase</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+            --accent: #ffeb3b;
+            --bg: #0f172a;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text: #f8fafc;
+            --success: #10b981;
+            --error: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); overflow-x: hidden; }
+
+        header {
+            padding: 30px; text-align: center;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 40px;
+        }
+
+        @media (max-width: 850px) { .container { grid-template-columns: 1fr; } }
+
+        /* --- Phone Mockup --- */
+        .phone {
+            width: 280px; height: 560px;
+            background: #000; border: 12px solid #334155; border-radius: 40px;
+            position: sticky; top: 20px; overflow: hidden;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+        }
+        .phone::before {
+            content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 120px; height: 25px; background: #334155; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; z-index: 10;
+        }
+
+        .screen {
+            width: 100%; height: 100%;
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            display: flex; flex-direction: column; padding: 25px 15px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* --- UI Components --- */
+        .invitation-card {
+            background: rgba(255,255,255,0.1); border-radius: 20px; padding: 15px;
+            border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px);
+            margin-top: 40px;
+        }
+        .qr-placeholder {
+            width: 160px; height: 160px; background: #fff; margin: 15px auto;
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            padding: 10px; border: 4px solid var(--primary);
+        }
+        .qr-placeholder img { width: 100%; height: 100%; }
+
+        .btn-checkin {
+            background: var(--primary); color: #000; border: none; padding: 12px;
+            border-radius: 25px; font-weight: bold; width: 100%; cursor: pointer;
+            margin-top: 20px; transition: 0.2s;
+        }
+
+        /* --- Control Panel --- */
+        .card {
+            background: var(--card-bg); padding: 25px; border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px;
+        }
+        h2 { color: var(--primary); margin-bottom: 15px; font-size: 1.3rem; }
+        .s-btn {
+            display: block; width: 100%; padding: 14px; text-align: left;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: #fff; border-radius: 12px; margin-bottom: 10px; cursor: pointer;
+        }
+        .s-btn.active { background: var(--primary); color: #000; font-weight: bold; }
+
+        footer { text-align: center; padding: 40px; opacity: 0.4; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 style="color: var(--primary);">EVENT CHECK-IN SYSTEM</h1>
+        <p style="opacity: 0.7;">AI Face Recognition & Dynamic QR Simulation</p>
+    </header>
+
+    <div class="container">
+        <!-- Phone View -->
+        <div class="phone" id="device">
+            <div class="screen" id="app">
+                <div style="font-size: 0.8rem; opacity: 0.6; margin-bottom: 20px;">DSS CLUB • Invitation</div>
+                <div class="invitation-card">
+                    <div style="width: 50px; height: 50px; background: #ccc; border-radius: 50%; margin: 0 auto 10px; overflow: hidden; border: 2px solid var(--primary);">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Avatar" style="width: 100%;">
+                    </div>
+                    <div style="font-size: 0.9rem; font-weight: bold; text-align: center;">Nguyễn Văn A</div>
+                    <div style="font-size: 0.6rem; text-align: center; opacity: 0.7;">Workshop: AI in Smart Home</div>
+                    
+                    <div class="qr-placeholder">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=DSSCLUB-EVENT-2026-TOKEN-XYZ" alt="QR">
+                    </div>
+                    <div style="font-size: 0.5rem; text-align: center; color: var(--accent);">Đổi mã sau: 24s</div>
+                </div>
+                <button class="btn-checkin">QUÉT MÃ TẠI QUẦY</button>
+            </div>
+        </div>
+
+        <!-- Controls View -->
+        <div class="controls">
+            <div class="card">
+                <h2>Kịch bản mô phỏng</h2>
+                <button class="s-btn active" onclick="sim('normal', 0)">Kịch bản 1: Nhận thiệp & Lấy QR</button>
+                <button class="s-btn" onclick="sim('error', 1)">Kịch bản 2: Sai vị trí (GPS Geofence)</button>
+                <button class="s-btn" onclick="sim('staff', 2)">Kịch bản 3: Nhân viên quét mã & Face AI</button>
+                <button class="s-btn" onclick="sim('success', 3)">Kịch bản 4: Check-in Thành công (Nhận điểm)</button>
+            </div>
+
+            <div class="card">
+                <h2>Phân tích cho sếp</h2>
+                <ul style="padding-left: 20px; font-size: 0.95rem; line-height: 1.8;">
+                    <li><b>Dynamic QR:</b> Chống chụp màn hình gửi cho người khác đi hộ.</li>
+                    <li><b>GPS Geofence:</b> Chỉ hiện mã khi khách đã đứng đúng sảnh hội trường.</li>
+                    <li><b>AI Face:</b> Đối soát ảnh thực tế tại quầy với ảnh KYC của tài khoản.</li>
+                    <li><b>Gamification:</b> Tự động cộng điểm thưởng ngay khi vừa qua cửa.</li>
+                </ul>
+            </div>
+
+            <div class="card" style="padding: 10px;">
+                <div class="mermaid">
+                    flowchart LR
+                        A[Quét QR] --> B{Face AI OK?}
+                        B -- Yes --> C[Vào Cửa]
+                        B -- No --> D[Check CCCD]
+                        C --> E[+100 Points]
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>&copy; 2026 DSS CLUB - AI Powered Showcase</footer>
+
+    <script>
+        function sim(type, idx) {
+            const app = document.getElementById('app');
+            const dev = document.getElementById('device');
+            document.querySelectorAll('.s-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+
+            if(type === 'normal') {
+                app.innerHTML = `<div style="font-size: 0.8rem; opacity: 0.6; margin-bottom: 20px;">DSS CLUB • Invitation</div>
+                <div class="invitation-card">
+                    <div style="width: 50px; height: 50px; background: #ccc; border-radius: 50%; margin: 0 auto 10px; overflow: hidden; border: 2px solid var(--primary);">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Avatar" style="width: 100%;">
+                    </div>
+                    <div style="font-size: 0.9rem; font-weight: bold; text-align: center;">Nguyễn Văn A</div>
+                    <div style="qr-placeholder"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=DSS" style="width:160px"></div>
+                </div><button class="btn-checkin">QUÉT MÃ TẠI QUẦY</button>`;
+            } 
+            else if(type === 'error') {
+                app.innerHTML = `<div style="margin-top: 100px; text-align: center;">
+                    <div style="font-size: 4rem;">📍</div>
+                    <h3 style="color: var(--error); margin: 20px 0;">Sai vị trí</h3>
+                    <p style="font-size: 0.8rem; opacity: 0.7;">Vui lòng di chuyển đến sảnh khách sạn Marriott để nhận mã Check-in.</p>
+                    <div style="margin-top: 30px; font-size: 0.7rem; color: var(--accent);">GPS: 21.0102, 105.7834 (Bạn cách 450m)</div>
+                </div>`;
+            }
+            else if(type === 'staff') {
+                app.innerHTML = `<div style="text-align: center;">
+                    <div style="font-size: 0.7rem; margin-bottom: 10px;">STAFF VIEW - FACE MATCHING</div>
+                    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 15px;">
+                        <div style="border: 1px solid #fff; border-radius: 8px; padding: 5px;">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" width="80"><br><small>KYC</small>
+                        </div>
+                        <div style="border: 2px solid var(--primary); border-radius: 8px; padding: 5px; position: relative;">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" width="80" style="filter: grayscale(0.5);"><br><small>LIVE</small>
+                            <div style="position: absolute; top:0; left:0; width:100%; height:2px; background:var(--primary); animation: scan 2s infinite;"></div>
+                        </div>
+                    </div>
+                    <div style="color: var(--primary); font-weight: bold; font-size: 1.2rem;">98.4% MATCH</div>
+                    <button class="btn-checkin" style="background: var(--success); color: #fff; margin-top: 20px;">XÁC NHẬN VÀO CỬA</button>
+                </div>`;
+            }
+            else if(type === 'success') {
+                app.innerHTML = `<div style="text-align: center; margin-top: 50px; animation: bounce 0.6s ease-out;">
+                    <div style="font-size: 4rem;">🎉</div>
+                    <h2 style="color: var(--success); margin: 20px 0;">THÀNH CÔNG!</h2>
+                    <p style="font-size: 0.9rem;">Chào mừng Nguyễn Văn A<br>đến với sự kiện.</p>
+                    <div style="background: rgba(255,235,59,0.1); border: 1px dashed var(--accent); padding: 15px; border-radius: 12px; margin-top: 30px;">
+                        <span style="color: var(--accent); font-weight: bold; font-size: 1.5rem;">+100</span><br>
+                        <span style="font-size: 0.7rem;">ĐIỂM CỐNG HIẾN ĐÃ NHẬN</span>
+                    </div>
+                </div>`;
+            }
+
+            dev.style.transform = 'scale(1.05)';
+            setTimeout(() => dev.style.transform = 'scale(1)', 150);
+        }
+
+        mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+    </script>
+    <style>
+        @keyframes scan { 0% { top: 0; } 100% { top: 100px; } }
+        @keyframes bounce { 0% { transform: scale(0.5); } 80% { transform: scale(1.1); } 100% { transform: scale(1); } }
+    </style>
+</body>
+</html>
