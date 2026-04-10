@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSS CLUB - Feature Presentation</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+            --accent: #ffeb3b;
+            --bg: #0f172a;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text: #f8fafc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- Header --- */
+        header {
+            padding: 40px 20px;
+            text-align: center;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        h1 { font-size: 2.5rem; color: var(--primary); margin-bottom: 10px; }
+        .tagline { font-size: 1.1rem; opacity: 0.8; }
+
+        /* --- Main Content --- */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 100%; }
+        }
+
+        /* --- Phone Mockup --- */
+        .phone-container {
+            position: sticky;
+            top: 20px;
+            display: flex;
+            justify-content: center;
+            perspective: 1000px;
+        }
+
+        .phone {
+            width: 300px;
+            height: 600px;
+            background: #000;
+            border: 12px solid #334155;
+            border-radius: 40px;
+            position: relative;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.5);
+            overflow: hidden;
+            transition: transform 0.5s ease;
+        }
+
+        .phone::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 120px; height: 30px;
+            background: #334155;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            z-index: 10;
+        }
+
+        .app-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        /* --- Simulation UI States --- */
+
+        .ui-update-popup {
+            background: rgba(0,0,0,0.8);
+            display: flex;
+        }
+
+        .popup-card {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 20px;
+            border: 2px solid var(--primary);
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .btn-update {
+            background: var(--primary);
+            color: #000;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+
+        /* --- Controls --- */
+
+        
+        .card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        h2 { margin-bottom: 20px; color: var(--primary); display: flex; align-items: center; }
+        h2::before { content: '•'; margin-right: 10px; color: var(--accent); }
+
+        .scenario-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            text-align: left;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .scenario-btn:hover { background: rgba(0, 210, 255, 0.1); border-color: var(--primary); }
+        .scenario-btn.active { background: var(--primary); color: #000; font-weight: bold; }
+
+        .logic-view { margin-top: 20px; }
+
+        footer { text-align: center; padding: 40px; opacity: 0.5; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>DSS CLUB - In-App Update</h1>
+        <p class="tagline">Trình diễn Giải pháp Tự động Cập nhật & Bảo trì hệ thống</p>
+    </header>
+
+    <div class="container">
+        <!-- Bên trái: Mô phỏng điện thoại -->
+        <div class="phone-container">
+            <div class="phone" id="phoneBody">
+                <div class="app-screen" id="appScreen">
+                    <div style="font-size: 3rem; margin-bottom: 20px;">📱</div>
+                    <h3>Giao diện người dùng</h3>
+                    <p style="font-size: 0.8rem; margin-top: 10px; opacity: 0.7;">Đang ở Version: 1.0.0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bên phải: Nội dung và Điều khiển -->
+        <div class="info-panel">
+            <div class="card">
+                <h2>Chọn kịch bản mô phỏng</h2>
+                <button class="scenario-btn active" onclick="simulate('normal', 0)">Kịch bản 1: Hoạt động bình thường</button>
+                <button class="scenario-btn" onclick="simulate('optional', 1)">Kịch bản 2: Cập nhật mới (Tùy chọn)</button>
+                <button class="scenario-btn" onclick="simulate('force', 2)">Kịch bản 3: Cập nhật Bắt buộc (Force)</button>
+                <button class="scenario-btn" onclick="simulate('maintenance', 3)">Kịch bản 4: Chế độ Bảo trì CMS</button>
+            </div>
+
+            <div class="card">
+                <h2>Giá trị mang lại cho sếp</h2>
+                <ul style="padding-left: 20px; font-size: 0.95rem;">
+                    <li><b>Chủ động:</b> Không đợi App Store duyệt vẫn có thể ép user nâng cấp.</li>
+                    <li><b>Ổn định:</b> Tránh lỗi khi Backend đổi API mà App cũ không kịp cập nhật.</li>
+                    <li><b>An toàn:</b> Tự động hóa việc bảo trì trong khung giờ thấp điểm.</li>
+                </ul>
+            </div>
+
+            <div class="card logic-view">
+                <h2>Cơ chế vận hành</h2>
+                <div class="mermaid">
+                flowchart TD
+                    A[Start App] --> B{Maintenance?}
+                    B -- Yes --> C[Show Maintenance UI]
+                    B -- No --> D{Version < Min?}
+                    D -- Yes --> E[Force Update Popup]
+                    D -- No --> F[Normal App Home]
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 DSS CLUB - AI Powered Document Presentation
+    </footer>
+
+    <script>
+        function simulate(type, btnIndex) {
+            const screen = document.getElementById('appScreen');
+            const phone = document.getElementById('phoneBody');
+            
+            // Sửa lỗi: Cập nhật trạng thái nút dựa trên index để chính xác 100%
+            document.querySelectorAll('.scenario-btn').forEach((btn, idx) => {
+                btn.classList.remove('active');
+                if(idx === btnIndex) btn.classList.add('active');
+            });
+
+            // Hiệu ứng tương tác
+            if(type === 'normal') {
+                screen.innerHTML = `
+                    <div style="font-size: 3rem; margin-bottom: 20px;">📱</div>
+                    <h3>Giao diện người dùng</h3>
+                    <p style="font-size: 0.8rem; margin-top: 10px; opacity: 0.7;">Đang ở Version: 1.0.0</p>
+                    <div style="margin-top: 30px; width: 80%; height: 5px; background: rgba(255,255,255,0.1); border-radius: 10px;"></div>
+                `;
+            } else if(type === 'optional') {
+                screen.innerHTML = `
+                    <div class="popup-card">
+                        <div style="font-size: 2rem;">🚀</div>
+                        <h4 style="margin: 10px 0;">Bản mới 2.1.0</h4>
+                        <p style="font-size: 0.8rem; margin: 10px 0;">Có thêm tính năng quét mã QR mới!</p>
+                        <button class="btn-update">Cập nhật ngay</button>
+                        <p style="font-size: 0.7rem; margin-top: 10px; opacity: 0.6; cursor: pointer;">Để sau</p>
+                    </div>
+                `;
+            } else if(type === 'force') {
+                screen.innerHTML = `
+                    <div class="popup-card" style="border-color: #ff4d4d; background: #2d1b1b;">
+                        <div style="font-size: 2rem;">⚠️</div>
+                        <h4 style="margin: 10px 0;">Cập nhật quan trọng</h4>
+                        <p style="font-size: 0.8rem; margin: 10px 0;">Phiên bản bạn đang dùng đã quá cũ và không còn an toàn.</p>
+                        <button class="btn-update" style="background: #ff4d4d; color: white;">Nâng cấp ngay</button>
+                        <p style="font-size: 0.6rem; margin-top: 10px; color: #ff4d4d;">(Không thể bỏ qua)</p>
+                    </div>
+                `;
+            } else if (type === 'maintenance') {
+                screen.innerHTML = `
+                    <div style="padding: 20px;">
+                        <div style="font-size: 3rem; margin-bottom: 20px;">🛠️</div>
+                        <h3>Đang Bảo Trì</h3>
+                        <p style="font-size: 0.8rem; margin: 15px 0; opacity: 0.8;">Hệ thống đang được nâng cấp để phục vụ tốt hơn.</p>
+                        <div style="background: rgba(255,235,59,0.1); border: 1px dashed var(--accent); padding: 10px; color: var(--accent); font-size: 0.7rem; border-radius: 8px;">
+                            Dự kiến quay lại lúc: 04h00 Sáng
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Hiệu ứng rung nhẹ khi đổi state
+            phone.style.transform = 'scale(1.05)';
+            setTimeout(() => phone.style.transform = 'scale(1)', 200);
+        }
+
+        mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+    </script>
+</body>
+</html>
