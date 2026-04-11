@@ -1,0 +1,66 @@
+/* 
+   DSS CLUB BRAND TOKENS
+   Single Source of Truth for Design Variables
+   Defined based on DSS_Club_Brand_Identity.md
+*/
+
+:root {
+    /* --- CORE COLORS --- */
+    --dss-blue: #0068FF;
+    --dss-deep-blue: #0047CC;
+    --dss-ice-blue: #E8F0FF;
+    --dss-ghost-blue: #F5F8FF;
+
+    /* --- NEUTRALS (NAVY FAMILY) --- */
+    --navy-dark: #0D1B3E;
+    --slate: #3A4A6B;
+    --muted-blue: #8A9ABB;
+    --cool-gray: #EEF1F8;
+    --white: #FFFFFF;
+
+    /* --- ACCENT COLORS --- */
+    --cyan-spark: #00C6FF;
+    --energy-orange: #FF6B2C;
+    --electric-purple: #A259FF;
+    --mint-green: #00D68F;
+    --amber: #FFAA00;
+    --alert-red: #FF3B30;
+
+    /* --- GRADIENTS --- */
+    --gradient-primary: linear-gradient(135deg, var(--dss-blue) 0%, var(--cyan-spark) 100%);
+    --gradient-premium: linear-gradient(135deg, var(--dss-deep-blue) 0%, var(--electric-purple) 100%);
+    --gradient-hero-dark: linear-gradient(135deg, var(--navy-dark) 0%, var(--dss-blue) 60%, var(--cyan-spark) 100%);
+    --gradient-overlay: linear-gradient(180deg, rgba(0, 104, 255, 0.55) 0%, rgba(0, 198, 255, 0.25) 100%);
+
+    /* --- TYPOGRAPHY --- */
+    --font-primary: 'Be Vietnam Pro', 'Nunito', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    
+    /* --- UI METRICS --- */
+    --radius-button: 12px;
+    --radius-card: 16px;
+    --radius-modal: 20px;
+    --radius-pill: 99px;
+
+    /* --- SHADOWS --- */
+    --shadow-sm: 0 2px 8px rgba(13, 27, 62, 0.08); /* Navy based shadow */
+    --shadow-md: 0 8px 24px rgba(13, 27, 62, 0.12);
+    --shadow-lg: 0 12px 32px rgba(0, 104, 255, 0.28); /* Blue tinted shadow */
+
+    /* --- SPACING --- */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-base: 12px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+}
+
+/* Base Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap');
+
+body {
+    font-family: var(--font-primary);
+    background-color: var(--dss-ghost-blue);
+    color: var(--navy-dark);
+    margin: 0;
+}
