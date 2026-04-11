@@ -1,10 +1,11 @@
 /* 
    DSS CLUB BRAND TOKENS
-   Theme: Light / Zalo Style (v1.2)
+   Theme: Light / Premium Zalo Style (v2.0)
+   Updated: 2026-04-11
 */
 
 :root {
-    /* --- CORE COLORS --- */
+    /* --- CORE BRAND COLORS --- */
     --dss-blue: #0068FF;
     --dss-deep-blue: #0050CC;
     --dss-ice-blue: #E8F1FF;
@@ -16,7 +17,12 @@
     --muted-blue: #8C9BAB;
     --cool-gray: #E8EDF3;
     --white: #FFFFFF;
-    --bg-main: #F7F9FC;
+
+    /* --- SEMANTIC SURFACES --- */
+    --surface-main: #F7F9FC;
+    --surface-card: var(--white);
+    --surface-glass: rgba(255, 255, 255, 0.8);
+    --surface-glass-dark: rgba(13, 27, 62, 0.05);
 
     /* --- ACCENT COLORS --- */
     --cyan-spark: #00AAFF;
@@ -27,19 +33,27 @@
     /* --- GRADIENTS --- */
     --gradient-primary: linear-gradient(135deg, var(--dss-blue) 0%, var(--cyan-spark) 100%);
     --gradient-premium: linear-gradient(135deg, var(--dss-deep-blue) 0%, var(--dss-blue) 100%);
+    --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+
+    /* --- BORDER & DIVIDER --- */
+    --border-subtle: #E8EDF3;
+    --border-medium: #D1D9E2;
+    --border-bold: var(--navy-dark);
 
     /* --- TYPOGRAPHY --- */
     --font-primary: 'Be Vietnam Pro', 'Nunito', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
     
     /* --- UI METRICS --- */
     --radius-button: 12px;
-    --radius-card: 16px;
-    --radius-modal: 20px;
+    --radius-card: 20px;
+    --radius-modal: 24px;
     --radius-pill: 99px;
 
     /* --- SHADOWS --- */
     --shadow-sm: 0 2px 8px rgba(13, 27, 62, 0.04);
     --shadow-md: 0 8px 24px rgba(13, 27, 62, 0.08);
+    --shadow-lg: 0 16px 48px rgba(13, 27, 62, 0.12);
+    --shadow-premium: 0 40px 100px rgba(13, 27, 62, 0.15);
 
     /* --- SPACING --- */
     --space-xs: 4px;
@@ -48,18 +62,26 @@
     --space-md: 16px;
     --space-lg: 24px;
     --space-xl: 32px;
+    --space-xxl: 60px;
+
+    /* --- ANIMATION TOKENS --- */
+    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-slow: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Base Font Import */
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap');
 
 body {
     font-family: var(--font-primary);
-    background-color: var(--bg-main);
+    background-color: var(--surface-main);
     color: var(--navy-dark);
     margin: 0;
+    -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, h5, h6 {
     color: var(--navy-dark);
+    font-weight: 800;
 }

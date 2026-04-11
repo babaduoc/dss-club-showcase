@@ -3,429 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DSS CLUB - Presentation Center</title>
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Trung tâm trình diễn công nghệ DSS CLUB - Khám phá các tính năng mới nhất v2.0">
+    <title>DSS CLUB - Showcase Portal</title>
+    <!-- Design System -->
     <link rel="stylesheet" href="css/brand_tokens.css">
+    <link rel="stylesheet" href="css/master_layout.css">
     <style>
-        /* --- Root Overrides & Extensions --- */
-        :root {
-            --header-height: 80px;
-            --glass-bg: rgba(255, 255, 255, 0.8);
-            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        body {
-            background-color: var(--bg-main);
-            color: var(--navy-dark);
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        /* --- Animations --- */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes imageReveal {
-            from { opacity: 0; scale: 0.95; }
-            to { opacity: 1; scale: 1; }
-        }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* --- Header --- */
-        header {
-            height: var(--header-height);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 40px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--cool-gray);
-            transition: var(--transition);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-        }
-
-        .logo-circle {
-            width: 32px;
-            height: 32px;
-            background: var(--gradient-primary);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 900;
-            font-size: 1.2rem;
-        }
-
-        .logo-text {
-            font-weight: 800;
-            font-size: 1.25rem;
-            letter-spacing: -0.5px;
-            color: var(--navy-dark);
-        }
-
-        .version-badge {
-            background: var(--dss-ice-blue);
-            color: var(--dss-blue);
-            padding: 4px 12px;
-            border-radius: var(--radius-pill);
-            font-size: 0.75rem;
-            font-weight: 700;
-        }
-
-        /* --- Hero Section --- */
-        .hero {
-            padding: 100px 20px 60px;
-            max-width: 1200px;
-            margin: 0 auto;
-            text-align: center;
-            position: relative;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(0, 104, 255, 0.05) 0%, transparent 70%);
+        /* Page Specific Overrides */
+        .portal-bg-pattern {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 104, 255, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 170, 255, 0.03) 0%, transparent 40%);
             z-index: -1;
         }
-
-        .hero-label {
-            display: inline-block;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-weight: 800;
-            font-size: 0.85rem;
-            color: var(--dss-blue);
-            margin-bottom: 24px;
-            opacity: 0;
-            animation: fadeInUp 0.8s forwards;
-        }
-
-        .hero h1 {
-            font-size: 4rem;
-            font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 24px;
-            background: linear-gradient(to right, var(--navy-dark), var(--dss-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            opacity: 0;
-            animation: fadeInUp 0.8s 0.2s forwards;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--slate);
-            max-width: 700px;
-            margin: 0 auto 50px;
-            opacity: 0;
-            animation: fadeInUp 0.8s 0.3s forwards;
-        }
-
-        .hero-visual {
-            max-width: 900px;
-            margin: 0 auto;
-            border-radius: 40px;
+        
+        .hero-illustration {
+            width: 100%;
+            max-width: 800px;
+            margin: var(--space-lg) auto 0;
+            border-radius: var(--radius-modal);
             overflow: hidden;
-            box-shadow: 0 40px 100px rgba(13, 27, 62, 0.12);
-            opacity: 0;
-            animation: imageReveal 1.2s 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            box-shadow: var(--shadow-premium);
             border: 1px solid var(--white);
         }
 
-        .hero-visual img {
+        .hero-illustration img {
             width: 100%;
             display: block;
-        }
-
-        /* --- Grid & Cards --- */
-        .main-content {
-            padding: 80px 20px;
-            max-width: 1300px;
-            margin: 0 auto;
-        }
-
-        .grid-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 40px;
-            padding: 0 10px;
-        }
-
-        .grid-header h2 {
-            font-size: 2rem;
-            font-weight: 800;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 24px;
-        }
-
-        .card {
-            background: var(--white);
-            border-radius: var(--radius-card);
-            padding: 40px;
-            text-decoration: none;
-            color: inherit;
-            border: 1px solid var(--cool-gray);
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            z-index: 1;
-        }
-
-        .card:hover {
-            transform: translateY(-8px);
-            border-color: var(--dss-blue);
-            box-shadow: var(--shadow-md);
-        }
-
-        .card .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
-            border-radius: var(--radius-pill);
-            font-size: 0.75rem;
-            font-weight: 800;
-            margin-bottom: 24px;
-            width: fit-content;
-        }
-
-        .badge-boss { background: #000; color: #fff; }
-        .badge-showcase { background: var(--dss-ghost-blue); color: var(--dss-blue); }
-        .badge-ready { background: #E6F7ED; color: var(--mint-green); }
-
-        .card h3 {
-            font-size: 1.6rem;
-            margin-bottom: 16px;
-            font-weight: 800;
-            transition: color 0.3s;
-        }
-
-        .card:hover h3 { color: var(--dss-blue); }
-
-        .card p {
-            color: var(--slate);
-            font-size: 1rem;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            flex-grow: 1;
-        }
-
-        .card-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-top: 24px;
-            border-top: 1px solid var(--cool-gray);
-        }
-
-        .explore-btn {
-            font-weight: 700;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--dss-blue);
-        }
-
-        .explore-circle {
-            width: 36px;
-            height: 36px;
-            border: 2.5px solid var(--dss-blue);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-        }
-
-        .card:hover .explore-circle {
-            background: var(--dss-blue);
-            color: white;
-        }
-
-        /* --- Footer --- */
-        footer {
-            padding: 80px 20px;
-            text-align: center;
-            background: var(--white);
-            border-top: 1px solid var(--cool-gray);
-        }
-
-        .footer-brand {
-            margin-bottom: 24px;
-            opacity: 0.6;
-        }
-
-        .footer-text {
-            font-size: 0.85rem;
-            color: var(--slate);
-            letter-spacing: 1px;
-            font-weight: 600;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            header { padding: 0 20px; }
-            .grid { grid-template-columns: 1fr; }
-            .card { padding: 30px; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <a href="#" class="logo">
-            <div class="logo-circle">D</div>
-            <span class="logo-text">DSS CLUB</span>
+    <div class="portal-bg-pattern"></div>
+
+    <header class="dss-header">
+        <a href="#" class="dss-logo">
+            <div class="dss-logo-icon">D</div>
+            <span class="dss-logo-text">DSS CLUB</span>
         </a>
-        <span class="version-badge">v2.0 Beta</span>
+        <div class="dss-badge dss-badge-premium" style="margin-bottom: 0;">v2.0 Beta</div>
     </header>
 
-    <main>
-        <div class="hero">
-            <span class="hero-label">Presentation Center</span>
-            <h1>Showcase Experience</h1>
-            <p>Hệ sinh thái công nghệ DSS CLUB được thiết kế để mang lại trải nghiệm đỉnh cao cho các đối tác cấp cao và cộng đồng người dùng kỹ thuật số.</p>
+    <main class="dss-container dss-section">
+        <section class="dss-hero">
+            <h1 class="reveal-up">Technology Showcase</h1>
+            <p class="reveal-up delay-1">Khám phá tương lai của hệ điều hành quản trị DSS CLUB thông qua các bản mô phỏng tương tác cao cấp.</p>
             
-            <div class="hero-visual">
-                <img src="images/hero.png" alt="DSS CLUB Futuristic Showcase">
+            <div class="hero-illustration reveal-zoom delay-2">
+                <img src="images/hero.png" alt="DSS CLUB Ecosystem">
             </div>
-        </div>
+        </section>
 
-        <section class="main-content">
-            <div class="grid-header">
-                <div>
-                    <h2>Feature Portfolios</h2>
-                    <p style="color: var(--slate)">Khám phá các bản giới thiệu chi tiết từng module tính năng</p>
-                </div>
-            </div>
-
-            <div class="grid">
+        <section class="dss-section">
+            <div class="dss-grid">
                 <!-- Executive Pitch -->
-                <a href="Event_Checkin_Pitch.html" class="card">
-                    <span class="badge badge-boss">BOSS-READY 💎</span>
+                <a href="Event_Checkin_Pitch.html" class="dss-card reveal-up delay-3">
+                    <span class="dss-badge dss-badge-boss">Boss-Ready 💎</span>
                     <h3>The Executive Pitch</h3>
-                    <p>Bản trình bày chiến lược dành cho Ban Giám Đốc. Tập trung vào ROI, bảo mật hệ thống và quy trình quản trị chuyên sâu.</p>
-                    <div class="card-footer">
-                        <span class="explore-btn">Xem bản Pitch</span>
-                        <div class="explore-circle">→</div>
+                    <p>Bản trình bày chiến lược tập trung vào hiệu quả vận hành và an ninh hệ thống dành cho Ban Giám Đốc.</p>
+                    <div style="margin-top: auto; color: var(--dss-blue); font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                        Bắt đầu thuyết trình <span>→</span>
                     </div>
                 </a>
 
-                <!-- Showcase: Check-in -->
-                <a href="Event_Checkin_Showcase_Premium.html" class="card">
-                    <span class="badge badge-showcase">PREMIUM ⚡</span>
-                    <h3>AI Event Check-in v2.0</h3>
-                    <p>Mô phỏng trải nghiệm người dùng cuối và quy trình vận hành sự kiện thông minh với công nghệ nhận diện AI.</p>
-                    <div class="card-footer">
-                        <span class="explore-btn">Khám phá Demo</span>
-                        <div class="explore-circle">→</div>
+                <!-- Check-in Showcase -->
+                <a href="Event_Checkin_Showcase_Premium.html" class="dss-card reveal-up delay-4">
+                    <span class="dss-badge dss-badge-premium">Interactive ⚡</span>
+                    <h3>AI Event Check-in</h3>
+                    <p>Trải nghiệm luồng check-in 3 lớp: QR Động, Geofencing và AI Face Recognition (Phát hiện gian lận).</p>
+                    <div style="margin-top: auto; color: var(--dss-blue); font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                        Trình diễn Demo <span>→</span>
                     </div>
                 </a>
 
                 <!-- App Update -->
-                <a href="App_Update_Showcase.html" class="card">
-                    <span class="badge badge-ready">READY</span>
+                <a href="App_Update_Showcase.html" class="dss-card reveal-up delay-5">
+                    <span class="dss-badge dss-badge-success">Standard</span>
                     <h3>Smart App Update</h3>
-                    <p>Cơ chế thông báo bảo trì và cập nhật ứng dụng bắt buộc theo chuẩn UX mới, đảm bảo an toàn cho hệ thống.</p>
-                    <div class="card-footer">
-                        <span class="explore-btn">Xem chi tiết</span>
-                        <div class="explore-circle">→</div>
-                    </div>
-                </a>
-
-                <!-- Social Community -->
-                <a href="Community_Showcase.html" class="card">
-                    <span class="badge badge-ready">READY</span>
-                    <h3>Social & Contribution</h3>
-                    <p>Hệ thống mạng xã hội nội bộ và cơ chế Gamification tích điểm cống hiến, thúc đẩy tương tác cộng đồng.</p>
-                    <div class="card-footer">
-                        <span class="explore-btn">Trải nghiệm</span>
-                        <div class="explore-circle">→</div>
-                    </div>
-                </a>
-
-                <!-- Verification Levels -->
-                <a href="Verification_Showcase.html" class="card">
-                    <span class="badge badge-showcase">STORY EDITION ⚡</span>
-                    <h3>VIP Verification Levels</h3>
-                    <p>Hệ thống phân cấp đặc quyền VIP thông qua định danh AI, nâng tầm trải nghiệm cá nhân hóa khách hàng.</p>
-                    <div class="card-footer">
-                        <span class="explore-btn">Bắt đầu hành trình</span>
-                        <div class="explore-circle">→</div>
+                    <p>Mô phỏng cơ chế bảo trì và cập nhật ứng dụng bắt buộc linh hoạt từ phía CMS quản trị.</p>
+                    <div style="margin-top: auto; color: var(--dss-blue); font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                        Xem chi tiết <span>→</span>
                     </div>
                 </a>
             </div>
         </section>
     </main>
 
-    <footer>
-        <div class="footer-brand">
-            <span class="logo-text" style="opacity: 0.4">DAHUA DSS CLUB</span>
+    <footer style="padding: var(--space-xxl) 0; text-align: center; border-top: 1px solid var(--border-subtle); background: var(--white);">
+        <div style="opacity: 0.5; font-size: 0.85rem; font-weight: 700; letter-spacing: 1px;">
+            DAHUA DSS CLUB • POWERED BY ANTIGRAVITY AI
         </div>
-        <p class="footer-text">POWERED BY ANTIGRAVITY AI • BABADUOC.GITHUB.IO</p>
     </footer>
 
     <script>
-        // Optional: Simple scroll reveal script if needed
-        const observerOptions = {
-            threshold: 0.1
-        };
-
+        // Simple Intersection Observer to trigger reveal animations on scroll
+        const observerOptions = { threshold: 0.1 };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
+                    entry.target.classList.add('visible'); // If we needed more complex CSS
                     observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
 
-        document.querySelectorAll('.card').forEach((card, index) => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            card.style.transition = `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${index * 0.1}s`;
-            observer.observe(card);
-        });
+        document.querySelectorAll('.reveal-up, .reveal-zoom').forEach(el => observer.observe(el));
     </script>
 </body>
 </html>
