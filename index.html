@@ -3,45 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DSS CLUB - Portal</title>
-    <!-- Master Design System -->
+    <title>DSS CLUB - SHOWCASE CENTER PORTAL</title>
+    
+    <!-- Global Standard Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="css/brand_tokens.css">
-    <link rel="stylesheet" href="css/master_layout.css">
     <style>
-        /* Extra-clean overrides */
-        body {
-            background-color: var(--white); /* Pure white as requested */
+        /* Portal Styles v9.5 */
+        * { font-family: 'Inter', sans-serif !important; box-sizing: border-box; }
+        body { background: #f8fafc; color: #0f172a; margin: 0; padding: 0; }
+        
+        .hero { background: #0f172a; color: white; padding: 80px 0; text-align: center; position: relative; overflow: hidden; }
+        .hero::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(0,104,255,0.1) 0%, transparent 60%); pointer-events: none; }
+        .hero h1 { font-size: 3rem; font-weight: 900; letter-spacing: -2px; margin: 0; }
+        .hero p { opacity: 0.6; font-size: 1.1rem; margin-top: 10px; font-weight: 500; }
+        
+        .portal-grid { max-width: 1200px; margin: -50px auto 100px; display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px; padding: 0 20px; }
+        
+        .showcase-card { 
+            background: white; 
+            border-radius: 24px; 
+            padding: 30px; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05); 
+            border: 1px solid rgba(0,104,255,0.05);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
         }
-        .dss-header {
-            background: white;
-            border-bottom: 1px solid var(--border-subtle);
-        }
+        .showcase-card:hover { transform: translateY(-10px); box-shadow: 0 40px 80px rgba(0,104,255,0.1); border-color: #0068FF; }
+        
+        .card-tag { display: inline-block; background: #e8f1ff; color: #0068FF; padding: 6px 12px; border-radius: 99px; font-size: 0.7rem; font-weight: 800; margin-bottom: 20px; text-transform: uppercase; }
+        .card-title { font-size: 1.4rem; font-weight: 800; margin: 0 0 10px; line-height: 1.3; }
+        .card-desc { font-size: 0.9rem; color: #64748b; margin-bottom: 30px; flex-grow: 1; line-height: 1.6; }
+        
+        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 20px; font-size: 0.8rem; font-weight: 600; color: #94a3b8; }
+        .card-link { color: #0068FF; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+        
+        .status-badge { width: 10px; height: 10px; border-radius: 50%; background: #00B96B; margin-right: 8px; }
+        
+        footer { text-align: center; padding: 60px 0; color: #94a3b8; font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; }
     </style>
 </head>
 <body>
+    <div class="hero">
+        <h1>SHOWCASE CENTER</h1>
+        <p>Hệ thống trình diễn & mô phỏng đặc tả tính năng DSS CLUB</p>
+    </div>
 
-    <header class="dss-header">
-        <a href="#" class="dss-logo">
-            <div class="dss-logo-icon">D</div>
-            <span class="dss-logo-text">DSS CLUB</span>
+    <main class="portal-grid">
+        <!-- Card: Verification Levels -->
+        <a href="Verification_Levels.html" class="showcase-card">
+            <span class="card-tag">Hệ thống & Định danh</span>
+            <div class="card-title">Phân cấp Đặc quyền Tài khoản</div>
+            <p class="card-desc">Cấp độ Level 1-2-3 dựa trên định danh eKYC. Kiểm soát hạn mức quét mã và đặc quyền đổi quà tặng giá trị cao.</p>
+            <div class="card-footer">
+                <div>v9.4 • 11/04/2026</div>
+                <div class="card-link">Xem mô phỏng →</div>
+            </div>
         </a>
-    </header>
 
-    <main class="dss-container dss-section">
-        <section class="dss-hero">
-            <h1 class="reveal-up">New Portal</h1>
-            <p class="reveal-up delay-1">Hệ thống đã chuẩn hóa. Sẵn sàng để xây dựng các kịch bản trình diễn mới.</p>
-        </section>
+        <!-- Card: Event Check-in -->
+        <a href="Event_Checkin.html" class="showcase-card">
+            <span class="card-tag">Sự kiện & Hoạt động</span>
+            <div class="card-title">Check-in AI Face & Dynamic QR</div>
+            <p class="card-desc">Hệ thống check-in thông minh kết hợp đối soát khuôn mặt và mã QR động TOTP. Tự động hóa cộng điểm thưởng sự kiện.</p>
+            <div class="card-footer">
+                <div>v9.4 • 11/04/2026</div>
+                <div class="card-link">Xem mô phỏng →</div>
+            </div>
+        </a>
 
-        <!-- Placeholder for new items -->
-        <div class="dss-grid" id="main-grid" style="min-height: 200px; border: 2px dashed var(--border-subtle); border-radius: var(--radius-card); display: flex; align-items: center; justify-content: center; color: var(--muted-blue);">
-            <p>Chưa có mục trình bày nào được thêm vào</p>
-        </div>
+        <!-- Thêm các bài trình diễn mới vào đây -->
     </main>
 
-    <footer style="padding: var(--space-xxl) 0; text-align: center;">
-        <p style="opacity: 0.2; font-size: 0.8rem; font-weight: 700;">DSS CLUB • BLANK SLATE</p>
+    <footer>
+        DSS CLUB PORTAL • MASTER SKILL v9.5 • POWERED BY AI
     </footer>
-
 </body>
 </html>

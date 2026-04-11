@@ -43,16 +43,18 @@
     /* --- TYPOGRAPHY --- */
     --font-primary: 'Be Vietnam Pro', 'Nunito', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
     
-    /* --- UI METRICS --- */
+    /* --- UI METRICS (EXECUTIVE BENTO) --- */
     --radius-button: 12px;
-    --radius-card: 20px;
+    --radius-card: 24px;
+    --radius-bento: 32px;
     --radius-modal: 24px;
     --radius-pill: 99px;
 
-    /* --- SHADOWS --- */
+    /* --- SHADOWS (REFINED FOR BENTO) --- */
     --shadow-sm: 0 2px 8px rgba(13, 27, 62, 0.04);
-    --shadow-md: 0 8px 24px rgba(13, 27, 62, 0.08);
-    --shadow-lg: 0 16px 48px rgba(13, 27, 62, 0.12);
+    --shadow-md: 0 8px 24px rgba(13, 27, 62, 0.06);
+    --shadow-lg: 0 20px 40px rgba(13, 27, 62, 0.08);
+    --shadow-bento: 0 20px 60px -10px rgba(13, 27, 62, 0.05), 0 10px 30px -5px rgba(13, 27, 62, 0.03);
     --shadow-premium: 0 40px 100px rgba(13, 27, 62, 0.15);
 
     /* --- SPACING --- */
@@ -62,19 +64,24 @@
     --space-md: 16px;
     --space-lg: 24px;
     --space-xl: 32px;
-    --space-xxl: 60px;
+    --space-xxl: 80px;
+
+    /* --- BENTO SURFACES --- */
+    --bento-bg: #FFFFFF;
+    --bento-border: rgba(13, 27, 62, 0.06);
+    --bento-hover-border: var(--dss-blue);
 
     /* --- ANIMATION TOKENS --- */
     --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-smooth: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     --transition-slow: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Base Font Import */
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap');
+/* Base Font Import - explicitly requesting Vietnamese subset */
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap&subset=vietnamese');
 
 body {
-    font-family: var(--font-primary);
+    font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     background-color: var(--surface-main);
     color: var(--navy-dark);
     margin: 0;
@@ -82,6 +89,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
+    font-family: 'Be Vietnam Pro', sans-serif;
     color: var(--navy-dark);
     font-weight: 800;
 }
