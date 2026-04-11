@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Pitch: Hệ thống Check-in Sự kiện DSS Club</title>
+    <!-- Nhúng Brand Tokens tập trung -->
+    <link rel="stylesheet" href="css/brand_tokens.css">
+    <style>
+        :root {
+            --primary: var(--dss-blue);
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-primary); }
+        body { background: var(--bg); color: var(--navy-dark); }
+
+        /* ── LAYOUT ── */
+        .pitch-container {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ── SIDEBAR: EXECUTIVE summary ── */
+        .sidebar {
+            background: var(--white);
+            border-right: 1px solid var(--cool-gray);
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .boss-quote {
+            background: var(--dss-ice-blue);
+            padding: 20px;
+            border-radius: var(--radius-card);
+            border-left: 4px solid var(--primary);
+            margin-bottom: 30px;
+        }
+        .boss-quote p { font-size: 13px; font-style: italic; color: var(--dss-deep-blue); line-height: 1.6; }
+
+        .roi-card {
+            background: var(--navy-dark);
+            color: #fff;
+            padding: 25px;
+            border-radius: var(--radius-card);
+            margin-bottom: 30px;
+        }
+        .roi-title { font-size: 11px; color: var(--cyan-spark); font-weight: 800; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; }
+        .roi-item { margin-bottom: 15px; }
+        .roi-val { font-size: 20px; font-weight: 800; display: block; }
+        .roi-label { font-size: 11px; opacity: 0.6; }
+
+        .scenario-selector {
+            margin-top: auto;
+        }
+        .mode-toggle {
+            display: grid; grid-template-columns: 1fr 1fr;
+            background: var(--cool-gray);
+            padding: 4px; border-radius: 12px; margin-bottom: 20px;
+        }
+        .mode-btn {
+            border: none; padding: 12px; border-radius: 10px;
+            font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.3s;
+        }
+        .mode-btn.happy.active { background: var(--mint-green); color: #white; }
+        .mode-btn.unhappy.active { background: var(--energy-orange); color: #white; }
+        .mode-btn:not(.active) { color: var(--slate); background: transparent; }
+
+        /* ── MAIN AREA: DUAL SIMULATION ── */
+        .main-stage {
+            padding: 40px;
+            background: #edf2f7;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            position: relative;
+        }
+
+        .simulation-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 40px;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+        }
+
+        /* iPhone Mockup */
+        .iphone-wrapper {
+            width: 310px; height: 630px;
+            background: #000;
+            border-radius: 45px;
+            border: 10px solid #1a1a1a;
+            box-shadow: 0 40px 80px -20px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .iphone-notch {
+            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 120px; height: 26px; background: #1a1a1a;
+            border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;
+            z-index: 10;
+        }
+        .iphone-screen {
+            width: 100%; height: 100%;
+            background: var(--bg-main);
+            display: flex; flex-direction: column;
+        }
+
+        /* PC / Dashboard Mockup */
+        .pc-wrapper {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--cool-gray);
+            height: 550px;
+            display: flex; flex-direction: column;
+            overflow: hidden;
+        }
+        .pc-toolbar {
+            height: 40px; background: #f1f5f9;
+            padding: 0 20px;
+            display: flex; align-items: center; gap: 8px;
+            border-bottom: 1px solid var(--cool-gray);
+        }
+        .pc-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .pc-view { flex: 1; overflow-y: auto; padding: 25px; }
+
+        /* Story Nav */
+        .story-nav {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #fff; padding: 20px 40px; border-radius: 15px;
+            box-shadow: var(--card-shadow);
+        }
+        .nav-btn {
+            background: var(--primary); color: #fff; border: none;
+            padding: 12px 30px; border-radius: 10px;
+            font-weight: 700; cursor: pointer; transition: 0.2s;
+        }
+        .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,104,255,0.3); }
+        .nav-btn:disabled { background: var(--cool-gray); cursor: not-allowed; }
+
+        .step-info { text-align: center; }
+        .step-title { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+        .step-desc { font-size: 13px; color: var(--slate); }
+
+        /* ── ANIMATIONS ── */
+        .fade-enter { animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* UI elements */
+        .btn-action {
+            background: var(--primary); color: #fff; border: none;
+            padding: 14px; border-radius: 12px; font-weight: 700; width: 100%; cursor: pointer;
+        }
+        .app-card { background: #fff; border-radius: 12px; padding: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="pitch-container">
+    <!-- SIDEBAR: EXECUTIVE SUMMARY -->
+    <div class="sidebar">
+        <div class="boss-quote">
+            <p>"Sếp ơi, đây là giải pháp giúp chúng ta <strong>chấm dứt hoàn toàn</strong> tình trạng gian lận check-in và nâng tầm chuyên nghiệp cho các Workshop sắp tới."</p>
+        </div>
+
+        <div class="roi-card">
+            <div class="roi-title">Báo cáo ROI dự kiến</div>
+            <div class="roi-item">
+                <span class="roi-val">~ 100%</span>
+                <span class="roi-label">Chống gian lận (Zero fraud)</span>
+            </div>
+            <div class="roi-item">
+                <span class="roi-val">- 80%</span>
+                <span class="roi-label">Thời gian chờ đợi tại sảnh</span>
+            </div>
+            <div class="roi-item" style="margin-bottom:0;">
+                <span class="roi-val">Real-time</span>
+                <span class="roi-label">Dữ liệu khách hàng chính xác</span>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 30px;">
+            <h4 style="font-size: 14px; margin-bottom: 10px;">Lợi ích cốt lõi:</h4>
+            <div style="font-size: 13px; line-height: 1.8; color: var(--slate);">
+                • <strong>GPS Lock:</strong> Buộc khách phải có mặt.<br>
+                • <strong>AI Face ID:</strong> Xác nhận đúng chủ tài khoản.<br>
+                • <strong>Dynamic QR:</strong> Không thể chụp ảnh màn hình.
+            </div>
+        </div>
+
+        <div class="scenario-selector">
+            <h4 style="font-size: 13px; margin-bottom: 12px; color: var(--navy-dark)">Chọn kịch bản demo:</h4>
+            <div class="mode-toggle">
+                <button id="btn-happy" class="mode-btn happy active" onclick="setScenario('happy')">THUẬN LỢI</button>
+                <button id="id-unhappy" class="mode-btn unhappy" onclick="setScenario('unhappy')">RỦI RO</button>
+            </div>
+            <p style="font-size: 11px; color: var(--slate); line-height: 1.4;">
+                * Sếp hãy thử chuyển sang <strong>RỦI RO</strong> để xem cách hệ thống thông minh từ chối gian lận.
+            </p>
+        </div>
+    </div>
+
+    <!-- MAIN STAGE: DUAL SIMULATION -->
+    <div class="main-stage">
+        <div class="simulation-grid">
+            <!-- iPhone Mockup (Góc nhìn Khách) -->
+            <div class="iphone-wrapper">
+                <div class="iphone-notch"></div>
+                <div class="iphone-screen" id="iphone-screen">
+                    <!-- Dynamic App Content -->
+                </div>
+            </div>
+
+            <!-- PC Mockup (Góc nhìn Quản lý) -->
+            <div class="pc-wrapper">
+                <div class="pc-toolbar">
+                    <div class="pc-dot" style="background:#ff5f56"></div>
+                    <div class="pc-dot" style="background:#ffbd2e"></div>
+                    <div class="pc-dot" style="background:#27c93f"></div>
+                    <div style="margin-left:auto; font-size:10px; color:var(--muted-blue)">Admin Dashboard · Event Management</div>
+                </div>
+                <div class="pc-view" id="pc-screen">
+                    <!-- Dynamic Dashboard Content -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Story Navigator -->
+        <div class="story-nav">
+            <button class="nav-btn" id="prev-btn" onclick="changeStep(-1)">Quay lại</button>
+            <div class="step-info">
+                <div class="step-title" id="step-title">Bước 1: Khởi tạo</div>
+                <div class="step-desc" id="step-desc">Thiết lập tham số an ninh cho sự kiện.</div>
+            </div>
+            <button class="nav-btn" id="next-btn" onclick="changeStep(1)">Tiếp theo</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const steps = [
+        {
+            title: "Bước 1: Khởi tạo",
+            desc: "Admin thiết lập tọa độ GPS và giới hạn an ninh.",
+            iphone: {
+                happy: `
+                    <div style="background:var(--primary); padding:40px 20px 20px; color:#fff">
+                        <div style="font-size:12px; opacity:0.8">DSS CLUB</div>
+                        <div style="font-size:18px; font-weight:800">Thông báo</div>
+                    </div>
+                    <div style="padding:20px">
+                        <div class="app-card">
+                            <div style="font-weight:700; color:var(--primary); margin-bottom:5px">Lời mời Summit 2026</div>
+                            <p style="font-size:12px; color:var(--slate)">Đại lý Nguyễn Văn Đức vừa nhận được thiệp mời tham dự sự kiện tại Rex Hotel.</p>
+                        </div>
+                    </div>
+                `,
+                unhappy: `
+                    <div style="padding:40px 20px">
+                        <div style="background:#fff5f5; border:1px solid #feb2b2; padding:20px; border-radius:15px; text-align:center">
+                            <div style="font-size:32px; margin-bottom:10px">⚠️</div>
+                            <div style="font-weight:800; color:#c53030">Chưa đủ điều kiện</div>
+                            <p style="font-size:11px; margin-top:10px">Bạn cần đạt Level 2 (Đã KYC) để nhận thiệp mời này.</p>
+                        </div>
+                    </div>
+                `
+            },
+            pc: {
+                happy: `
+                    <div class="fade-enter">
+                        <h3 style="margin-bottom:20px">Thiết lập sự kiện an toàn</h3>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px">
+                            <div style="border:1px solid var(--cool-gray); padding:20px; border-radius:12px">
+                                <label style="font-size:11px; font-weight:700">Tọa độ GPS Target</label>
+                                <div style="font-size:14px; margin-top:5px">10.7769, 106.7009</div>
+                            </div>
+                            <div style="border:1px solid var(--cool-gray); padding:20px; border-radius:12px">
+                                <label style="font-size:11px; font-weight:700">Bán kính Geofencing</label>
+                                <div style="font-size:14px; margin-top:5px">200 Mét</div>
+                            </div>
+                        </div>
+                        <div style="margin-top:20px; padding:15px; background:var(--dss-ice-blue); border-radius:12px; font-size:12px; color:var(--dss-deep-blue)">
+                            ✓ Hệ thống đã kích hoạt cơ chế <strong>Dynamic QR (TOTP)</strong> cho 500 khách mời.
+                        </div>
+                    </div>
+                `,
+                unhappy: `
+                    <div class="fade-enter">
+                        <div style="background:#fff5f5; border:1px solid #feb2b2; padding:20px; border-radius:12px; color:#c53030">
+                            <strong>Lỗi cấu hình:</strong> Sếp chưa nhập tọa độ GPS. Hệ thống an ninh Geofencing sẽ không hoạt động nếu thiếu dữ liệu này.
+                        </div>
+                    </div>
+                `
+            }
+        },
+        {
+            title: "Bước 2: Tiếp cận",
+            desc: "Xác thực vị trí thực tế của khách hàng qua GPS.",
+            iphone: {
+                happy: `
+                    <div style="background:var(--primary); padding:40px 20px 15px; color:#fff; font-weight:800">📍 Xác thực Vị trí</div>
+                    <div style="padding:20px; display:flex; flex-direction:column; align-items:center; text-align:center">
+                        <div style="width:100px; height:100px; background:#e8fbf2; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--mint-green); font-size:40px; margin-bottom:20px">✅</div>
+                        <h4 style="margin-bottom:10px">Bạn đã tới nơi!</h4>
+                        <p style="font-size:12px; color:var(--slate)">GPS xác nhận bạn đang ở khu vực sự kiện. Mã QR đã được mở khóa.</p>
+                        <div style="width:180px; height:180px; background:#fff; border:5px solid var(--primary); margin-top:20px; display:flex; align-items:center; justify-content:center; font-weight:900">QR ANIMATED</div>
+                    </div>
+                `,
+                unhappy: `
+                    <div style="background:var(--primary); padding:40px 20px 15px; color:#fff; font-weight:800">📍 Xác thực Vị trí</div>
+                    <div style="padding:20px; display:flex; flex-direction:column; align-items:center; text-align:center">
+                        <div style="width:100px; height:100px; background:#fff5f5; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--energy-orange); font-size:40px; margin-bottom:20px">🔒</div>
+                        <h4 style="margin-bottom:10px">Ngoài vùng phủ sóng</h4>
+                        <p style="font-size:12px; color:var(--slate)">Hệ thống phát hiện bạn đang ở cách sự kiện <strong>1.5km</strong>. Mã QR bị khóa để bảo mật.</p>
+                    </div>
+                `
+            },
+            pc: {
+                happy: `
+                    <div class="fade-enter">
+                        <h3 style="margin-bottom:15px">Giám sát Check-in thời gian thực</h3>
+                        <div style="background:#f8fafc; border-radius:12px; padding:20px; border:1px solid var(--cool-gray)">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:15px">
+                                <span>Khách đang tiếp cận:</span>
+                                <strong style="color:var(--primary)">12 người</strong>
+                            </div>
+                            <div style="height:10px; background:#e2e8f0; border-radius:5px; overflow:hidden">
+                                <div style="width:65%; height:100%; background:var(--primary)"></div>
+                            </div>
+                        </div>
+                        <p style="font-size:12px; margin-top:15px; opacity:0.7">Hệ thống đo lường độ chính xác GPS đạt 99.8% trong tics tắc.</p>
+                    </div>
+                `,
+                unhappy: `
+                    <div class="fade-enter">
+                        <div style="background:var(--energy-orange); color:#fff; padding:15px; border-radius:12px; font-size:13px">
+                            🛡️ <strong>Hệ thống đã chặn:</strong> 03 trường hợp cố tình mở mã QR từ xa (ngoài bán kính 1km).
+                        </div>
+                    </div>
+                `
+            }
+        },
+        {
+            title: "Bước 3: Check-in",
+            desc: "Đối soát AI Face ID và hoàn tất.",
+            iphone: {
+                happy: `
+                    <div style="padding:40px 20px; text-align:center">
+                        <div style="font-size:60px; margin-bottom:20px">🏷️</div>
+                        <h3 style="color:var(--mint-green)">Thành công!</h3>
+                        <p style="font-size:13px; color:var(--slate); margin-top:10px">Bạn đã được xác nhận vào cửa.</p>
+                        <div style="margin-top:30px; background:var(--dss-ice-blue); padding:15px; border-radius:20px; color:var(--primary); font-weight:800">
+                            +500 ĐIỂM CỐNG HIẾN
+                        </div>
+                    </div>
+                `,
+                unhappy: `
+                    <div style="padding:40px 20px; text-align:center">
+                        <div style="font-size:60px; margin-bottom:20px">❌</div>
+                        <h3 style="color:#c53030">Từ chối!</h3>
+                        <p style="font-size:13px; color:var(--slate); margin-top:10px">Face ID không trùng khớp với hồ sơ KYC. Bảo vệ đã được thông báo.</p>
+                    </div>
+                `
+            },
+            pc: {
+                happy: `
+                    <div class="fade-enter">
+                        <h3 style="margin-bottom:20px">Xác minh Danh tính (Face AI)</h3>
+                        <img src="staff_face_id_demo_1775886741410.png" style="width:100%; border-radius:12px; border:1px solid var(--border)">
+                        <div style="margin-top:20px; display:flex; gap:10px">
+                            <div style="flex:1; background:var(--bg-main); padding:15px; border-radius:12px; text-align:center">
+                                <div style="font-size:10px; font-weight:700">TỔNG KHÁCH</div>
+                                <div style="font-size:24px; font-weight:900">142</div>
+                            </div>
+                            <div style="flex:1; background:var(--dss-ice-blue); padding:15px; border-radius:12px; text-align:center; color:var(--primary)">
+                                <div style="font-size:10px; font-weight:700">TỶ LỆ KHỚP</div>
+                                <div style="font-size:24px; font-weight:900">98%</div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                unhappy: `
+                    <div class="fade-enter" style="text-align:center; padding:40px 0">
+                        <div style="color:#c53030; font-size:50px; margin-bottom:20px">🚨</div>
+                        <h4 style="color:#c53030">CẢNH BÁO GIAN LẬN</h4>
+                        <p style="font-size:13px; margin:15px 0">Phát hiện mạo danh tại quầy check-in #02. Hệ thống đã khóa tài khoản USR-992 để kiểm tra.</p>
+                    </div>
+                `
+            }
+        }
+    ];
+
+    let currentStep = 0;
+    let currentScenario = 'happy';
+
+    function render() {
+        const step = steps[currentStep];
+        document.getElementById('step-title').textContent = step.title;
+        document.getElementById('step-desc').textContent = step.desc;
+        
+        const iphoneScreen = document.getElementById('iphone-screen');
+        const pcScreen = document.getElementById('pc-screen');
+
+        iphoneScreen.innerHTML = step.iphone[currentScenario];
+        pcScreen.innerHTML = step.pc[currentScenario];
+
+        document.getElementById('prev-btn').disabled = (currentStep === 0);
+        document.getElementById('next-btn').disabled = (currentStep === steps.length - 1);
+    }
+
+    function changeStep(delta) {
+        currentStep += delta;
+        render();
+    }
+
+    function setScenario(type) {
+        currentScenario = type;
+        document.getElementById('btn-happy').classList.toggle('active', type === 'happy');
+        document.getElementById('id-unhappy').classList.toggle('active', type === 'unhappy');
+        render();
+    }
+
+    render();
+</script>
+
+</body>
+</html>
