@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DSS CLUB - Event Check-in Story</title>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/inter-ui/inter.css" rel="stylesheet">
+    <link rel="stylesheet" href="../3_MKT/brand_tokens.css">
     <style>
         :root {
-            --primary: #00d2ff;
-            --secondary: #3a7bd5;
-            --accent: #ffeb3b; 
-            --bg: #0f172a;
+            --primary: var(--dss-blue);
+            --secondary: var(--dss-deep-blue);
+            --accent: var(--amber); 
+            --bg: var(--navy-dark);
             --card-bg: rgba(255, 255, 255, 0.05);
-            --text: #f8fafc;
+            --text: var(--white);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-primary); }
         
         body { 
             background-color: var(--bg); 
@@ -37,7 +37,7 @@
             padding: 20px;
         }
 
-        .hero h1 { font-size: 4rem; font-weight: 900; background: linear-gradient(to right, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero h1 { font-size: 4rem; font-weight: 900; background: linear-gradient(to right, #fff, #94a3b8); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero p { font-size: 1.2rem; opacity: 0.7; margin: 20px 0; max-width: 700px; }
 
         /* --- Characters Section --- */

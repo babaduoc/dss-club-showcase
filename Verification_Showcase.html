@@ -5,21 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DSS CLUB - Verification Levels Story</title>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/inter-ui/inter.css" rel="stylesheet">
+    <link rel="stylesheet" href="../3_MKT/brand_tokens.css">
     <style>
         :root {
-            --primary: #00d2ff;
-            --secondary: #3a7bd5;
-            --vip: #facc15;
-            --bg: #0b1120;
+            --primary: var(--dss-blue);
+            --secondary: var(--dss-deep-blue);
+            --vip: var(--amber);
+            --bg: var(--navy-dark);
             --card-bg: rgba(255, 255, 255, 0.04);
-            --text: #f1f5f9;
-            --success: #10b981;
-            --error: #ef4444;
+            --text: var(--white);
+            --success: var(--mint-green);
+            --error: var(--alert-red);
             --border: rgba(255, 255, 255, 0.1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-primary); }
         body { background-color: var(--bg); color: var(--text); overflow-x: hidden; scroll-behavior: smooth; }
 
         /* --- Layout --- */
@@ -27,7 +27,7 @@
         .container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 400px; gap: 80px; align-items: center; }
         @media (max-width: 1000px) { .container { grid-template-columns: 1fr; } .container > div:nth-child(2) { order: -1; } }
 
-        h1 { font-size: 3.5rem; font-weight: 900; background: linear-gradient(135deg, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; }
+        h1 { font-size: 3.5rem; font-weight: 900; background: linear-gradient(135deg, #fff, #94a3b8); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; }
         h2 { font-size: 2.2rem; color: var(--primary); margin-bottom: 20px; }
         .step-label { font-size: 0.8rem; font-weight: 800; color: var(--vip); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; display: block; }
 

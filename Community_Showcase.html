@@ -5,20 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DSS CLUB - Social & Gamification Story</title>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/inter-ui/inter.css" rel="stylesheet">
+    <link rel="stylesheet" href="../3_MKT/brand_tokens.css">
     <style>
         :root {
-            --primary: #00d2ff;
-            --secondary: #3a7bd5;
-            --accent: #facc15;
-            --bg: #0b0f1a;
+            --primary: var(--dss-blue);
+            --secondary: var(--dss-deep-blue);
+            --accent: var(--amber);
+            --bg: var(--navy-dark);
             --card-bg: rgba(255, 255, 255, 0.03);
-            --text: #e2e8f0;
-            --success: #10b981;
+            --text: var(--white);
+            --success: var(--mint-green);
             --border: rgba(255, 255, 255, 0.1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-primary); }
         body { background-color: var(--bg); color: var(--text); overflow-x: hidden; scroll-behavior: smooth; }
 
         /* --- Story Layout --- */
@@ -26,7 +26,7 @@
         .content { max-width: 1200px; width: 100%; display: grid; grid-template-columns: 1fr 400px; gap: 60px; align-items: center; }
         @media (max-width: 1000px) { .content { grid-template-columns: 1fr; } .content > div:nth-child(2) { order: -1; } }
 
-        h1 { font-size: 4rem; font-weight: 900; text-align: center; margin-bottom: 20px; background: linear-gradient(to right, #00d2ff, #3a7bd5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        h1 { font-size: 4rem; font-weight: 900; text-align: center; margin-bottom: 20px; background: linear-gradient(to right, #00d2ff, #3a7bd5); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         h2 { font-size: 2.5rem; color: var(--primary); margin-bottom: 20px; }
         .step-label { font-size: 0.8rem; font-weight: 800; color: var(--accent); text-transform: uppercase; margin-bottom: 15px; display: block; }
 
