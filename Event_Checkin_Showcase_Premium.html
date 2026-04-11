@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSS CLUB - Premium Event Check-in Experience</title>
+    <!-- Nhúng Brand Tokens tập trung -->
+    <link rel="stylesheet" href="css/brand_tokens.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --primary: var(--dss-blue);
+            --bg: var(--bg-main);
+            --navy: var(--navy-dark);
+            --white: #ffffff;
+            --iphone-bg: #000;
+            --pc-chrome: #e2e8f0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-primary); }
+        body { background: var(--bg); color: var(--navy); overflow-x: hidden; }
+
+        /* ── LAYOUT ── */
+        .showcase-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        @media (max-width: 1200px) {
+            .showcase-wrapper { grid-template-columns: 1fr; overflow-y: auto; height: auto; }
+        }
+
+        /* ── LEFT: SIMULATION AREA ── */
+        .simulation-container {
+            background: linear-gradient(135deg, #f0f4f8 0%, #d7e3ed 100%);
+            display: flex;
+            align-items: center; justify-content: center;
+            position: relative; padding: 40px;
+            overflow: hidden;
+        }
+
+        /* PC Mockup */
+        .pc-mockup {
+            width: 80%; max-width: 900px; height: 500px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+            display: none; flex-direction: column;
+            border: 1px solid #cbd5e1;
+            animation: fadeIn 0.5s ease;
+        }
+        .pc-mockup.active { display: flex; }
+        .pc-header {
+            height: 40px; background: var(--pc-chrome);
+            border-radius: 12px 12px 0 0;
+            display: flex; align-items: center; padding: 0 15px; gap: 8px;
+        }
+        .pc-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .pc-body { flex: 1; display: flex; overflow: hidden; }
+        .pc-sidebar { width: 200px; background: var(--navy); padding: 20px; color: #fff; }
+        .pc-content { flex: 1; padding: 30px; background: #fff; overflow-y: auto; }
+
+        /* iPhone Mockup */
+        .iphone-mockup {
+            width: 320px; height: 650px;
+            background: var(--iphone-bg);
+            border-radius: 50px;
+            border: 12px solid #1a1a1a;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.25);
+            position: relative;
+            display: none; flex-direction: column;
+            overflow: hidden;
+            animation: fadeIn 0.5s ease;
+        }
+        .iphone-mockup.active { display: flex; }
+        .iphone-notch {
+            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 120px; height: 28px; background: #1a1a1a;
+            border-bottom-left-radius: 18px; border-bottom-right-radius: 18px;
+            z-index: 10;
+        }
+        .iphone-screen { flex: 1; background: var(--bg-main); overflow: hidden; position: relative; display: flex; flex-direction: column; }
+
+        /* ── RIGHT: STORY PANEL ── */
+        .story-panel {
+            background: #fff;
+            border-left: 1px solid var(--cool-gray);
+            padding: 30px;
+            display: flex; flex-direction: column;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.02);
+            z-index: 100;
+        }
+        .step-badge {
+            background: var(--dss-ice-blue); color: var(--primary);
+            font-size: 11px; font-weight: 800; text-transform: uppercase;
+            padding: 4px 12px; border-radius: 20px; margin-bottom: 15px; display: inline-block;
+        }
+        .story-title { font-size: 24px; font-weight: 800; color: var(--navy); margin-bottom: 10px; }
+        .story-desc { font-size: 14px; color: var(--slate); line-height: 1.6; margin-bottom: 25px; }
+
+        /* Scenario Selector */
+        .scenario-toggle {
+            display: flex; background: var(--cool-gray);
+            border-radius: 10px; padding: 4px; margin-bottom: 30px;
+        }
+        .sc-btn {
+            flex: 1; border: none; padding: 10px; border-radius: 8px;
+            font-size: 13px; font-weight: 700; cursor: pointer;
+            transition: 0.3s; color: var(--slate);
+        }
+        .sc-btn.happy.active { background: var(--mint-green); color: #fff; }
+        .sc-btn.unhappy.active { background: var(--energy-orange); color: #fff; }
+
+        /* Navigation */
+        .nav-btns { display: flex; justify-content: space-between; margin-top: auto; padding-top: 20px; }
+        .btn-nav {
+            padding: 12px 20px; border: none; border-radius: 10px;
+            font-weight: 700; cursor: pointer; font-size: 14px; transition: 0.3s;
+        }
+        .btn-prev { background: var(--cool-gray); color: var(--navy); }
+        .btn-next { background: var(--primary); color: #fff; }
+
+        /* ── COMPONENTS ── */
+        /* Table */
+        .ds-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .ds-table th { text-align: left; padding: 10px; background: #f8fafc; border-bottom: 2px solid #e2e8f0; }
+        .ds-table td { padding: 10px; border-bottom: 1px solid #f1f5f9; }
+
+        /* Error Banner */
+        .error-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 92, 0, 0.1); backdrop-filter: blur(4px);
+            display: none; align-items: center; justify-content: center; z-index: 50;
+        }
+        .error-card {
+            background: #fff; padding: 20px; border-radius: 15px; width: 80%;
+            box-shadow: 0 10px 30px rgba(255, 92, 0, 0.2); text-align: center;
+        }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* UI elements */
+        .app-header { background: var(--primary); color: #fff; padding: 40px 20px 15px; font-weight: 700; font-size: 16px; }
+        .app-card { background: #fff; border-radius: 15px; padding: 15px; box-shadow: var(--shadow-sm); margin: 15px; }
+
+        .business-badge {
+            background: var(--navy); color: var(--cyan-spark); padding: 10px; border-radius: 10px;
+            font-size: 11px; margin-top: 15px; display: flex; align-items: center; gap: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="showcase-wrapper">
+    <!-- LEFT: SIMULATION BOX -->
+    <div class="simulation-container">
+        <!-- PC Mockup (Admin View) -->
+        <div class="pc-mockup active" id="pc-sim">
+            <div class="pc-header">
+                <div class="pc-dot" style="background:#ff5f56"></div>
+                <div class="pc-dot" style="background:#ffbd2e"></div>
+                <div class="pc-dot" style="background:#27c93f"></div>
+                <div style="margin-left:auto; font-size:10px; color:#94a3b8">Admin CMS - DSS Club v2.0</div>
+            </div>
+            <div class="pc-body">
+                <div class="pc-sidebar">
+                    <div style="font-size:12px; font-weight:800; margin-bottom:20px; color:var(--cyan-spark)">DSS ADMIN</div>
+                    <div style="font-size:11px; opacity:0.6; margin-bottom:10px">MANAGEMENT</div>
+                    <div style="font-size:12px; margin-bottom:12px; font-weight:600">🏠 Dashboard</div>
+                    <div style="font-size:12px; margin-bottom:12px; font-weight:600; color:var(--primary)">🎫 Events</div>
+                    <div style="font-size:12px; margin-bottom:12px; font-weight:600">👥 Users</div>
+                </div>
+                <div class="pc-content" id="pc-content-area">
+                    <!-- Dynamic content per step -->
+                </div>
+            </div>
+        </div>
+
+        <!-- iPhone Mockup (User View) -->
+        <div class="iphone-mockup" id="iphone-sim">
+            <div class="iphone-notch"></div>
+            <div class="iphone-screen" id="iphone-content-area">
+                <!-- Dynamic content per step -->
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT: STORY PANEL -->
+    <div class="story-panel">
+        <div id="story-content">
+            <span class="step-badge" id="step-label">Bước 1: Khởi tạo</span>
+            <h2 class="story-title" id="title">Admin tạo sự kiện</h2>
+            <p class="story-desc" id="desc">Admin đăng nhập vào hệ thống CMS để thiết lập các thông số cơ bản cho Workshop "DSS Partner Summit 2026".</p>
+
+            <div class="scenario-toggle">
+                <button class="sc-btn happy active" onclick="setScenario('happy')">Happy Path</button>
+                <button class="sc-btn unhappy" onclick="setScenario('unhappy')">Unhappy Path</button>
+            </div>
+
+            <div id="details">
+                <!-- Additional step details -->
+            </div>
+
+            <div class="business-badge">
+                <span>💡</span>
+                <span id="business-val"><strong>Giá trị:</strong> Tự động hóa quy trình giúp giảm 40% công sức chuẩn bị dữ liệu.</span>
+            </div>
+        </div>
+
+        <div class="nav-btns">
+            <button class="btn-nav btn-prev" onclick="prevStep()">Quay lại</button>
+            <button class="btn-nav btn-next" onclick="nextStep()">Tiếp theo</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const steps = [
+        {
+            label: "Bước 1: Khởi tạo",
+            title: "Thiết lập Sự kiện",
+            desc: "Admin DSS thiết lập các lớp bảo mật: Tọa độ GPS, Bán kính Geofencing và Ngưỡng Face ID Matching.",
+            device: "pc",
+            happy: {
+                content: `
+                    <h3 style="margin-bottom:15px">Tạo sự kiện: Partner Summit 2026</h3>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:20px">
+                        <div class="app-card" style="margin:0; border:1px solid #e2e8f0">
+                            <label style="font-size:10px; font-weight:700">Tọa độ GPS</label>
+                            <div style="font-size:13px; font-weight:600">10.7769, 106.7009</div>
+                        </div>
+                        <div class="app-card" style="margin:0; border:1px solid #e2e8f0">
+                            <label style="font-size:10px; font-weight:700">Bán kính [R]</label>
+                            <div style="font-size:13px; font-weight:600">200 Mét</div>
+                        </div>
+                    </div>
+                    <div style="background:var(--dss-ice-blue); padding:15px; border-radius:10px; font-size:12px">
+                        📸 <strong>AI Face ID:</strong> Ngưỡng trùng khớp mặc định 80%.
+                    </div>
+                    <button style="margin-top:20px; width:100%; padding:12px; background:var(--primary); color:#fff; border:none; border-radius:8px; font-weight:700">Lưu và Gửi lời mời →</button>
+                `,
+                details: "✅ Hệ thống xác nhận tọa độ hợp lệ trên bản đồ.",
+                value: "<strong>Kiểm soát vị trí:</strong> Chống gian lận check-in từ xa ngay từ bước thiết lập."
+            },
+            unhappy: {
+                content: `
+                    <h3 style="margin-bottom:15px">Tạo sự kiện: Partner Summit 2026</h3>
+                    <div style="background:#fff5f5; border:1px solid #feb2b2; padding:15px; border-radius:10px; color:#c53030; font-size:12px">
+                        ⚠️ <strong>Lỗi:</strong> Tọa độ trung tâm không được để trống. Vui lòng chọn vị trí trên bản đồ để kích hoạt tính năng Geofencing.
+                    </div>
+                `,
+                details: "❌ Admin quên nhập tọa độ nên hệ thống không cho phép lưu.",
+                value: "<strong>Data Integrity:</strong> Ngăn chặn sai sót vận hành do thiếu dữ liệu cấu hình."
+            }
+        },
+        {
+            label: "Bước 2: Nhận thiệp",
+            title: "Lời mời Cá nhân hóa",
+            desc: "Khách mời (Đại lý) nhận được thông báo Push. Thiệp mời được render đẹp mắt với thông tin cá nhân.",
+            device: "iphone",
+            happy: {
+                content: `
+                    <div class="app-header">DSS CLUB</div>
+                    <div class="app-body">
+                        <div class="app-card" style="padding:0; overflow:hidden">
+                            <img src="event_banner_summit_1775886711910.png" style="width:100%; display:block">
+                            <div style="padding:15px">
+                                <h4 style="color:var(--primary)">DSS Partner Summit 2026</h4>
+                                <p style="font-size:11px; color:var(--slate)">Dành cho: <strong>Anh Nguyễn Văn Đức</strong></p>
+                                <div style="margin-top:10px; font-size:11px; opacity:0.7">📍 Rex Hotel, Quận 1, TP.HCM</div>
+                            </div>
+                        </div>
+                        <button style="background:var(--primary); color:#fff; padding:15px; border:none; border-radius:12px; width:90%; align-self:center; font-weight:700">Mở Mã Check-in</button>
+                    </div>
+                `,
+                details: "✅ Khách thấy thiệp mời chuyên nghiệp, tạo hiệu ứng WOW.",
+                value: "<strong>Branding:</strong> Nâng tầm thương hiệu DSS trong mắt các đối tác đại lý."
+            },
+            unhappy: {
+                content: `
+                    <div class="app-header">DSS CLUB</div>
+                    <div class="app-body">
+                        <div class="app-card" style="border-left:4px solid var(--energy-orange)">
+                            <h4 style="color:var(--energy-orange)">Yêu cầu xác minh</h4>
+                            <p style="font-size:12px; line-height:1.5">Bạn chưa hoàn thành <strong>KYC Level 2</strong>. Vui lòng xác minh danh tính để nhận thiệp mời sự kiện.</p>
+                        </div>
+                    </div>
+                `,
+                details: "❌ Khách chưa xác minh nên hệ thống chặn không cho nhận vé.",
+                value: "<strong>Security:</strong> Đảm bảo 100% người dự tiệc là chính chủ tài khoản."
+            }
+        },
+        {
+            label: "Bước 3: Tiếp cận",
+            title: "GPS Geofencing",
+            desc: "Hệ thống kiểm tra vị trí thực tế của khách hàng so với địa điểm tổ chức.",
+            device: "iphone",
+            happy: {
+                content: `
+                    <div class="app-header">Xác thực Vị trí</div>
+                    <div class="app-body" style="justify-content:center; align-items:center; text-align:center">
+                        <div style="width:80px; height:80px; background:#e8fbf2; color:var(--mint-green); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:32px; margin-bottom:20px">📍</div>
+                        <h3>Vị trí Hợp lệ</h3>
+                        <p style="font-size:13px; color:var(--slate); margin:10px 20px">Bạn đang ở trong khu vực sự kiện. Mã QR đã sẵn sàng.</p>
+                        <div style="width:150px; height:150px; background:#ddd; margin:20px auto; border:4px solid var(--primary); display:flex; align-items:center; justify-content:center; font-weight:800">QR CODE</div>
+                    </div>
+                `,
+                details: "✅ GPS xanh, mã QR động bắt đầu nhảy.",
+                value: "<strong>Anti-fraud:</strong> Triệt tiêu việc check-in hộ từ nhà hoặc quán cafe."
+            },
+            unhappy: {
+                content: `
+                    <div class="app-header">Xác thực Vị trí</div>
+                    <div class="app-body" style="justify-content:center; align-items:center; text-align:center">
+                        <div style="width:80px; height:80px; background:#fff5f5; color:var(--energy-orange); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:32px; margin-bottom:20px">🔒</div>
+                        <h3>Chưa tới vùng sự kiện</h3>
+                        <p style="font-size:13px; color:var(--slate); margin:10px 20px">Bạn đang ở cách sự kiện 1.5km. Vui lòng đến gần hơn để mở khóa mã QR.</p>
+                    </div>
+                `,
+                details: "❌ Khách ở xa nên QR bị khóa không hiển thị.",
+                value: "<strong>Operational Discipline:</strong> Đảm bảo khách phải đến tận nơi mới được tính là tham dự."
+            }
+        },
+        {
+            label: "Bước 4: Xác thực tại quầy",
+            title: "AI Face Recognition",
+            desc: "Staff dùng tablet quét mã. AI đối soát khuôn mặt khách với ảnh KYC trong tíc tắc.",
+            device: "pc",
+            happy: {
+                content: `
+                    <h3 style="margin-bottom:15px">Quầy Check-in: Guest ID #842</h3>
+                    <div style="display:grid; grid-template-columns:1fr; gap:15px">
+                        <img src="staff_face_id_demo_1775886741410.png" style="width:100%; border-radius:10px; border:1px solid var(--border)">
+                        <div style="background:var(--mint-green); color:#fff; padding:15px; border-radius:10px; text-align:center; font-weight:800">
+                            ✓ XÁC NHẬN CHÍNH CHỦ (98% MATCH)
+                        </div>
+                    </div>
+                `,
+                details: "✅ AI nhận diện chính xác Nguyễn Văn Đức. Staff chỉ cần bấm Duyệt.",
+                value: "<strong>Efficiency:</strong> Xử lý check-in trong < 2 giây, không gây ùn tắc tại sảnh hội trường."
+            },
+            unhappy: {
+                content: `
+                    <h3 style="margin-bottom:15px">Cảnh báo Đối soát</h3>
+                    <div style="background:#fff5f5; border:1px solid #feb2b2; padding:20px; border-radius:10px; text-align:center">
+                        <div style="font-size:48px; margin-bottom:10px">❌</div>
+                        <h4 style="color:#c53030">KHÔNG TRÙNG KHỚP (12%)</h4>
+                        <p style="font-size:12px; color:var(--slate); margin-top:10px">Khuôn mặt trước camera không khớp với hồ sơ KYC. Vui lòng kiểm tra lại!</p>
+                    </div>
+                `,
+                details: "❌ Người khác mượn điện thoại đi thay bị AI phát hiện ngay lập tức.",
+                value: "<strong>High Security:</strong> Ngăn chặn tuyệt đối việc mượn tài khoản mạo danh tham gia."
+            }
+        }
+    ];
+
+    let currentStep = 0;
+    let currentScenario = 'happy';
+
+    function render() {
+        const step = steps[currentStep];
+        const scenario = step[currentScenario];
+
+        // Update Text
+        document.getElementById('step-label').textContent = step.label;
+        document.getElementById('title').textContent = step.title;
+        document.getElementById('desc').textContent = step.desc;
+        document.getElementById('details').innerHTML = `<p style="font-size:13px; font-weight:600; color:var(--primary); margin-bottom:15px">💡 Diễn giải:</p><p style="font-size:13px; color:var(--slate)">${scenario.details}</p>`;
+        document.getElementById('business-val').innerHTML = `<strong>Giá trị:</strong> ${scenario.value}`;
+
+        // Update Devices
+        document.getElementById('pc-sim').classList.toggle('active', step.device === 'pc');
+        document.getElementById('iphone-sim').classList.toggle('active', step.device === 'iphone');
+
+        if (step.device === 'pc') {
+            document.getElementById('pc-content-area').innerHTML = scenario.content;
+        } else {
+            document.getElementById('iphone-content-area').innerHTML = scenario.content;
+        }
+    }
+
+    function setScenario(type) {
+        currentScenario = type;
+        document.querySelectorAll('.sc-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector(`.sc-btn.${type}`).classList.add('active');
+        render();
+    }
+
+    function nextStep() {
+        if (currentStep < steps.length - 1) {
+            currentStep++;
+            render();
+        }
+    }
+
+    function prevStep() {
+        if (currentStep > 0) {
+            currentStep--;
+            render();
+        }
+    }
+
+    render();
+</script>
+
+</body>
+</html>
