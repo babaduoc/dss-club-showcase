@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DSS CLUB - Event Check-in Story</title>
+    <title>DSS CLUB - Event Check-in (AI Face & Dynamic QR)</title>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <link rel="stylesheet" href="css/brand_tokens.css">
     <style>
         :root {
             --primary: var(--dss-blue);
-            --secondary: var(--dss-deep-blue);
-            --accent: var(--warning-yellow); 
             --bg: var(--bg-main);
             --card-bg: var(--white);
             --text: var(--navy-dark);
@@ -18,295 +16,721 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-primary); }
-        
-        body { 
-            background-color: var(--bg); 
-            color: var(--text); 
-            line-height: 1.6;
-            scroll-behavior: smooth;
-        }
+        body { background-color: var(--bg); color: var(--text); overflow-x: hidden; scroll-behavior: smooth; }
 
-        /* --- Header & Intro --- */
+        /* ── HERO ── */
         .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            background: var(--navy-dark);
+            padding: 80px 20px 60px;
             text-align: center;
-            background: radial-gradient(circle at center, rgba(58, 123, 213, 0.1) 0%, transparent 70%);
-            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; top: -100px; right: -100px;
+            width: 400px; height: 400px;
+            background: var(--primary); border-radius: 50%; opacity: 0.07;
+        }
+        .hero::after {
+            content: '';
+            position: absolute; bottom: -80px; left: -80px;
+            width: 300px; height: 300px;
+            background: var(--cyan-spark); border-radius: 50%; opacity: 0.05;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(0, 104, 255, 0.15);
+            color: var(--cyan-spark);
+            border: 1px solid rgba(0, 170, 255, 0.3);
+            font-size: 11px; font-weight: 700;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            padding: 6px 16px; border-radius: var(--radius-pill);
+            margin-bottom: 20px;
+        }
+        .hero h1 {
+            font-size: clamp(28px, 5vw, 52px);
+            font-weight: 900; color: #fff; line-height: 1.1;
+            letter-spacing: -1px; margin-bottom: 16px;
+        }
+        .hero h1 span { background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero p { font-size: 16px; color: rgba(255,255,255,0.6); max-width: 580px; margin: 0 auto 32px; line-height: 1.7; }
+        .hero-pills { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .hero-pill {
+            background: rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.75);
+            border: 1px solid rgba(255,255,255,0.12);
+            font-size: 12px; font-weight: 500;
+            padding: 6px 14px; border-radius: var(--radius-pill);
         }
 
-        .hero h1 { font-size: 4rem; font-weight: 900; color: var(--navy-dark); }
-        .hero p { font-size: 1.2rem; color: var(--slate); margin: 20px 0; max-width: 700px; }
+        /* ── SECTION ── */
+        .section { padding: 80px 20px; }
+        .section + .section { border-top: 1px solid var(--border); }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .sec-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--primary); margin-bottom: 10px; }
+        .sec-title { font-size: clamp(22px, 3.5vw, 34px); font-weight: 800; color: var(--navy-dark); letter-spacing: -0.5px; margin-bottom: 10px; }
+        .sec-desc { font-size: 15px; color: var(--slate); line-height: 1.7; max-width: 600px; }
+        .sec-head { margin-bottom: 48px; }
 
-        /* --- Characters Section --- */
-        .characters {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin: 50px 0;
-        }
-        .char-card {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 20px;
-            width: 250px;
-            text-align: center;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-sm);
-        }
-        .char-img { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 15px; border: 3px solid var(--primary); }
-
-        /* --- Story Timeline --- */
-        .story-section {
-            padding: 100px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .story-content {
+        /* ── SIMULATOR LAYOUT ── */
+        .sim-layout {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            max-width: 1100px;
-            width: 100%;
-            gap: 60px;
-            align-items: center;
+            grid-template-columns: 360px 1fr;
+            gap: 40px;
+            align-items: start;
         }
-        @media (max-width: 900px) { .story-content { grid-template-columns: 1fr; } .story-content > div:first-child { order: 2; } }
+        @media (max-width: 900px) { .sim-layout { grid-template-columns: 1fr; } }
 
-        .story-text h2 { color: var(--primary); font-size: 2.5rem; margin-bottom: 20px; }
-        .story-text .step-number { font-size: 1rem; color: var(--accent); font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
-
-        /* --- Phone HUD --- */
-        .phone {
-            width: 320px; height: 650px; background: #000; border: 12px solid #334155; border-radius: 45px;
-            position: relative; box-shadow: 0 40px 80px rgba(0,0,0,0.5); overflow: hidden; margin: 0 auto;
+        /* ── PHONE ── */
+        .phone-outer {
+            width: 320px; height: 660px;
+            background: #fff;
+            border: 10px solid var(--navy-dark);
+            border-radius: 44px;
+            position: relative;
+            box-shadow: var(--shadow-md), 0 0 0 1px var(--border);
+            overflow: hidden;
+            margin: 0 auto;
+            flex-shrink: 0;
         }
-        .phone::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 140px; height: 30px; background: #334155; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; z-index: 10; }
-        
-        .screen { width: 100%; height: 100%; background: #000; overflow-y: auto; scrollbar-width: none; border-radius: 35px; }
-        .screen::-webkit-scrollbar { display: none; }
+        .phone-outer::before {
+            content: '';
+            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 120px; height: 26px;
+            background: var(--navy-dark);
+            border-bottom-left-radius: 16px; border-bottom-right-radius: 16px;
+            z-index: 10;
+        }
+        .phone-screen { width: 100%; height: 100%; overflow: hidden; position: relative; }
+        .app-view { display: none; width: 100%; height: 100%; flex-direction: column; background: var(--bg-main); }
+        .app-view.active { display: flex; }
 
-        /* --- Interaction States --- */
-        .app-view { padding: 40px 20px; min-height: 100%; background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); display: flex; flex-direction: column; }
-        .p-btn { width: 100%; padding: 15px; border-radius: 15px; border: none; font-weight: bold; cursor: pointer; transition: 0.2s; margin-top: auto; }
+        /* App common */
+        .app-header {
+            background: var(--primary);
+            padding: 36px 16px 14px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .app-header-title { color: #fff; font-size: 14px; font-weight: 700; }
+        .app-header-back { color: rgba(255,255,255,0.7); font-size: 18px; cursor: pointer; }
+        .app-body { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+        .app-btn {
+            width: 100%; padding: 14px;
+            background: var(--primary); color: #fff;
+            border: none; border-radius: var(--radius-button);
+            font-family: var(--font-primary); font-weight: 700; font-size: 14px;
+            cursor: pointer; margin-top: auto;
+        }
 
-        /* --- Technical Details --- */
-        .tech-box { background: rgba(0, 210, 255, 0.05); border-left: 4px solid var(--primary); padding: 20px; border-radius: 0 15px 15px 0; margin: 20px 0; }
-        .mermaid-container { width: 100%; max-width: 800px; margin: 50px auto; background: rgba(255,255,255,0.02); padding: 30px; border-radius: 30px; border: 1px solid var(--border); }
+        /* ── View 1: Invitation ── */
+        .invite-avatar {
+            width: 80px; height: 80px; border-radius: 50%;
+            border: 3px solid var(--primary);
+            background: linear-gradient(135deg, var(--dss-ice-blue), var(--primary));
+            margin: 0 auto 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px;
+        }
+        .invite-card {
+            background: var(--navy-dark);
+            border-radius: var(--radius-card);
+            padding: 20px;
+            text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .invite-card::before {
+            content: '';
+            position: absolute; top: -40px; right: -40px;
+            width: 120px; height: 120px;
+            background: var(--primary); border-radius: 50%; opacity: 0.15;
+        }
+        .invite-card-name { font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+        .invite-card-title { font-size: 11px; color: rgba(255,255,255,0.5); margin-bottom: 14px; }
+        .invite-divider { height: 1px; background: rgba(255,255,255,0.08); margin: 12px 0; }
+        .invite-event { font-size: 13px; color: rgba(255,255,255,0.8); font-weight: 600; margin-bottom: 4px; }
+        .invite-detail { font-size: 11px; color: rgba(255,255,255,0.45); }
+        .invite-tag {
+            display: inline-block;
+            background: rgba(0,104,255,0.2); color: var(--cyan-spark);
+            font-size: 10px; font-weight: 700;
+            padding: 3px 10px; border-radius: var(--radius-pill);
+            margin-top: 10px;
+        }
 
-        .footer { text-align: center; padding: 100px 20px; opacity: 0.3; font-size: 0.8rem; }
+        /* ── View 2: QR Screen ── */
+        .qr-box {
+            background: #fff; border-radius: var(--radius-card);
+            padding: 16px; border: 1px solid var(--border);
+            text-align: center;
+        }
+        .qr-title { font-size: 12px; font-weight: 700; color: var(--slate); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+        .qr-img {
+            width: 160px; height: 160px;
+            margin: 0 auto 10px;
+            display: grid; grid-template-columns: repeat(8, 1fr); gap: 2px;
+        }
+        .qr-cell { border-radius: 2px; }
+        .qr-ttl { font-size: 10px; color: var(--slate); }
+        .qr-timer {
+            display: inline-flex; align-items: center; gap: 5px;
+            background: var(--dss-ice-blue); color: var(--primary);
+            font-size: 11px; font-weight: 700;
+            padding: 4px 10px; border-radius: var(--radius-pill);
+            margin-top: 6px;
+        }
+        .qr-timer-dot { width: 6px; height: 6px; background: var(--mint-green); border-radius: 50%; animation: blink 1s infinite; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+        .gps-lock {
+            background: #FFF8E6; border: 1px solid #FFCF5C;
+            border-radius: var(--radius-card); padding: 14px 12px;
+            text-align: center;
+        }
+        .gps-lock-icon { font-size: 28px; margin-bottom: 6px; }
+        .gps-lock-txt { font-size: 12px; color: #7A4D00; font-weight: 600; line-height: 1.5; }
+
+        /* ── View 3: Staff App ── */
+        .scan-btn-big {
+            width: 160px; height: 160px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            margin: 20px auto;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            color: #fff; font-size: 13px; font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(0,104,255,0.35);
+            transition: transform 0.2s;
+        }
+        .scan-btn-big:hover { transform: scale(1.04); }
+        .scan-btn-big span { font-size: 36px; margin-bottom: 6px; }
+        .face-compare {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+            margin-bottom: 12px;
+        }
+        .face-card { border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--border); }
+        .face-card-head { padding: 6px 10px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+        .face-card-head.kyc { background: var(--dss-ice-blue); color: var(--primary); }
+        .face-card-head.live { background: #E8FBF2; color: var(--mint-green); }
+        .face-body {
+            height: 80px; display: flex; align-items: center; justify-content: center;
+            background: var(--bg-main); font-size: 32px;
+        }
+        .match-score {
+            background: var(--gradient-primary); border-radius: var(--radius-card);
+            padding: 12px 16px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .match-label { font-size: 11px; color: rgba(255,255,255,0.7); font-weight: 600; }
+        .match-val { font-size: 22px; font-weight: 900; color: #fff; }
+        .match-badge {
+            background: rgba(255,255,255,0.2); color: #fff;
+            font-size: 10px; font-weight: 700;
+            padding: 3px 10px; border-radius: var(--radius-pill);
+        }
+
+        /* ── CONTROL PANEL ── */
+        .control-panel { position: sticky; top: 20px; }
+        .panel-title { font-size: 13px; font-weight: 700; color: var(--slate); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; }
+        .scenario-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+        .scenario-btn {
+            background: var(--card-bg); border: 1.5px solid var(--border);
+            border-radius: var(--radius-card); padding: 16px 18px;
+            cursor: pointer; text-align: left;
+            transition: all 0.2s;
+        }
+        .scenario-btn:hover { border-color: var(--primary); box-shadow: var(--shadow-sm); }
+        .scenario-btn.active { border-color: var(--primary); background: var(--dss-ice-blue); }
+        .scenario-btn.active .sc-num { background: var(--primary); color: #fff; }
+        .sc-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .sc-num {
+            width: 26px; height: 26px; border-radius: 50%;
+            background: var(--cool-gray); color: var(--slate);
+            font-size: 11px; font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .sc-name { font-size: 14px; font-weight: 700; color: var(--navy-dark); }
+        .sc-desc { font-size: 12px; color: var(--slate); line-height: 1.6; }
+
+        /* Value Proposition Card */
+        .value-card {
+            background: var(--navy-dark);
+            border-radius: var(--radius-card); padding: 20px;
+            margin-top: 4px;
+        }
+        .value-title { font-size: 11px; font-weight: 700; color: var(--cyan-spark); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+        .value-item { display: flex; gap: 10px; margin-bottom: 10px; }
+        .value-item:last-child { margin-bottom: 0; }
+        .value-icon { font-size: 18px; flex-shrink: 0; }
+        .value-text { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.6; }
+        .value-text strong { color: #fff; }
+
+        /* ── FLOW SECTION ── */
+        .flow-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        @media (max-width: 768px) { .flow-grid { grid-template-columns: 1fr; } }
+        .flow-card {
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: var(--radius-card); padding: 22px;
+        }
+        .flow-step {
+            width: 40px; height: 40px;
+            background: var(--gradient-primary); border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; margin-bottom: 14px;
+        }
+        .flow-card h3 { font-size: 15px; font-weight: 700; color: var(--navy-dark); margin-bottom: 6px; }
+        .flow-card p { font-size: 13px; color: var(--slate); line-height: 1.6; }
+        .flow-tag {
+            display: inline-block; margin-top: 10px;
+            background: var(--dss-ice-blue); color: var(--primary);
+            font-size: 10px; font-weight: 700;
+            padding: 3px 10px; border-radius: var(--radius-pill);
+        }
+
+        /* ── AC TABLE ── */
+        .ac-table { width: 100%; border-collapse: collapse; }
+        .ac-table th { background: var(--navy-dark); color: #fff; padding: 12px 16px; text-align: left; font-size: 12px; font-weight: 700; }
+        .ac-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--slate); vertical-align: top; }
+        .ac-table tr:last-child td { border-bottom: none; }
+        .ac-table tr:hover td { background: var(--bg-main); }
+        .ac-code { font-family: 'Courier New', monospace; font-size: 11px; color: var(--primary); font-weight: 700; }
+        .ac-badge { display: inline-block; padding: 2px 8px; border-radius: var(--radius-pill); font-size: 10px; font-weight: 700; }
+        .p-cao { background: #FFF0E8; color: var(--energy-orange); }
+        .p-tb { background: var(--dss-ice-blue); color: var(--primary); }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--navy-dark); padding: 40px 20px; text-align: center;
+        }
+        footer p { font-size: 12px; color: rgba(255,255,255,0.3); }
+        footer a { color: rgba(255,255,255,0.5); text-decoration: none; }
+        footer a:hover { color: #fff; }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-up { animation: fadeUp 0.5s ease both; }
+
+        /* QR Animation */
+        @keyframes qrRefresh {
+            0% { opacity: 1; }
+            45% { opacity: 0.3; transform: scale(0.97); }
+            55% { opacity: 0.3; transform: scale(0.97); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .qr-animate { animation: qrRefresh 30s linear infinite; }
+        .timer-count { font-variant-numeric: tabular-nums; }
     </style>
 </head>
 <body>
 
-    <!-- Hero -->
-    <section class="hero">
-        <div style="background: var(--primary); color: #000; padding: 5px 15px; border-radius: 20px; font-weight: 800; font-size: 0.7rem; margin-bottom: 20px;">DSS CLUB PRO</div>
-        <h1>Hành Trình Sự Kiện</h1>
-        <p>Mô phỏng trải nghiệm thực tế của người dùng và nhân viên trong hệ thống Check-in thông minh bằng Face AI & QR Động.</p>
-        
-        <div class="characters">
-            <div class="char-card">
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" class="char-img">
-                <h3>Anh Long</h3>
-                <p style="font-size: 0.8rem; opacity: 0.6;">Khách mời Level 2</p>
-            </div>
-            <div class="char-card">
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Avery" class="char-img">
-                <h3>Chị Hà</h3>
-                <p style="font-size: 0.8rem; opacity: 0.6;">Nhân viên Check-in</p>
-            </div>
+<!-- HERO -->
+<section class="hero">
+    <div style="position:relative; z-index:1;">
+        <div class="hero-badge">FEAT-EVENT-CHECKIN — Interactive Showcase</div>
+        <h1 class="fade-up">Check-in Sự Kiện<br><span>AI Face & Dynamic QR</span></h1>
+        <p class="fade-up">Hệ thống check-in thông minh 3 lớp bảo mật: Mã QR Động chống gian lận, Geofencing GPS và AI Face Recognition — tự động hóa toàn bộ quy trình xác minh khách mời tại sự kiện DSS Club.</p>
+        <div class="hero-pills">
+            <span class="hero-pill">🔐 Dynamic QR (TOTP)</span>
+            <span class="hero-pill">📍 GPS Geofencing</span>
+            <span class="hero-pill">🤖 AI Face Recognition</span>
+            <span class="hero-pill">🎁 Auto Points Reward</span>
+            <span class="hero-pill">📊 Real-time Dashboard</span>
         </div>
+    </div>
+</section>
 
-        <div style="margin-top: 50px; animation: bounce 2s infinite;">
-            <a href="#step1" style="color: #fff; text-decoration: none; font-size: 0.9rem;">Cuộn xuống để xem chuyện gì đã xảy ra...<br>▼</a>
+<!-- SIMULATOR SECTION -->
+<section class="section" id="simulator">
+    <div class="container">
+        <div class="sec-head">
+            <div class="sec-tag">01 — Live Simulation</div>
+            <h2 class="sec-title">Trải nghiệm tương tác 3 góc nhìn</h2>
+            <p class="sec-desc">Chọn kịch bản bên phải để xem từng luồng hoạt động của Khách mời, Nhân viên check-in và Quản trị viên.</p>
         </div>
-    </section>
+        <div class="sim-layout">
 
-    <!-- Step 1: Registration -->
-    <section class="story-section" id="step1">
-        <div class="story-content">
-            <div class="story-text">
-                <span class="step-number">Giai đoạn 1</span>
-                <h2>Lời mời bất ngờ</h2>
-                <p>Anh Long nhận được thông báo về Workshop công nghệ mới từ DSS CLUB. Để xác nhận tham dự, hệ thống yêu cầu anh chụp một tấm ảnh chân dung sắc nét để làm <b>Avatar Thiệp mời</b>.</p>
-                <div class="tech-box">
-                    <strong>Kỹ thuật FR-02:</strong> Hệ thống yêu cầu quyền truy cập Camera và thực hiện chụp ảnh trực tiếp để ngăn chặn việc tải lên ảnh giả danh.
-                </div>
-            </div>
-            <div class="phone">
-                <div class="screen">
-                    <div class="app-view">
-                        <div style="background: rgba(0,210,255,0.2); border: 1px solid var(--primary); padding: 15px; border-radius: 12px; margin-bottom: 30px;">
-                            🏛️ <b>DSS CLUB:</b> Bạn có 1 thiệp mời sự kiện "Workshop AI 2026". Nhấn để xác nhận!
-                        </div>
-                        <h4 style="margin-bottom: 5px;">Tạo ảnh sự kiện</h4>
-                        <p style="font-size: 0.7rem; opacity: 0.6; margin-bottom: 20px;">Vui lòng đưa mặt vào khung để hệ thống tạo thiệp cá nhân hóa.</p>
-                        <div style="width: 100%; height: 250px; background: #334155; border-radius: 20px; border: 2px dashed var(--primary); display: flex; align-items: center; justify-content: center;">
-                             <div style="width: 150px; height: 150px; border-radius: 50%; border: 2px solid #fff; opacity: 0.5;"></div>
-                        </div>
-                        <button class="p-btn" style="background: var(--primary); color: #000; margin-top: 20px;">CHỤP ẢNH XÁC NHẬN</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+            <!-- PHONE SIMULATOR -->
+            <div>
+                <div class="phone-outer">
+                    <div class="phone-screen">
 
-    <!-- Step 2: Arriving -->
-    <section class="story-section">
-        <div class="story-content">
-            <div class="phone" style="order: 0;">
-                <div class="screen">
-                    <div class="app-view">
-                        <!-- Invitation Card View -->
-                        <div style="background: linear-gradient(135deg, #3a7bd5, #00d2ff); padding: 25px; border-radius: 30px; text-align: center; color: #fff;">
-                            <div style="width: 80px; height: 80px; border-radius: 50%; border: 4px solid #fff; margin: 0 auto 15px; overflow: hidden;">
-                                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" width="100%">
+                        <!-- View A: Invitation -->
+                        <div class="app-view active" id="view-invite">
+                            <div class="app-header">
+                                <div class="app-header-title">📨 Thiệp mời sự kiện</div>
                             </div>
-                            <h3 style="font-size: 1.2rem;">INVITATION</h3>
-                            <div style="font-size: 0.8rem; margin: 10px 0;">Khách mời: <b>Anh Long</b></div>
-                            <div style="background: rgba(255,255,255,0.2); padding: 10px; border-radius: 10px; font-size: 0.6rem;">
-                                Chỗ ngồi: VIP-01<br>Tòa nhà: Marriott Hotel
+                            <div class="app-body">
+                                <div class="invite-card">
+                                    <div class="invite-avatar">👤</div>
+                                    <div class="invite-card-name">Anh Nguyễn Văn Đức</div>
+                                    <div class="invite-card-title">Đại lý Vàng — Cấp 2 ✓</div>
+                                    <div class="invite-divider"></div>
+                                    <div class="invite-event">🏆 DSS Partner Summit 2026</div>
+                                    <div class="invite-detail">📅 15/04/2026 · 08:30 SA</div>
+                                    <div class="invite-detail">📍 Khách sạn Rex Sài Gòn, TP.HCM</div>
+                                    <div class="invite-tag">VÉ XÁC NHẬN</div>
+                                </div>
+                                <div style="background: var(--dss-ice-blue); border-radius: var(--radius-card); padding: 12px; font-size: 12px; color: var(--primary);">
+                                    <strong>💡 Lưu ý:</strong> Vui lòng có mặt đúng giờ để nhận +200 điểm thưởng tham dự.
+                                </div>
+                                <button class="app-btn" onclick="showView('view-qr')">Xem Mã Check-in →</button>
                             </div>
                         </div>
-                        
-                        <div style="background: rgba(255,77,77,0.1); border: 1px solid #ff4d4d; border-radius: 15px; padding: 15px; margin-top: 20px; text-align: center;">
-                            <span style="font-size: 1.2rem;">📍</span><br>
-                            <span style="font-size: 0.7rem; color: #ff4d4d;">Bạn đang đứng cách sự kiện 500m.<br>Vui lòng đến gần hơn để lấy mã QR.</span>
-                        </div>
-                        
-                        <div style="font-size: 0.6rem; opacity: 0.5; margin-top: 15px; text-align: center;">Kỹ thuật FR-05: Geofencing Check</div>
-                        <button class="p-btn" style="background: #334155; color: #fff; cursor: not-allowed; margin-top: auto;">CHƯA THỂ CHECK-IN</button>
-                    </div>
-                </div>
-            </div>
-            <div class="story-text">
-                <span class="step-number">Giai đoạn 2</span>
-                <h2>Sát cánh tại điểm tập kết</h2>
-                <p>Anh Long lái xe đến Marriott Hotel. Khi còn ở xa, ứng dụng chỉ hiện thiệp mời nhưng khóa chức năng Check-in để đảm bảo tính xác thực.</p>
-                <div class="tech-box">
-                    <strong>Hàng rào địa lý (Geofencing):</strong> Với FR-05, hệ thống liên tục kiểm tra tọa độ GPS của người dùng. Mã QR Check-in chỉ xuất hiện khi khách lọt vào bán kính [R] mét quanh điểm sự kiện.
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Step 3: Check-in gate -->
-    <section class="story-section">
-        <div class="story-content">
-            <div class="story-text">
-                <span class="step-number">Giai đoạn 3</span>
-                <h2>Quét mã & Đối soát Face AI</h2>
-                <p>Tại quầy, Chị Hà sử dụng Staff App để quét mã của Anh Long. Hệ thống không chỉ nhận diện mã mà còn tự động bật <b>Face AI</b> để đối chiếu khuôn mặt thực tế của Anh Long với ảnh đã xác thực (KYC).</p>
-                <div class="tech-box">
-                    <strong>Face AI Matching (FR-07):</strong> Hệ thống trả về tỉ lệ % trùng khớp ngay lập tức. Nếu > 80%, nhân viên sẽ nhấn duyệt. Điều này loại bỏ hoàn toàn việc "đi hộ".
-                </div>
-            </div>
-            <div class="phone">
-                <div class="screen">
-                    <div class="app-view">
-                        <div style="font-size: 0.6rem; margin-bottom: 20px; opacity: 0.5;">STAFF APP • SCAN MODE</div>
-                        <div style="flex: 1; border: 2px solid var(--primary); border-radius: 20px; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #000;">
-                            
-                            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                                <div style="border:1px solid #fff; border-radius: 8px; padding: 2px;"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" width="80"></div>
-                                <div style="border:2px solid var(--primary); border-radius: 8px; padding: 2px; position: relative;">
-                                     <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" width="80" style="filter: brightness(0.7);">
-                                     <div style="position: absolute; top:0; left:0; width:100%; height:2px; background:var(--primary); animation: scan 2s infinite;"></div>
+                        <!-- View B: QR Dynamic -->
+                        <div class="app-view" id="view-qr">
+                            <div class="app-header">
+                                <span class="app-header-back" onclick="showView('view-invite')">‹</span>
+                                <div class="app-header-title">Mã Check-in Động</div>
+                            </div>
+                            <div class="app-body">
+                                <div id="qr-gps-ok">
+                                    <div class="qr-box">
+                                        <div class="qr-title">Mã QR Hợp lệ — Đang hoạt động</div>
+                                        <div class="qr-animate" style="margin: 0 auto 10px;">
+                                            <svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <!-- QR Border pattern -->
+                                                <rect width="160" height="160" fill="#F7F9FC"/>
+                                                <rect x="10" y="10" width="58" height="58" rx="4" fill="#0068FF" opacity="0.9"/>
+                                                <rect x="16" y="16" width="46" height="46" rx="2" fill="#F7F9FC"/>
+                                                <rect x="22" y="22" width="34" height="34" rx="1" fill="#0068FF" opacity="0.9"/>
+                                                <rect x="92" y="10" width="58" height="58" rx="4" fill="#0068FF" opacity="0.9"/>
+                                                <rect x="98" y="16" width="46" height="46" rx="2" fill="#F7F9FC"/>
+                                                <rect x="104" y="22" width="34" height="34" rx="1" fill="#0068FF" opacity="0.9"/>
+                                                <rect x="10" y="92" width="58" height="58" rx="4" fill="#0068FF" opacity="0.9"/>
+                                                <rect x="16" y="98" width="46" height="46" rx="2" fill="#F7F9FC"/>
+                                                <rect x="22" y="104" width="34" height="34" rx="1" fill="#0068FF" opacity="0.9"/>
+                                                <!-- Data modules -->
+                                                <rect x="78" y="10" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="78" y="22" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="78" y="34" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="78" y="46" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="10" y="78" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="22" y="78" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="34" y="78" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="46" y="78" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="78" y="78" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="92" y="78" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="104" y="78" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="116" y="78" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="128" y="78" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="140" y="78" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="104" y="92" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="128" y="92" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="92" y="104" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="116" y="104" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="140" y="104" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="104" y="116" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="116" y="116" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="92" y="128" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="116" y="128" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="140" y="128" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="128" y="140" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="78" y="92" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="78" y="116" width="8" height="8" fill="#0068FF" rx="1"/>
+                                                <rect x="78" y="140" width="8" height="8" fill="#0068FF" rx="1"/>
+                                            </svg>
+                                        </div>
+                                        <div class="qr-timer">
+                                            <div class="qr-timer-dot"></div>
+                                            Làm mới sau: <span class="timer-count" id="qr-countdown">28</span>s
+                                        </div>
+                                        <div class="qr-ttl" style="margin-top:8px; font-size:10px; color:var(--muted-blue);">
+                                            FEAT-EVENT-CHECKIN · UserID: USR-0842
+                                        </div>
+                                    </div>
+                                    <div style="background: #E8FBF2; border-radius: var(--radius-card); padding: 12px; display:flex; gap:8px; align-items:flex-start;">
+                                        <span style="font-size:18px;">📍</span>
+                                        <div style="font-size:12px; color:#006A40; font-weight:600; line-height:1.5;">GPS xác nhận: Bạn đang trong bán kính 180m từ điểm sự kiện. Mã QR đang hiển thị.</div>
+                                    </div>
+                                </div>
+                                <div id="qr-gps-fail" style="display:none;">
+                                    <div class="gps-lock">
+                                        <div class="gps-lock-icon">🔒</div>
+                                        <div class="gps-lock-txt">Bạn đang cách sự kiện <strong>1.4 km</strong>.<br>Vui lòng di chuyển đến khu vực sự kiện<br>để nhận mã check-in.</div>
+                                    </div>
+                                    <div style="font-size:11px; color:var(--muted-blue); text-align:center; margin-top:8px;">Bán kính hợp lệ: 200m quanh điểm tập kết</div>
+                                </div>
+                                <div style="display:flex; gap:8px;">
+                                    <button class="app-btn" style="background: var(--mint-green);" onclick="toggleGPS(true)">✅ GPS OK</button>
+                                    <button class="app-btn" style="background: var(--energy-orange);" onclick="toggleGPS(false)">🔒 Ngoài vùng</button>
                                 </div>
                             </div>
-                            
-                            <div style="color: var(--primary); font-weight: 800; font-size: 1.5rem;">98.2% MATCH</div>
-                            <div style="color: var(--success); font-size: 0.7rem; font-weight: bold;">[ HỢP LỆ - ĐÚNG CHỦ ]</div>
                         </div>
-                        <button class="p-btn" style="background: var(--success); color: #fff; margin-top: 20px;">XÁC NHẬN VÀO CỬA</button>
+
+                        <!-- View C: Staff App -->
+                        <div class="app-view" id="view-staff">
+                            <div class="app-header" style="background: var(--navy-dark);">
+                                <div class="app-header-title">🛡️ Staff Check-in App</div>
+                            </div>
+                            <div class="app-body">
+                                <div id="staff-scan" style="text-align:center;">
+                                    <div class="scan-btn-big" onclick="showStaffResult()">
+                                        <span>📷</span>
+                                        Quét QR
+                                    </div>
+                                    <div style="font-size:12px; color:var(--slate);">Hướng camera vào mã QR của khách</div>
+                                </div>
+                                <div id="staff-result" style="display:none;">
+                                    <div style="font-size:12px; font-weight:700; color:var(--navy-dark); margin-bottom:8px;">So sánh khuôn mặt</div>
+                                    <div class="face-compare">
+                                        <div class="face-card">
+                                            <div class="face-card-head kyc">Ảnh KYC</div>
+                                            <div class="face-body">🧑‍💼</div>
+                                        </div>
+                                        <div class="face-card">
+                                            <div class="face-card-head live">Camera Live</div>
+                                            <div class="face-body">👤</div>
+                                        </div>
+                                    </div>
+                                    <div class="match-score">
+                                        <div>
+                                            <div class="match-label">Tỷ lệ trùng khớp</div>
+                                            <div class="match-val">93.7%</div>
+                                        </div>
+                                        <div class="match-badge">✅ HỢP LỆ</div>
+                                    </div>
+                                    <div style="background: var(--bg-main); border-radius: var(--radius-card); padding: 12px; margin-top: 10px; font-size: 12px; line-height:1.6; color: var(--slate);">
+                                        <strong style="color:var(--navy-dark);">Nguyễn Văn Đức</strong> · Công ty An Ninh Miền Đông<br>
+                                        <span style="color: var(--mint-green);">✓ Level 2 · Mã QR TOTP hợp lệ</span>
+                                    </div>
+                                    <div style="display:flex; gap:8px; margin-top:4px;">
+                                        <button class="app-btn" style="background: var(--mint-green);" onclick="confirmCheckin()">✅ Xác Nhận Vào Cửa</button>
+                                    </div>
+                                </div>
+                                <div id="staff-success" style="display:none; text-align:center; padding: 20px 0;">
+                                    <div style="font-size:48px; margin-bottom:12px;">🎉</div>
+                                    <div style="font-size:16px; font-weight:800; color: var(--mint-green);">Check-in thành công!</div>
+                                    <div style="font-size:12px; color:var(--slate); margin-top:6px;">+200 điểm đã cộng cho <strong>Nguyễn Văn Đức</strong></div>
+                                    <button class="app-btn" style="margin-top:20px; background: var(--navy-dark);" onclick="resetStaff()">← Quét khách tiếp theo</button>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Step 4: Success & Points -->
-    <section class="story-section">
-        <div class="story-content">
-            <div class="phone" style="order: 0;">
-                <div class="screen">
-                    <div class="app-view" style="text-align: center; justify-content: center;">
-                        <div style="font-size: 5rem; animation: bounce 1s;">🎉</div>
-                        <h2 style="color: var(--success); margin: 20px 0;">THÀNH CÔNG</h2>
-                        <p style="font-size: 0.8rem;">Chào mừng Anh Long đã đến!</p>
-                        
-                        <div style="background: rgba(255,235,59,0.1); border: 2px dashed var(--accent); padding: 20px; border-radius: 20px; margin-top: 40px;">
-                            <div style="color: var(--accent); font-size: 1.5rem; font-weight: 900;">+100</div>
-                            <div style="font-size: 0.6rem; font-weight: bold;">ĐIỂM CỐNG HIẾN ĐÃ NHẬN</div>
+            <!-- CONTROL PANEL -->
+            <div class="control-panel">
+                <div class="panel-title">Chọn kịch bản</div>
+                <div class="scenario-list">
+                    <div class="scenario-btn active" id="sc-1" onclick="setScenario(1)">
+                        <div class="sc-header">
+                            <div class="sc-num">1</div>
+                            <div class="sc-name">Khách nhận thiệp mời</div>
                         </div>
-                        
-                        <p style="font-size: 0.6rem; opacity: 0.5; margin-top: 20px;">Kỹ thuật FR-8.2: Auto Points Hook</p>
+                        <div class="sc-desc">User nhận thông báo, xem thiệp mời có Avatar cá nhân hóa và thông tin sự kiện chi tiết.</div>
+                    </div>
+                    <div class="scenario-btn" id="sc-2" onclick="setScenario(2)">
+                        <div class="sc-header">
+                            <div class="sc-num">2</div>
+                            <div class="sc-name">Mã QR Động + GPS Lock</div>
+                        </div>
+                        <div class="sc-desc">QR tự làm mới mỗi 30 giây. Chỉ hiển thị khi GPS xác nhận khách đang ở đúng bán kính sự kiện.</div>
+                    </div>
+                    <div class="scenario-btn" id="sc-3" onclick="setScenario(3)">
+                        <div class="sc-header">
+                            <div class="sc-num">3</div>
+                            <div class="sc-name">Staff quét & Face AI</div>
+                        </div>
+                        <div class="sc-desc">Staff quét QR → AI đối soát khuôn mặt Camera vs Ảnh KYC → Xác nhận cho vào và cộng điểm.</div>
+                    </div>
+                </div>
+
+                <!-- VALUE PROPOSITION -->
+                <div class="value-card">
+                    <div class="value-title">💼 Giá trị dành cho Ban Giám Đốc</div>
+                    <div class="value-item">
+                        <div class="value-icon">🚫</div>
+                        <div class="value-text"><strong>Loại bỏ gian lận:</strong> Mã QR đổi mỗi 30 giây + GPS lock — không thể screenshot gửi người khác check-in thay.</div>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon">⚡</div>
+                        <div class="value-text"><strong>Tăng tốc độ đón khách:</strong> Xác minh tự động < 3 giây so với 30–60 giây đối chiếu thủ công.</div>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon">📊</div>
+                        <div class="value-text"><strong>Dữ liệu thời gian thực:</strong> Ban tổ chức biết ngay số khách đã vào cửa — tối ưu logistics và phục vụ tiệc.</div>
+                    </div>
+                    <div class="value-item" style="margin-bottom:0;">
+                        <div class="value-icon">🎁</div>
+                        <div class="value-text"><strong>Tăng trung thành:</strong> Tự động cộng điểm + Push thông báo — khách cảm thấy được ghi nhận đặc biệt.</div>
                     </div>
                 </div>
             </div>
-            <div class="story-text">
-                <span class="step-number">Giai đoạn 4</span>
-                <h2>Quà tặng tức thì</h2>
-                <p>Ngay khi Chị Hà nhấn duyệt, hệ thống tự động cộng 100 điểm thưởng vào tài khoản Anh Long. Anh nhận được thông báo chúc mừng ngay trên tay.</p>
-                <div class="tech-box">
-                    <strong>Tự động hóa (Reward Hook):</strong> Với FR-8.2, việc cộng điểm diễn ra theo thời gian thực (Real-time), kích thích tinh thần tương tác của khách tham dự.
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Deep Dive: Flowcharts -->
-    <section class="story-section" style="background: rgba(255,255,255,0.02);">
-        <h2 style="margin-bottom: 50px; color: var(--primary);">Đào sâu Kỹ thuật dành cho Chuyên gia</h2>
-        
-        <div class="mermaid-container">
-            <h3 style="margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">1. Quy trình QR Động & GPS</h3>
-            <div class="mermaid">
-                flowchart TD
-                    A[Vào Sự Kiện] --> B{Xác thực GPS?}
-                    B -- Ngoài R --> C[Báo Di Chuyển Lại Gần]
-                    B -- Trong R --> D[Gọi API TOTP]
-                    D --> E[Render QR Code]
-                    E --> F[Mã đổi mới mỗi 30s]
-                    F --> E
-            </div>
         </div>
-
-        <div class="mermaid-container">
-            <h3 style="margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">2. Logic Đối soát Face AI</h3>
-            <div class="mermaid">
-                flowchart LR
-                    subgraph DB
-                        KYC[Ảnh KYC Gốc]
-                    end
-                    subgraph StaffApp
-                        CAM[Camera Chụp Thực Tế]
-                    end
-                    KYC --> COMP[AI so sánh đặc điểm]
-                    CAM --> COMP
-                    COMP --> RES{Matching > 80%?}
-                    RES -- Yes --> APP[Tích Xanh Hợp Lệ]
-                    RES -- No --> WARN[Yêu cầu gỡ khẩu trang/kính]
-            </div>
-        </div>
-    </section>
-
-    <div class="footer">
-        POWERED BY ANTIGRAVITY AI • DAHUA DSS CLUB SHOWCASE CENTER
     </div>
+</section>
 
-    <script>
-        mermaid.initialize({ startOnLoad: true, theme: 'dark' });
-    </script>
-    <style>
-        @keyframes scan { 0% { top: 0; } 100% { top: 100px; } }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-    </style>
+<!-- FLOW SECTION -->
+<section class="section" style="background: var(--bg-main);" id="flow">
+    <div class="container">
+        <div class="sec-head">
+            <div class="sec-tag">02 — Luồng xử lý</div>
+            <h2 class="sec-title">Quy trình 6 bước tự động hóa</h2>
+            <p class="sec-desc">Từ lúc Admin tạo sự kiện đến khi khách nhận điểm thưởng — không cần thao tác thủ công nào.</p>
+        </div>
+        <div class="flow-grid">
+            <div class="flow-card">
+                <div class="flow-step">🎪</div>
+                <h3>Admin tạo sự kiện</h3>
+                <p>Cấu hình trên CMS: tọa độ GPS, bán kính [R], thời gian, điểm thưởng [Z] và template thiệp mời.</p>
+                <span class="flow-tag">Admin CMS</span>
+            </div>
+            <div class="flow-card">
+                <div class="flow-step">📨</div>
+                <h3>Khách nhận thiệp mời</h3>
+                <p>Push Notification + Inbox gửi đến User. Yêu cầu chụp Avatar mới, render thiệp mời cá nhân hóa đẹp mắt.</p>
+                <span class="flow-tag">Guest App</span>
+            </div>
+            <div class="flow-card">
+                <div class="flow-step">📍</div>
+                <h3>GPS Geofencing</h3>
+                <p>Khi khách đến đúng địa điểm (trong R mét), App tự động mở khóa và hiển thị mã QR Động.</p>
+                <span class="flow-tag">Guest App · GPS</span>
+            </div>
+            <div class="flow-card">
+                <div class="flow-step">🔄</div>
+                <h3>QR Động (TOTP)</h3>
+                <p>Mã QR tự làm mới mỗi X giây theo thuật toán TOTP. Server chỉ chấp nhận mã còn trong TTL hợp lệ.</p>
+                <span class="flow-tag">TOTP Engine</span>
+            </div>
+            <div class="flow-card">
+                <div class="flow-step">🤖</div>
+                <h3>Staff quét & AI Face</h3>
+                <p>Camera tablet quét QR, hệ thống gọi API Face AI đối soát ảnh KYC. Tỷ lệ trùng khớp > 80% → Xanh.</p>
+                <span class="flow-tag">Staff App · Face AI</span>
+            </div>
+            <div class="flow-card">
+                <div class="flow-step">🎁</div>
+                <h3>Cộng điểm tự động</h3>
+                <p>Ngay sau khi Staff duyệt, hệ thống cộng [Z] điểm và bắn Push thông báo cho khách trong &lt; 5 giây.</p>
+                <span class="flow-tag">Points Engine · Push</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ACCEPTANCE CRITERIA -->
+<section class="section" id="acceptance">
+    <div class="container">
+        <div class="sec-head">
+            <div class="sec-tag">03 — Tiêu chí chấp nhận</div>
+            <h2 class="sec-title">Điều kiện để tính năng được DONE</h2>
+            <p class="sec-desc">Dev và QA sử dụng bảng này để xác nhận hoàn thành. Tất cả 8 tiêu chí phải đạt.</p>
+        </div>
+        <div style="border-radius: var(--radius-modal); overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow-sm);">
+            <table class="ac-table">
+                <thead>
+                    <tr>
+                        <th style="width:90px;">Mã AC</th>
+                        <th>Mô tả tiêu chí</th>
+                        <th style="width:100px;">Ưu tiên</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="ac-code">AC-01</span></td>
+                        <td>Mã QR tự thay đổi hình dạng sau đúng X giây theo cài đặt Admin, sai lệch không quá 500ms.</td>
+                        <td><span class="ac-badge p-cao">Cao</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="ac-code">AC-02</span></td>
+                        <td>Nút "Lấy mã Check-in" bị ẩn/hiện đúng logic khi User tắt định vị hoặc đứng ngoài bán kính R.</td>
+                        <td><span class="ac-badge p-cao">Cao</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="ac-code">AC-03</span></td>
+                        <td>Mã QR đã qua TTL bị server từ chối ngay cả khi format QR hợp lệ (chống screenshot cũ).</td>
+                        <td><span class="ac-badge p-cao">Cao</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="ac-code">AC-04</span></td>
+                        <td>Staff App hiển thị đồng thời 2 ảnh (KYC và Camera thực tế) song song trên cùng màn hình xác nhận.</td>
+                        <td><span class="ac-badge p-cao">Cao</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="ac-code">AC-05</span></td>
+                        <td>Điểm thưởng được cộng chính xác vào tài khoản User trong vòng 5 giây sau khi Staff bấm "Xác nhận".</td>
+                        <td><span class="ac-badge p-cao">Cao</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="ac-code">AC-06</span></td>
+                        <td>Push Notification cộng điểm gửi đến đúng User sau khi check-in thành công.</td>
+                        <td><span class="ac-badge p-cao">Cao</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="ac-code">AC-07</span></td>
+                        <td>Admin có thể xuất danh sách khách tham dự ra file .xlsx đầy đủ (Tên, SĐT, giờ vào cửa, điểm đã cộng).</td>
+                        <td><span class="ac-badge p-cao">Cao</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="ac-code">AC-08</span></td>
+                        <td>Dashboard Admin phản ánh số liệu mới nhất sau tối đa 5 giây kể từ khi có check-in mới.</td>
+                        <td><span class="ac-badge p-tb">Trung bình</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>DSS Club Showcase Center · <a href="index.html">← Quay về trang chủ</a> · <strong style="color:rgba(255,255,255,0.5);">FEAT-EVENT-CHECKIN v1.1</strong></p>
+    <p style="margin-top:8px;">© 2026 DSS Vietnam Technology</p>
+</footer>
+
+<script>
+    mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { primaryColor: '#0068FF', primaryTextColor: '#fff', primaryBorderColor: '#0050CC', lineColor: '#E8EDF3', secondaryColor: '#F0F5FF', tertiaryColor: '#F7F9FC' } });
+
+    function showView(id) {
+        document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function setScenario(n) {
+        document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('sc-' + n).classList.add('active');
+        if (n === 1) showView('view-invite');
+        if (n === 2) showView('view-qr');
+        if (n === 3) { showView('view-staff'); resetStaff(); }
+    }
+
+    function toggleGPS(ok) {
+        document.getElementById('qr-gps-ok').style.display = ok ? 'block' : 'none';
+        document.getElementById('qr-gps-fail').style.display = ok ? 'none' : 'block';
+    }
+
+    function showStaffResult() {
+        document.getElementById('staff-scan').style.display = 'none';
+        document.getElementById('staff-result').style.display = 'block';
+    }
+
+    function confirmCheckin() {
+        document.getElementById('staff-result').style.display = 'none';
+        document.getElementById('staff-success').style.display = 'block';
+    }
+
+    function resetStaff() {
+        document.getElementById('staff-scan').style.display = 'block';
+        document.getElementById('staff-result').style.display = 'none';
+        document.getElementById('staff-success').style.display = 'none';
+    }
+
+    // QR countdown timer
+    let countdown = 28;
+    setInterval(() => {
+        countdown--;
+        if (countdown <= 0) countdown = 30;
+        const el = document.getElementById('qr-countdown');
+        if (el) el.textContent = countdown;
+    }, 1000);
+</script>
+
 </body>
 </html>
