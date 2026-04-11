@@ -4,224 +4,428 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DSS CLUB - Presentation Center</title>
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Trung tâm trình diễn công nghệ DSS CLUB - Khám phá các tính năng mới nhất v2.0">
     <link rel="stylesheet" href="css/brand_tokens.css">
     <style>
+        /* --- Root Overrides & Extensions --- */
         :root {
-            --primary: var(--dss-blue);
-            --secondary: var(--dss-deep-blue);
-            --bg: var(--bg-main);
-            --card-bg: var(--white);
-            --text: var(--navy-dark);
+            --header-height: 80px;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-primary); }
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
         body {
-            background-color: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            background-color: var(--bg-main);
+            color: var(--navy-dark);
+            overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 60px 20px;
-            width: 100%;
+        /* --- Animations --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes imageReveal {
+            from { opacity: 0; scale: 0.95; }
+            to { opacity: 1; scale: 1; }
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Header --- */
+        header {
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--cool-gray);
+            transition: var(--transition);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-circle {
+            width: 32px;
+            height: 32px;
+            background: var(--gradient-primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 900;
+            font-size: 1.2rem;
+        }
+
+        .logo-text {
+            font-weight: 800;
+            font-size: 1.25rem;
+            letter-spacing: -0.5px;
+            color: var(--navy-dark);
+        }
+
+        .version-badge {
+            background: var(--dss-ice-blue);
+            color: var(--dss-blue);
+            padding: 4px 12px;
+            border-radius: var(--radius-pill);
+            font-size: 0.75rem;
+            font-weight: 700;
         }
 
         /* --- Hero Section --- */
         .hero {
+            padding: 100px 20px 60px;
+            max-width: 1200px;
+            margin: 0 auto;
             text-align: center;
-            margin-bottom: 80px;
-            animation: fadeInDown 0.8s ease-out;
+            position: relative;
         }
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .logo-text {
-            font-size: 0.9rem;
-            font-weight: 800;
-            letter-spacing: 4px;
-            color: var(--primary);
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 104, 255, 0.05) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .hero-label {
+            display: inline-block;
             text-transform: uppercase;
-            margin-bottom: 15px;
-            display: block;
+            letter-spacing: 3px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            color: var(--dss-blue);
+            margin-bottom: 24px;
+            opacity: 0;
+            animation: fadeInUp 0.8s forwards;
         }
 
-        h1 {
-            font-size: 3.5rem;
+        .hero h1 {
+            font-size: 4rem;
             font-weight: 900;
             line-height: 1.1;
-            margin-bottom: 20px;
-            color: var(--navy-dark);
+            margin-bottom: 24px;
+            background: linear-gradient(to right, var(--navy-dark), var(--dss-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            animation: fadeInUp 0.8s 0.2s forwards;
         }
 
         .hero p {
             font-size: 1.25rem;
             color: var(--slate);
-            max-width: 600px;
+            max-width: 700px;
+            margin: 0 auto 50px;
+            opacity: 0;
+            animation: fadeInUp 0.8s 0.3s forwards;
+        }
+
+        .hero-visual {
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 40px 100px rgba(13, 27, 62, 0.12);
+            opacity: 0;
+            animation: imageReveal 1.2s 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            border: 1px solid var(--white);
+        }
+
+        .hero-visual img {
+            width: 100%;
+            display: block;
+        }
+
+        /* --- Grid & Cards --- */
+        .main-content {
+            padding: 80px 20px;
+            max-width: 1300px;
             margin: 0 auto;
         }
 
-        /* --- Grid Section --- */
+        .grid-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 40px;
+            padding: 0 10px;
+        }
+
+        .grid-header h2 {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 24px;
         }
 
         .card {
-            background: var(--card-bg);
-            border: 1px solid var(--cool-gray);
-            border-radius: 24px;
+            background: var(--white);
+            border-radius: var(--radius-card);
             padding: 40px;
             text-decoration: none;
             color: inherit;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
+            border: 1px solid var(--cool-gray);
+            transition: var(--transition);
             display: flex;
             flex-direction: column;
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(0, 104, 255, 0.03));
-            opacity: 0;
-            transition: 0.4s;
+            position: relative;
+            z-index: 1;
         }
 
         .card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary);
-            background: var(--white);
+            transform: translateY(-8px);
+            border-color: var(--dss-blue);
             box-shadow: var(--shadow-md);
         }
 
-        .card:hover::before { opacity: 1; }
-
-        .card .status {
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            padding: 4px 12px;
-            border-radius: 20px;
-            background: rgba(16, 185, 129, 0.1);
-            color: #10b981;
-            display: inline-block;
-            margin-bottom: 20px;
+        .card .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: var(--radius-pill);
+            font-size: 0.75rem;
+            font-weight: 800;
+            margin-bottom: 24px;
             width: fit-content;
         }
 
-        .card.active .status { background: var(--primary); color: #000; }
-        .card.coming-soon { opacity: 0.6; cursor: default; }
-        .card.coming-soon .status { background: rgba(255,255,255,0.1); color: #fff; }
+        .badge-boss { background: #000; color: #fff; }
+        .badge-showcase { background: var(--dss-ghost-blue); color: var(--dss-blue); }
+        .badge-ready { background: #E6F7ED; color: var(--mint-green); }
 
         .card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 12px;
-            color: #fff;
+            font-size: 1.6rem;
+            margin-bottom: 16px;
+            font-weight: 800;
+            transition: color 0.3s;
         }
 
+        .card:hover h3 { color: var(--dss-blue); }
+
         .card p {
-            color: #94a3b8;
+            color: var(--slate);
+            font-size: 1rem;
             line-height: 1.6;
-            font-size: 0.95rem;
             margin-bottom: 30px;
             flex-grow: 1;
         }
 
-        .card .arrow {
-            width: 40px;
-            height: 40px;
-            background: rgba(255,255,255,0.1);
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 24px;
+            border-top: 1px solid var(--cool-gray);
+        }
+
+        .explore-btn {
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--dss-blue);
+        }
+
+        .explore-circle {
+            width: 36px;
+            height: 36px;
+            border: 2.5px solid var(--dss-blue);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: 0.3s;
+            transition: var(--transition);
         }
 
-        .card:hover .arrow {
-            background: var(--primary);
-            color: #000;
-            transform: translateX(5px);
+        .card:hover .explore-circle {
+            background: var(--dss-blue);
+            color: white;
         }
 
         /* --- Footer --- */
         footer {
-            margin-top: auto;
-            padding: 40px;
+            padding: 80px 20px;
             text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: var(--white);
+            border-top: 1px solid var(--cool-gray);
         }
 
-        footer p {
-            font-size: 0.8rem;
-            color: #64748b;
+        .footer-brand {
+            margin-bottom: 24px;
+            opacity: 0.6;
+        }
+
+        .footer-text {
+            font-size: 0.85rem;
+            color: var(--slate);
             letter-spacing: 1px;
+            font-weight: 600;
         }
 
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            header { padding: 0 20px; }
+            .grid { grid-template-columns: 1fr; }
+            .card { padding: 30px; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <header>
+        <a href="#" class="logo">
+            <div class="logo-circle">D</div>
+            <span class="logo-text">DSS CLUB</span>
+        </a>
+        <span class="version-badge">v2.0 Beta</span>
+    </header>
+
+    <main>
         <div class="hero">
-            <span class="logo-text">DAHUA DSS CLUB</span>
-            <h1>Showcase Center</h1>
-            <p>Hệ thống trình diễn các tính năng công nghệ mới nhất dành cho hệ điều hành DSS CLUB v2.0</p>
+            <span class="hero-label">Presentation Center</span>
+            <h1>Showcase Experience</h1>
+            <p>Hệ sinh thái công nghệ DSS CLUB được thiết kế để mang lại trải nghiệm đỉnh cao cho các đối tác cấp cao và cộng đồng người dùng kỹ thuật số.</p>
+            
+            <div class="hero-visual">
+                <img src="images/hero.png" alt="DSS CLUB Futuristic Showcase">
+            </div>
         </div>
 
-        <div class="grid">
-            <!-- Executive Pitch: Event Check-in -->
-            <a href="Event_Checkin_Pitch.html" class="card active" style="border: 2px solid var(--primary); background: rgba(0, 104, 255, 0.05);">
-                <span class="status">BOSS-READY 💎</span>
-                <h3>Bản Pitch: Check-in v2.0</h3>
-                <p>Bản trình bày giải pháp tối ưu dành cho Ban Giám Đốc. Tập trung vào ROI, bảo mật và trải nghiệm thực tế.</p>
-                <div class="arrow">→</div>
-            </a>
+        <section class="main-content">
+            <div class="grid-header">
+                <div>
+                    <h2>Feature Portfolios</h2>
+                    <p style="color: var(--slate)">Khám phá các bản giới thiệu chi tiết từng module tính năng</p>
+                </div>
+            </div>
 
-            <!-- Event Check-in (Premium) -->
-            <a href="Event_Checkin_Showcase_Premium.html" class="card">
-                <span class="status">Showcase ⚡</span>
-                <h3>AI Event Check-in v2</h3>
-                <p>Bản mô phỏng chi tiết các tính năng kỹ thuật và luồng vận hành hệ thống.</p>
-                <div class="arrow">→</div>
-            </a>
+            <div class="grid">
+                <!-- Executive Pitch -->
+                <a href="Event_Checkin_Pitch.html" class="card">
+                    <span class="badge badge-boss">BOSS-READY 💎</span>
+                    <h3>The Executive Pitch</h3>
+                    <p>Bản trình bày chiến lược dành cho Ban Giám Đốc. Tập trung vào ROI, bảo mật hệ thống và quy trình quản trị chuyên sâu.</p>
+                    <div class="card-footer">
+                        <span class="explore-btn">Xem bản Pitch</span>
+                        <div class="explore-circle">→</div>
+                    </div>
+                </a>
 
-            <!-- App Update -->
-            <a href="App_Update_Showcase.html" class="card">
-                <span class="status">Đã sẵn sàng</span>
-                <h3>Smart App Auto Update</h3>
-                <p>Mô phỏng cơ chế cập nhật bắt buộc và thông báo bảo trì hệ thống linh hoạt trên nền tảng di động.</p>
-                <div class="arrow">→</div>
-            </a>
+                <!-- Showcase: Check-in -->
+                <a href="Event_Checkin_Showcase_Premium.html" class="card">
+                    <span class="badge badge-showcase">PREMIUM ⚡</span>
+                    <h3>AI Event Check-in v2.0</h3>
+                    <p>Mô phỏng trải nghiệm người dùng cuối và quy trình vận hành sự kiện thông minh với công nghệ nhận diện AI.</p>
+                    <div class="card-footer">
+                        <span class="explore-btn">Khám phá Demo</span>
+                        <div class="explore-circle">→</div>
+                    </div>
+                </a>
 
-            <!-- Social Community -->
-            <a href="Community_Showcase.html" class="card">
-                <span class="status">Đã sẵn sàng</span>
-                <h3>Cộng đồng & Điểm cống hiến</h3>
-                <p>Khám phá hệ thống Mạng xã hội nội bộ và cơ chế Gamification tích điểm cống hiến đầy lôi cuốn.</p>
-                <div class="arrow">→</div>
-            </a>
+                <!-- App Update -->
+                <a href="App_Update_Showcase.html" class="card">
+                    <span class="badge badge-ready">READY</span>
+                    <h3>Smart App Update</h3>
+                    <p>Cơ chế thông báo bảo trì và cập nhật ứng dụng bắt buộc theo chuẩn UX mới, đảm bảo an toàn cho hệ thống.</p>
+                    <div class="card-footer">
+                        <span class="explore-btn">Xem chi tiết</span>
+                        <div class="explore-circle">→</div>
+                    </div>
+                </a>
 
-            <!-- Verification Levels -->
-            <a href="Verification_Showcase.html" class="card active">
-                <span class="status">Story Edition ⚡</span>
-                <h3>Phân cấp Đặc quyền VIP</h3>
-                <p>Hành trình thăng hạng từ người dùng cơ bản đến Đại lý VIP thông qua hệ thống định danh AI bảo mật.</p>
-                <div class="arrow">→</div>
-            </a>
-        </div>
-    </div>
+                <!-- Social Community -->
+                <a href="Community_Showcase.html" class="card">
+                    <span class="badge badge-ready">READY</span>
+                    <h3>Social & Contribution</h3>
+                    <p>Hệ thống mạng xã hội nội bộ và cơ chế Gamification tích điểm cống hiến, thúc đẩy tương tác cộng đồng.</p>
+                    <div class="card-footer">
+                        <span class="explore-btn">Trải nghiệm</span>
+                        <div class="explore-circle">→</div>
+                    </div>
+                </a>
+
+                <!-- Verification Levels -->
+                <a href="Verification_Showcase.html" class="card">
+                    <span class="badge badge-showcase">STORY EDITION ⚡</span>
+                    <h3>VIP Verification Levels</h3>
+                    <p>Hệ thống phân cấp đặc quyền VIP thông qua định danh AI, nâng tầm trải nghiệm cá nhân hóa khách hàng.</p>
+                    <div class="card-footer">
+                        <span class="explore-btn">Bắt đầu hành trình</span>
+                        <div class="explore-circle">→</div>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </main>
 
     <footer>
-        <p>POWERED BY ANTIGRAVITY AI • BABADUOC.GITHUB.IO</p>
+        <div class="footer-brand">
+            <span class="logo-text" style="opacity: 0.4">DAHUA DSS CLUB</span>
+        </div>
+        <p class="footer-text">POWERED BY ANTIGRAVITY AI • BABADUOC.GITHUB.IO</p>
     </footer>
 
+    <script>
+        // Optional: Simple scroll reveal script if needed
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.card').forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${index * 0.1}s`;
+            observer.observe(card);
+        });
+    </script>
 </body>
 </html>
