@@ -11,15 +11,17 @@
     --dss-ice-blue: #E8F0FF;
     --dss-ghost-blue: #F5F8FF;
 
-    /* --- NEUTRALS (NAVY FAMILY) --- */
-    --navy-dark: #0D1B3E;
-    --slate: #3A4A6B;
+    /* --- NEUTRALS (NAVY & SLATE FAMILY) --- */
+    --navy-dark: #030712; /* Deep Slate - New Background */
+    --navy-surface: #0D1B3E; /* Second layer background */
+    --slate: #94A3B8; /* Slate 400 - Body Text */
     --muted-blue: #8A9ABB;
     --cool-gray: #EEF1F8;
     --white: #FFFFFF;
 
     /* --- ACCENT COLORS --- */
     --cyan-spark: #00C6FF;
+    --indigo-spark: #6366F1; /* New transition color */
     --energy-orange: #FF6B2C;
     --electric-purple: #A259FF;
     --mint-green: #00D68F;
@@ -28,9 +30,14 @@
 
     /* --- GRADIENTS --- */
     --gradient-primary: linear-gradient(135deg, var(--dss-blue) 0%, var(--cyan-spark) 100%);
-    --gradient-premium: linear-gradient(135deg, var(--dss-deep-blue) 0%, var(--electric-purple) 100%);
-    --gradient-hero-dark: linear-gradient(135deg, var(--navy-dark) 0%, var(--dss-blue) 60%, var(--cyan-spark) 100%);
-    --gradient-overlay: linear-gradient(180deg, rgba(0, 104, 255, 0.55) 0%, rgba(0, 198, 255, 0.25) 100%);
+    --gradient-premium: linear-gradient(135deg, var(--dss-deep-blue) 0%, var(--indigo-spark) 50%, var(--electric-purple) 100%);
+    --gradient-hero-dark: linear-gradient(135deg, #030712 0%, #0D1B3E 40%, var(--dss-blue) 100%);
+    --gradient-overlay: linear-gradient(180deg, rgba(0, 104, 255, 0.25) 0%, rgba(0, 198, 255, 0) 100%);
+
+    /* --- GLASS MORPHISM --- */
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-blur: blur(16px);
 
     /* --- TYPOGRAPHY --- */
     --font-primary: 'Be Vietnam Pro', 'Nunito', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
@@ -60,7 +67,11 @@
 
 body {
     font-family: var(--font-primary);
-    background-color: var(--dss-ghost-blue);
-    color: var(--navy-dark);
+    background-color: var(--navy-dark);
+    color: var(--slate);
     margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--white);
 }
