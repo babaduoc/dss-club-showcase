@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSS Club — Bộ Nhận Diện Thương Hiệu</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue:        #0068FF;
+  --blue-dark:   #0050CC;
+  --blue-deep:   #0D1B3E;
+  --blue-light:  #E8F1FF;
+  --blue-xlight: #F0F5FF;
+  --cyan:        #00AAFF;
+  --orange:      #FF5C00;
+  --green:       #00B96B;
+  --purple:      #7B5CFF;
+  --slate:       #4A5568;
+  --muted:       #8C9BAB;
+  --line:        #E8EDF3;
+  --white:       #FFFFFF;
+  --bg:          #F7F9FC;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  background: var(--bg);
+  color: var(--blue-deep);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── LAYOUT ── */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+/* ── NAV ── */
+nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-logomark {
+  width: 32px; height: 32px;
+  background: var(--blue);
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.nav-logomark svg { width: 17px; height: 17px; }
+.nav-wordmark { font-size: 16px; font-weight: 700; color: var(--blue-deep); letter-spacing: -.3px; }
+.nav-links { display: flex; gap: 2rem; }
+.nav-links a {
+  font-size: 13px; font-weight: 500; color: var(--slate);
+  text-decoration: none; transition: color .15s;
+}
+.nav-links a:hover { color: var(--blue); }
+.nav-badge {
+  background: var(--blue); color: #fff;
+  font-size: 11px; font-weight: 600;
+  padding: 5px 14px; border-radius: 99px;
+  letter-spacing: .02em;
+}
+
+/* ── HERO ── */
+.hero {
+  background: var(--blue-deep);
+  padding: 80px 0 0;
+  overflow: hidden;
+  position: relative;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -120px; right: -120px;
+  width: 500px; height: 500px;
+  background: var(--blue);
+  border-radius: 50%;
+  opacity: .12;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 40px; left: -80px;
+  width: 300px; height: 300px;
+  background: var(--cyan);
+  border-radius: 50%;
+  opacity: .07;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 3rem;
+  align-items: flex-end;
+}
+.hero-eyebrow {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 1rem;
+}
+.hero-title {
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  margin-bottom: 1.25rem;
+}
+.hero-title span { color: var(--blue); }
+.hero-sub {
+  font-size: 16px; font-weight: 400;
+  color: rgba(255,255,255,.6);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  max-width: 460px;
+}
+.hero-pills { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 2.5rem; }
+.hero-pill {
+  background: rgba(255,255,255,.1);
+  color: rgba(255,255,255,.8);
+  border: 1px solid rgba(255,255,255,.15);
+  font-size: 12px; font-weight: 500;
+  padding: 6px 14px; border-radius: 99px;
+}
+.hero-pill.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-hero-primary {
+  background: var(--blue); color: #fff;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 14px; font-weight: 600;
+  padding: 13px 28px; border-radius: 12px;
+  border: none; cursor: pointer;
+  transition: background .15s, transform .1s;
+  text-decoration: none; display: inline-block;
+}
+.btn-hero-primary:hover { background: var(--blue-dark); transform: translateY(-1px); }
+.btn-hero-ghost {
+  background: rgba(255,255,255,.1); color: #fff;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 14px; font-weight: 500;
+  padding: 12px 28px; border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.2);
+  cursor: pointer; transition: background .15s;
+  text-decoration: none; display: inline-block;
+}
+.btn-hero-ghost:hover { background: rgba(255,255,255,.18); }
+
+.hero-phones {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+  padding-bottom: 0;
+  position: relative;
+  z-index: 1;
+}
+.phone-wrap {
+  background: #1C2A4A;
+  border-radius: 32px;
+  padding: 10px;
+  width: 170px;
+  flex-shrink: 0;
+  border: 1.5px solid rgba(255,255,255,.08);
+}
+.phone-wrap.main { width: 190px; }
+.phone-screen {
+  background: #fff;
+  border-radius: 22px;
+  overflow: hidden;
+}
+.ph { background: var(--blue); padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; }
+.ph-title { font-size: 13px; font-weight: 700; color: #fff; }
+.ph-av { width: 26px; height: 26px; border-radius: 50%; background: rgba(255,255,255,.25); }
+.ph-pts-wrap { background: var(--blue); padding: 0 12px 14px; }
+.ph-pts {
+  background: #fff; border-radius: 12px; padding: 12px 14px;
+}
+.ph-pts-lbl { font-size: 9px; color: var(--muted); margin-bottom: 3px; }
+.ph-pts-val { font-size: 26px; font-weight: 800; color: var(--blue-deep); line-height: 1; }
+.ph-pts-row { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; }
+.ph-pts-sub { font-size: 9px; color: var(--green); font-weight: 600; }
+.ph-pts-lvl { background: var(--blue-light); color: var(--blue); font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 99px; }
+.ph-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; }
+.ph-item { padding: 10px 4px; display: flex; flex-direction: column; align-items: center; gap: 4px; border-top: 1px solid var(--line); }
+.ph-icon { width: 26px; height: 26px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+.ph-lbl { font-size: 7px; color: var(--slate); font-weight: 500; text-align: center; }
+.ph-promo { margin: 8px 10px; background: var(--blue); border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; }
+.ph-promo-t { font-size: 9px; font-weight: 700; color: #fff; line-height: 1.3; }
+.ph-promo-s { font-size: 7px; color: rgba(255,255,255,.7); margin-top: 1px; }
+.ph-promo-btn { background: rgba(255,255,255,.2); color: #fff; font-size: 8px; font-weight: 700; padding: 4px 8px; border-radius: 6px; border: none; font-family: inherit; cursor: pointer; }
+.ph-nav { background: #fff; display: flex; justify-content: space-around; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); }
+.ph-nd { width: 18px; height: 3px; border-radius: 2px; }
+
+.phone-wrap2 { margin-bottom: -20px; }
+.ph2-list { display: flex; flex-direction: column; }
+.ph2-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+.ph2-thumb { width: 28px; height: 28px; border-radius: 7px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.ph2-name { font-size: 10px; font-weight: 600; color: var(--blue-deep); }
+.ph2-pts { font-size: 9px; color: var(--blue); font-weight: 600; }
+.ph2-arr { margin-left: auto; font-size: 14px; color: var(--muted); }
+.ph2-more { padding: 8px 12px; }
+.ph2-more-btn { width: 100%; background: var(--blue); color: #fff; border: none; font-family: inherit; font-size: 10px; font-weight: 700; padding: 8px; border-radius: 8px; cursor: pointer; }
+
+/* ── SECTION FRAMEWORK ── */
+.section { padding: 80px 0; }
+.section + .section { border-top: 1px solid var(--line); }
+.section.bg-white { background: var(--white); }
+.sec-head { margin-bottom: 48px; }
+.sec-num {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--blue); margin-bottom: 10px;
+}
+.sec-title { font-size: 28px; font-weight: 800; color: var(--blue-deep); letter-spacing: -.5px; }
+.sec-desc { font-size: 15px; color: var(--slate); margin-top: 8px; max-width: 540px; line-height: 1.6; }
+
+/* ── LOGO SECTION ── */
+.logo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.logo-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.logo-preview {
+  height: 120px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+}
+.logo-preview.dark { background: var(--blue-deep); }
+.logo-preview.blue { background: var(--blue); }
+.logo-preview.light { background: var(--bg); }
+.logo-preview.white { background: var(--white); border-bottom: 1px solid var(--line); }
+.logo-meta { padding: 14px 16px; border-top: 1px solid var(--line); background: var(--white); }
+.logo-meta-name { font-size: 12px; font-weight: 700; color: var(--blue-deep); }
+.logo-meta-use { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+.lm { display: flex; align-items: center; gap: 9px; }
+.lm-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.lm-icon.on-blue { background: var(--blue); }
+.lm-icon.on-white { background: var(--white); }
+.lm-icon.on-dark { background: rgba(255,255,255,.15); border-radius: 10px; }
+.lm-name { font-size: 18px; font-weight: 800; letter-spacing: -.3px; }
+.lm-sub { font-size: 9px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; margin-top: 1px; }
+.lm-sm .lm-icon { width: 26px; height: 26px; border-radius: 7px; }
+.lm-sm .lm-name { font-size: 14px; }
+
+.icon-display {
+  width: 56px; height: 56px;
+  background: var(--blue);
+  border-radius: 15px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ── COLOR SECTION ── */
+.color-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.color-grid-full { grid-template-columns: repeat(8, 1fr); gap: 12px; }
+.color-card { border-radius: 14px; overflow: hidden; border: 1px solid var(--line); }
+.color-swatch { height: 80px; }
+.color-info { padding: 12px 14px; background: var(--white); }
+.color-name { font-size: 12px; font-weight: 700; color: var(--blue-deep); }
+.color-hex { font-size: 11px; color: var(--muted); font-family: 'Courier New', monospace; margin-top: 2px; }
+.color-role { font-size: 10px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+
+.color-sm .color-swatch { height: 56px; }
+.color-sm .color-info { padding: 8px 10px; }
+.color-sm .color-name { font-size: 11px; }
+
+/* ── TYPOGRAPHY ── */
+.type-table { display: flex; flex-direction: column; gap: 0; }
+.type-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 2rem;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+.type-row:last-child { border-bottom: none; }
+.type-meta {}
+.type-role { font-size: 12px; font-weight: 700; color: var(--blue-deep); }
+.type-spec { font-size: 11px; color: var(--muted); font-family: 'Courier New', monospace; margin-top: 3px; }
+.type-sample {}
+
+/* ── SPACING & RADIUS ── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+.subsec-title { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+.space-item { display: flex; align-items: center; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.space-item:last-child { border-bottom: none; }
+.space-bar { height: 14px; background: var(--blue); border-radius: 3px; flex-shrink: 0; }
+.space-label { font-size: 13px; color: var(--slate); }
+.space-label b { color: var(--blue-deep); font-weight: 700; }
+
+.radius-grid { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-end; padding-top: 8px; }
+.r-item { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.r-box { background: var(--blue-light); border: 1.5px solid var(--blue); }
+.r-name { font-size: 11px; font-weight: 700; color: var(--blue-deep); text-align: center; }
+.r-use { font-size: 10px; color: var(--muted); text-align: center; }
+
+/* ── COMPONENTS ── */
+.comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border-radius: 20px; overflow: hidden; border: 1px solid var(--line); }
+.comp-cell { background: var(--white); padding: 28px; }
+.comp-label { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+
+/* Buttons */
+.btn-stack { display: flex; flex-direction: column; gap: 10px; }
+.btn {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-weight: 600; border: none; cursor: pointer;
+  border-radius: 11px; transition: all .15s;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn:active { transform: scale(.97); }
+.bp { background: var(--blue); color: #fff; padding: 12px 20px; font-size: 14px; }
+.bp:hover { background: var(--blue-dark); }
+.bs { background: var(--blue-light); color: var(--blue); padding: 12px 20px; font-size: 14px; }
+.bs:hover { background: #d6e8ff; }
+.bo { background: transparent; color: var(--blue); border: 1.5px solid var(--blue); padding: 11px 20px; font-size: 14px; }
+.bo:hover { background: var(--blue-light); }
+.bd { background: #FFF0EE; color: #C0392B; padding: 12px 20px; font-size: 14px; }
+.btn-pill-style { border-radius: 99px; }
+.btn-sm-style { padding: 8px 16px; font-size: 12px; border-radius: 8px; }
+
+.btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* Inputs */
+.inp-group { margin-bottom: 16px; }
+.inp-lbl { font-size: 12px; font-weight: 600; color: var(--slate); margin-bottom: 6px; display: block; }
+.inp {
+  width: 100%;
+  border: 1.5px solid var(--line);
+  border-radius: 11px;
+  padding: 11px 14px;
+  font-size: 14px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  color: var(--blue-deep);
+  background: var(--white);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+.inp::placeholder { color: var(--muted); }
+.inp:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,104,255,.1); }
+.inp.state-active { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,104,255,.1); }
+.inp.state-error { border-color: #E74C3C; background: #FFF8F8; }
+.inp-hint { font-size: 11px; color: var(--muted); margin-top: 5px; }
+.inp-hint.err { color: #C0392B; }
+
+/* Badges */
+.badge-flow { display: flex; flex-wrap: wrap; gap: 8px; }
+.badge {
+  padding: 5px 12px; border-radius: 99px;
+  font-size: 12px; font-weight: 600;
+}
+.b-primary { background: var(--blue); color: #fff; }
+.b-soft { background: var(--blue-light); color: var(--blue-dark); }
+.b-orange { background: #FFF0E8; color: #C0390F; }
+.b-green { background: #E8FBF2; color: #00764A; }
+.b-purple { background: #F0ECFF; color: #5A30CC; }
+.b-gray { background: var(--line); color: var(--slate); }
+.b-dark { background: var(--blue-deep); color: #fff; }
+.b-cyan { background: #E0F5FF; color: #006A99; }
+
+/* Alerts */
+.alert {
+  display: flex; align-items: flex-start; gap: 11px;
+  padding: 13px 15px; border-radius: 11px;
+  font-size: 13px; font-weight: 500; line-height: 1.5;
+  margin-bottom: 8px;
+}
+.alert:last-child { margin-bottom: 0; }
+.alert-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.a-info { background: var(--blue-light); color: var(--blue-dark); }
+.a-info .alert-dot { background: var(--blue); }
+.a-ok { background: #E8FBF2; color: #00764A; }
+.a-ok .alert-dot { background: var(--green); }
+.a-warn { background: #FFF8E6; color: #7A4D00; }
+.a-warn .alert-dot { background: #FFAA00; }
+.a-err { background: #FFF0EE; color: #A52A1A; }
+.a-err .alert-dot { background: #E74C3C; }
+
+/* ── POINTS CARD ── */
+.pts-card {
+  background: var(--blue);
+  border-radius: 20px;
+  padding: 24px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.pts-card::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  background: rgba(255,255,255,.07);
+  border-radius: 50%;
+}
+.pts-card::after {
+  content: '';
+  position: absolute;
+  bottom: -20px; left: 40px;
+  width: 100px; height: 100px;
+  background: rgba(255,255,255,.05);
+  border-radius: 50%;
+}
+.pts-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+.pts-lbl { font-size: 12px; color: rgba(255,255,255,.65); margin-bottom: 6px; }
+.pts-val { font-size: 42px; font-weight: 800; color: #fff; line-height: 1; letter-spacing: -1px; }
+.pts-sub { font-size: 12px; color: rgba(255,255,255,.7); margin-top: 6px; }
+.pts-badge { background: rgba(255,255,255,.2); color: #fff; font-size: 12px; font-weight: 700; padding: 6px 14px; border-radius: 99px; }
+.pts-progress-lbl { font-size: 11px; color: rgba(255,255,255,.6); margin-bottom: 8px; }
+.pts-bar { background: rgba(255,255,255,.2); height: 5px; border-radius: 3px; }
+.pts-fill { background: #fff; height: 5px; border-radius: 3px; width: 65%; }
+
+.stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 16px; }
+.stat-box { background: var(--white); border-radius: 14px; padding: 16px; border: 1px solid var(--line); }
+.stat-val { font-size: 24px; font-weight: 800; color: var(--blue-deep); line-height: 1; }
+.stat-lbl { font-size: 11px; color: var(--muted); margin-top: 5px; }
+
+/* ── GRADIENT SECTION ── */
+.grad-list { display: flex; flex-direction: column; gap: 12px; }
+.grad-bar {
+  height: 60px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 22px;
+}
+.grad-name { font-size: 14px; font-weight: 700; color: #fff; }
+.grad-code { font-size: 11px; color: rgba(255,255,255,.65); font-family: 'Courier New', monospace; }
+
+/* ── NOTIFICATIONS ── */
+.notif-list { display: flex; flex-direction: column; gap: 12px; }
+.notif {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: flex; align-items: flex-start; gap: 14px;
+}
+.notif-icon {
+  width: 44px; height: 44px; border-radius: 13px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.notif-title { font-size: 14px; font-weight: 700; color: var(--blue-deep); }
+.notif-body { font-size: 13px; color: var(--slate); margin-top: 3px; line-height: 1.5; }
+.notif-time { font-size: 11px; color: var(--muted); margin-top: 6px; }
+
+/* ── BANNER EXAMPLE ── */
+.banner-ex {
+  background: var(--blue);
+  border-radius: 20px;
+  padding: 32px 36px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: relative; overflow: hidden;
+  margin-bottom: 16px;
+}
+.banner-ex::before {
+  content: '';
+  position: absolute; top: -60px; right: -60px;
+  width: 220px; height: 220px;
+  background: rgba(255,255,255,.06);
+  border-radius: 50%;
+}
+.banner-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.6); margin-bottom: 8px; }
+.banner-title { font-size: 26px; font-weight: 800; color: #fff; line-height: 1.2; letter-spacing: -.5px; margin-bottom: 16px; }
+.banner-cta {
+  background: #fff; color: var(--blue);
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 13px; font-weight: 700;
+  padding: 10px 22px; border-radius: 10px;
+  border: none; cursor: pointer;
+}
+.banner-deco { font-size: 72px; font-weight: 900; color: rgba(255,255,255,.1); letter-spacing: -3px; position: relative; z-index: 1; }
+
+.promo-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.promo-card { border-radius: 16px; padding: 20px 22px; }
+.promo-card.orange { background: var(--orange); }
+.promo-card.purple { background: var(--purple); }
+.promo-eyebrow { font-size: 10px; font-weight: 600; color: rgba(255,255,255,.65); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+.promo-title { font-size: 18px; font-weight: 800; color: #fff; line-height: 1.25; margin-bottom: 10px; }
+.promo-btn { background: rgba(255,255,255,.2); color: #fff; font-family: 'Be Vietnam Pro', sans-serif; font-size: 11px; font-weight: 700; padding: 6px 14px; border-radius: 8px; border: none; cursor: pointer; }
+
+/* ── VOICE ── */
+.voice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.voice-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--blue);
+  border-radius: 0 14px 14px 0;
+  padding: 18px 20px;
+}
+.voice-title { font-size: 13px; font-weight: 700; color: var(--blue-deep); margin-bottom: 6px; }
+.voice-desc { font-size: 13px; color: var(--slate); line-height: 1.6; }
+.voice-example {
+  background: var(--blue-xlight);
+  border-radius: 10px; padding: 10px 13px;
+  font-size: 12px; font-style: italic; color: var(--blue-dark);
+  margin-top: 10px;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--blue-deep);
+  padding: 60px 0 40px;
+  margin-top: 0;
+}
+.footer-inner { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3rem; }
+.footer-brand { }
+.footer-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.footer-logo-icon { width: 36px; height: 36px; background: var(--blue); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+.footer-logo-name { font-size: 18px; font-weight: 800; color: #fff; letter-spacing: -.3px; }
+.footer-desc { font-size: 13px; color: rgba(255,255,255,.5); line-height: 1.7; }
+.footer-col-title { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 16px; }
+.footer-col a { display: block; font-size: 13px; color: rgba(255,255,255,.6); text-decoration: none; margin-bottom: 10px; transition: color .15s; }
+.footer-col a:hover { color: #fff; }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,.08);
+  margin-top: 48px; padding-top: 24px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-copy { font-size: 12px; color: rgba(255,255,255,.35); }
+.footer-version { font-size: 11px; color: rgba(255,255,255,.25); font-family: 'Courier New', monospace; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp .5s ease both; }
+.fade-up-1 { animation-delay: .1s; }
+.fade-up-2 { animation-delay: .2s; }
+.fade-up-3 { animation-delay: .3s; }
+.fade-up-4 { animation-delay: .4s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-phones { display: none; }
+  .logo-grid { grid-template-columns: 1fr 1fr; }
+  .color-grid-full { grid-template-columns: repeat(4, 1fr); }
+  .comp-grid { grid-template-columns: 1fr; }
+  .two-col { grid-template-columns: 1fr; }
+  .footer-inner { grid-template-columns: 1fr; }
+  .promo-cards { grid-template-columns: 1fr; }
+  .voice-grid { grid-template-columns: 1fr; }
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .banner-deco { display: none; }
+  .type-row { grid-template-columns: 140px 1fr; }
+}
+@media (max-width: 600px) {
+  .section { padding: 56px 0; }
+  .logo-grid { grid-template-columns: 1fr; }
+  .color-grid-full { grid-template-columns: 1fr 1fr; }
+  .color-grid { grid-template-columns: 1fr 1fr; }
+  .stats-row { grid-template-columns: 1fr; }
+  nav .nav-links { display: none; }
+  .type-row { grid-template-columns: 1fr; gap: .5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <div class="nav-logomark">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="4" y="4" width="7" height="7" rx="2" fill="rgba(255,255,255,.9)"/>
+            <rect x="13" y="4" width="7" height="7" rx="2" fill="rgba(255,255,255,.55)"/>
+            <rect x="4" y="13" width="7" height="7" rx="2" fill="rgba(255,255,255,.55)"/>
+            <rect x="13" y="13" width="7" height="7" rx="2" fill="rgba(255,255,255,.25)"/>
+          </svg>
+        </div>
+        <span class="nav-wordmark">DSS Club</span>
+      </a>
+      <div class="nav-links">
+        <a href="#logo">Logo</a>
+        <a href="#colors">Màu sắc</a>
+        <a href="#typography">Typography</a>
+        <a href="#components">Components</a>
+        <a href="#usage">Ứng dụng</a>
+      </div>
+      <span class="nav-badge">v1.2 — Zalo Style</span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="fade-up">
+        <div class="hero-eyebrow">DSS Vietnam Technology — Brand Identity System</div>
+        <h1 class="hero-title">
+          Bộ nhận diện<br>thương hiệu<br><span>DSS Club</span>
+        </h1>
+        <p class="hero-sub">
+          Hệ thống thiết kế chuẩn cho ứng dụng tích điểm & đổi quà của hơn 5.000 đại lý trên toàn quốc. Phong cách clean, tối giản, tông xanh sáng.
+        </p>
+        <div class="hero-pills">
+          <span class="hero-pill active">Clean &amp; Minimal</span>
+          <span class="hero-pill">#0068FF</span>
+          <span class="hero-pill">Be Vietnam Pro</span>
+          <span class="hero-pill">Zalo-inspired</span>
+        </div>
+        <div class="hero-btns">
+          <a href="#components" class="btn-hero-primary">Xem components</a>
+          <a href="#colors" class="btn-hero-ghost">Khám phá màu sắc</a>
+        </div>
+      </div>
+      <div class="hero-phones fade-up fade-up-3">
+        <!-- Phone 1: Home -->
+        <div class="phone-wrap main">
+          <div class="phone-screen">
+            <div class="ph">
+              <span class="ph-title">DSS Club</span>
+              <div class="ph-av"></div>
+            </div>
+            <div class="ph-pts-wrap">
+              <div class="ph-pts">
+                <div class="ph-pts-lbl">Điểm tích lũy của bạn</div>
+                <div class="ph-pts-val">4.820</div>
+                <div class="ph-pts-row">
+                  <span class="ph-pts-sub">+120 hôm nay</span>
+                  <span class="ph-pts-lvl">Bạc</span>
+                </div>
+              </div>
+            </div>
+            <div class="ph-grid">
+              <div class="ph-item">
+                <div class="ph-icon" style="background:#E8F1FF;">
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="3" y="3" width="10" height="10" rx="2" stroke="#0068FF" stroke-width="1.5"/><path d="M8 5.5v5M5.5 8h5" stroke="#0068FF" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </div>
+                <span class="ph-lbl">Đăng ký</span>
+              </div>
+              <div class="ph-item">
+                <div class="ph-icon" style="background:#FFF0E8;">
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2" y="5" width="12" height="9" rx="2" stroke="#FF5C00" stroke-width="1.5"/><path d="M5 5V4a3 3 0 016 0v1" stroke="#FF5C00" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </div>
+                <span class="ph-lbl">Đổi quà</span>
+              </div>
+              <div class="ph-item">
+                <div class="ph-icon" style="background:#E8FBF2;">
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M2 12l3.5-3.5 3 3L14 4" stroke="#00B96B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <span class="ph-lbl">Thống kê</span>
+              </div>
+              <div class="ph-item">
+                <div class="ph-icon" style="background:#F0ECFF;">
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5" stroke="#7B5CFF" stroke-width="1.5"/><path d="M8 5.5V8l2 2" stroke="#7B5CFF" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </div>
+                <span class="ph-lbl">Lịch sử</span>
+              </div>
+            </div>
+            <div class="ph-promo">
+              <div>
+                <div class="ph-promo-t">2× điểm cuối tuần</div>
+                <div class="ph-promo-s">Hết Chủ nhật 23:59</div>
+              </div>
+              <button class="ph-promo-btn">Xem</button>
+            </div>
+            <div class="ph-nav">
+              <div><div class="ph-nd" style="background:#0068FF; margin:0 auto 3px;"></div><div style="font-size:7px;color:#0068FF;font-weight:600;">Trang chủ</div></div>
+              <div><div class="ph-nd" style="background:#E8EDF3; margin:0 auto 3px;"></div><div style="font-size:7px;color:#8C9BAB;">Đăng ký</div></div>
+              <div><div class="ph-nd" style="background:#E8EDF3; margin:0 auto 3px;"></div><div style="font-size:7px;color:#8C9BAB;">Quà</div></div>
+              <div><div class="ph-nd" style="background:#E8EDF3; margin:0 auto 3px;"></div><div style="font-size:7px;color:#8C9BAB;">Tôi</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phone 2: Catalogue -->
+        <div class="phone-wrap phone-wrap2">
+          <div class="phone-screen">
+            <div class="ph">
+              <div style="display:flex;align-items:center;gap:6px;">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 13L5 8l5-5" stroke="rgba(255,255,255,.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="ph-title">Catalogue quà</span>
+              </div>
+            </div>
+            <div class="ph2-list">
+              <div class="ph2-item">
+                <div class="ph2-thumb" style="background:#E8F1FF;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="5" y="8" width="14" height="11" rx="2" stroke="#0068FF" stroke-width="1.5"/><path d="M9 8V6a3 3 0 016 0v2" stroke="#0068FF" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </div>
+                <div style="flex:1;"><div class="ph2-name">Tai nghe Dahua</div><div class="ph2-pts">3.000 điểm</div></div>
+                <span class="ph2-arr">›</span>
+              </div>
+              <div class="ph2-item">
+                <div class="ph2-thumb" style="background:#FFF0E8;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M20 12V22H4V12" stroke="#FF5C00" stroke-width="1.5" stroke-linecap="round"/><path d="M22 7H2v5h20V7z" stroke="#FF5C00" stroke-width="1.5" stroke-linecap="round"/><path d="M12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z" stroke="#FF5C00" stroke-width="1.5"/></svg>
+                </div>
+                <div style="flex:1;"><div class="ph2-name">Voucher mua hàng</div><div class="ph2-pts">1.500 điểm</div></div>
+                <span class="ph2-arr">›</span>
+              </div>
+              <div class="ph2-item">
+                <div class="ph2-thumb" style="background:#E8FBF2;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="14" rx="2" stroke="#00B96B" stroke-width="1.5"/><path d="M8 21h8M12 17v4" stroke="#00B96B" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </div>
+                <div style="flex:1;"><div class="ph2-name">Camera Dahua 2MP</div><div class="ph2-pts">8.000 điểm</div></div>
+                <span class="ph2-arr">›</span>
+              </div>
+            </div>
+            <div class="ph2-more"><button class="ph2-more-btn">Đổi quà ngay</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGO SYSTEM -->
+<section class="section bg-white" id="logo">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-num">01 — Logo system</div>
+      <h2 class="sec-title">Hệ thống logo</h2>
+      <p class="sec-desc">4 biến thể logo cho mọi ngữ cảnh sử dụng — từ header app đến in ấn ấn phẩm.</p>
+    </div>
+    <div class="logo-grid">
+
+      <div class="logo-card">
+        <div class="logo-preview white">
+          <div class="lm">
+            <div class="lm-icon on-blue">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <rect x="4" y="4" width="7" height="7" rx="2" fill="rgba(255,255,255,.9)"/>
+                <rect x="13" y="4" width="7" height="7" rx="2" fill="rgba(255,255,255,.55)"/>
+                <rect x="4" y="13" width="7" height="7" rx="2" fill="rgba(255,255,255,.55)"/>
+                <rect x="13" y="13" width="7" height="7" rx="2" fill="rgba(255,255,255,.25)"/>
+              </svg>
+            </div>
+            <div>
+              <div class="lm-name" style="color:#0D1B3E;">DSS Club</div>
+              <div class="lm-sub" style="color:#0068FF;">by DSS Vietnam</div>
+            </div>
+          </div>
+        </div>
+        <div class="logo-meta">
+          <div class="logo-meta-name">Full — nền sáng</div>
+          <div class="logo-meta-use">Tài liệu, website, print</div>
+        </div>
+      </div>
+
+      <div class="logo-card">
+        <div class="logo-preview blue">
+          <div class="lm">
+            <div class="lm-icon on-dark">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <rect x="4" y="4" width="7" height="7" rx="2" fill="rgba(255,255,255,.9)"/>
+                <rect x="13" y="4" width="7" height="7" rx="2" fill="rgba(255,255,255,.55)"/>
+                <rect x="4" y="13" width="7" height="7" rx="2" fill="rgba(255,255,255,.55)"/>
+                <rect x="13" y="13" width="7" height="7" rx="2" fill="rgba(255,255,255,.25)"/>
+              </svg>
+            </div>
+            <div>
+              <div class="lm-name" style="color:#fff;">DSS Club</div>
+              <div class="lm-sub" style="color:rgba(255,255,255,.6);">by DSS Vietnam</div>
+            </div>
+          </div>
+        </div>
+        <div class="logo-meta">
+          <div class="logo-meta-name">Full — nền xanh</div>
+          <div class="logo-meta-use">App header, banner chính</div>
+        </div>
+      </div>
+
+      <div class="logo-card">
+        <div class="logo-preview light">
+          <div class="lm lm-sm">
+            <div class="lm-icon on-blue" style="width:28px;height:28px;border-radius:8px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                <rect x="4" y="4" width="7" height="7" rx="2" fill="rgba(255,255,255,.9)"/>
+                <rect x="13" y="4" width="7" height="7" rx="2" fill="rgba(255,255,255,.55)"/>
+                <rect x="4" y="13" width="7" height="7" rx="2" fill="rgba(255,255,255,.55)"/>
+                <rect x="13" y="13" width="7" height="7" rx="2" fill="rgba(255,255,255,.25)"/>
+              </svg>
+            </div>
+            <div class="lm-name" style="font-size:15px;color:#0D1B3E;">DSS Club</div>
+          </div>
+        </div>
+        <div class="logo-meta">
+          <div class="logo-meta-name">Compact — toolbar</div>
+          <div class="logo-meta-use">Navbar, sidebar</div>
+        </div>
+      </div>
+
+      <div class="logo-card">
+        <div class="logo-preview dark">
+          <div class="icon-display">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="4" width="7" height="7" rx="2" fill="rgba(255,255,255,.9)"/>
+              <rect x="13" y="4" width="7" height="7" rx="2" fill="rgba(255,255,255,.55)"/>
+              <rect x="4" y="13" width="7" height="7" rx="2" fill="rgba(255,255,255,.55)"/>
+              <rect x="13" y="13" width="7" height="7" rx="2" fill="rgba(255,255,255,.25)"/>
+            </svg>
+          </div>
+        </div>
+        <div class="logo-meta">
+          <div class="logo-meta-name">Icon only</div>
+          <div class="logo-meta-use">App icon, favicon, avatar</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="margin-top:24px; background:var(--blue-xlight); border:1px solid var(--blue-light); border-radius:16px; padding:20px 24px;">
+      <div style="font-size:12px;font-weight:700;color:var(--blue-dark);margin-bottom:12px;">Quy tắc vùng bảo vệ (Clear space)</div>
+      <div style="display:flex;gap:2rem;flex-wrap:wrap;">
+        <div style="font-size:13px;color:var(--slate);">✓ Khoảng cách tối thiểu = 1× chiều cao chữ "D"</div>
+        <div style="font-size:13px;color:var(--slate);">✓ Kích thước tối thiểu digital: 120px</div>
+        <div style="font-size:13px;color:var(--slate);">✓ Kích thước tối thiểu print: 25mm</div>
+        <div style="font-size:13px;color:#C0390F;">✗ Không kéo giãn, xoay, đổi màu tự ý</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COLORS -->
+<section class="section" id="colors">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-num">02 — Color system</div>
+      <h2 class="sec-title">Hệ màu sắc</h2>
+      <p class="sec-desc">Phối hài hoà xung quanh màu chủ đạo DSS Blue #0068FF — tông lạnh nhất quán, nhấn sắc vừa đủ.</p>
+    </div>
+
+    <div style="margin-bottom:24px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">Màu chính</div>
+      <div class="color-grid">
+        <div class="color-card">
+          <div class="color-swatch" style="background:#0068FF;"></div>
+          <div class="color-info">
+            <div class="color-name">DSS Blue — Primary</div>
+            <div class="color-hex">#0068FF</div>
+            <div class="color-role">CTA, button, icon active, link, header</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background:#0050CC;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Blue — Pressed</div>
+            <div class="color-hex">#0050CC</div>
+            <div class="color-role">Trạng thái nhấn, dark variant</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background:#E8F1FF; border:1px solid #C8D8F8;"></div>
+          <div class="color-info">
+            <div class="color-name">Ice Blue — Light</div>
+            <div class="color-hex">#E8F1FF</div>
+            <div class="color-role">Selected state, badge bg, card tint</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background:#F0F5FF; border:1px solid #DDE8FF;"></div>
+          <div class="color-info">
+            <div class="color-name">Ghost Blue — Surface</div>
+            <div class="color-hex">#F0F5FF</div>
+            <div class="color-role">Page bg, section fill, hover bg</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:24px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">Màu trung tính — Navy family</div>
+      <div class="color-grid">
+        <div class="color-card">
+          <div class="color-swatch" style="background:#0D1B3E;"></div>
+          <div class="color-info">
+            <div class="color-name">Navy Dark</div>
+            <div class="color-hex">#0D1B3E</div>
+            <div class="color-role">Heading, dark text, footer</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background:#4A5568;"></div>
+          <div class="color-info">
+            <div class="color-name">Slate</div>
+            <div class="color-hex">#4A5568</div>
+            <div class="color-role">Body text, subheading, label</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background:#8C9BAB; border:1px solid #ddd;"></div>
+          <div class="color-info">
+            <div class="color-name">Muted Blue</div>
+            <div class="color-hex">#8C9BAB</div>
+            <div class="color-role">Placeholder, caption, hint text</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background:#E8EDF3; border:1px solid #d5dce5;"></div>
+          <div class="color-info">
+            <div class="color-name">Cool Gray</div>
+            <div class="color-hex">#E8EDF3</div>
+            <div class="color-role">Divider, border, input bg</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">Màu nhấn (Accent)</div>
+      <div class="color-grid">
+        <div class="color-card">
+          <div class="color-swatch" style="background:#00AAFF;"></div>
+          <div class="color-info">
+            <div class="color-name">Cyan Spark</div>
+            <div class="color-hex">#00AAFF</div>
+            <div class="color-role">Highlight, tag, gradient pair</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background:#FF5C00;"></div>
+          <div class="color-info">
+            <div class="color-name">Energy Orange</div>
+            <div class="color-hex">#FF5C00</div>
+            <div class="color-role">Promo, hot deal, alert warm</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background:#7B5CFF;"></div>
+          <div class="color-info">
+            <div class="color-name">Electric Purple</div>
+            <div class="color-hex">#7B5CFF</div>
+            <div class="color-role">VIP, Premium, reward cao</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background:#00B96B;"></div>
+          <div class="color-info">
+            <div class="color-name">Mint Green</div>
+            <div class="color-hex">#00B96B</div>
+            <div class="color-role">Success, điểm + tích lũy</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TYPOGRAPHY -->
+<section class="section bg-white" id="typography">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-num">03 — Typography</div>
+      <h2 class="sec-title">Hệ chữ viết</h2>
+      <p class="sec-desc">Be Vietnam Pro — font tiếng Việt được thiết kế chuyên biệt, hiện đại, dễ đọc trên mọi nền tảng.</p>
+    </div>
+
+    <div style="background:var(--blue-xlight); border:1px solid var(--blue-light); border-radius:14px; padding:16px 20px; margin-bottom:32px; display:flex; align-items:center; gap:16px;">
+      <div style="font-size:24px;font-weight:800;color:var(--blue);">Aa</div>
+      <div>
+        <div style="font-size:14px;font-weight:700;color:var(--blue-deep);">Be Vietnam Pro</div>
+        <div style="font-size:12px;color:var(--muted);">fonts.google.com/specimen/Be+Vietnam+Pro — Free, Open Source</div>
+      </div>
+      <div style="margin-left:auto; display:flex; gap:16px;">
+        <div style="text-align:center;"><div style="font-size:16px;font-weight:300;color:var(--blue-deep);">Aa</div><div style="font-size:10px;color:var(--muted);">300</div></div>
+        <div style="text-align:center;"><div style="font-size:16px;font-weight:400;color:var(--blue-deep);">Aa</div><div style="font-size:10px;color:var(--muted);">400</div></div>
+        <div style="text-align:center;"><div style="font-size:16px;font-weight:500;color:var(--blue-deep);">Aa</div><div style="font-size:10px;color:var(--muted);">500</div></div>
+        <div style="text-align:center;"><div style="font-size:16px;font-weight:600;color:var(--blue-deep);">Aa</div><div style="font-size:10px;color:var(--muted);">600</div></div>
+        <div style="text-align:center;"><div style="font-size:16px;font-weight:700;color:var(--blue-deep);">Aa</div><div style="font-size:10px;color:var(--muted);">700</div></div>
+        <div style="text-align:center;"><div style="font-size:16px;font-weight:800;color:var(--blue-deep);">Aa</div><div style="font-size:10px;color:var(--muted);">800</div></div>
+      </div>
+    </div>
+
+    <div class="type-table">
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-role">Display</div>
+          <div class="type-spec">48px · 800 · –1.5px</div>
+        </div>
+        <div class="type-sample" style="font-size:clamp(32px,5vw,48px);font-weight:800;color:var(--blue-deep);letter-spacing:-1.5px;line-height:1.05;">DSS Club</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-role">Heading 1</div>
+          <div class="type-spec">32px · 800 · –0.8px</div>
+        </div>
+        <div class="type-sample" style="font-size:32px;font-weight:800;color:var(--blue-deep);letter-spacing:-.8px;">Tích điểm thông minh</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-role">Heading 2</div>
+          <div class="type-spec">24px · 700 · –0.3px</div>
+        </div>
+        <div class="type-sample" style="font-size:24px;font-weight:700;color:var(--blue-deep);letter-spacing:-.3px;">Chương trình đổi quà hấp dẫn</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-role">Heading 3</div>
+          <div class="type-spec">18px · 700</div>
+        </div>
+        <div class="type-sample" style="font-size:18px;font-weight:700;color:var(--blue-deep);">Danh sách đại lý nổi bật tháng 4</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-role">Subheading</div>
+          <div class="type-spec">15px · 600</div>
+        </div>
+        <div class="type-sample" style="font-size:15px;font-weight:600;color:var(--slate);">Điểm thưởng được cộng trong 24 giờ</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-role">Body</div>
+          <div class="type-spec">14px · 400 · 1.7lh</div>
+        </div>
+        <div class="type-sample" style="font-size:14px;font-weight:400;color:var(--slate);line-height:1.7;">Đăng ký serial sản phẩm Dahua để tích điểm và đổi những phần quà hấp dẫn từ DSS Vietnam. Hệ thống sẽ xác nhận và cộng điểm tự động trong vòng 24 giờ.</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-role">Caption</div>
+          <div class="type-spec">11px · 400</div>
+        </div>
+        <div class="type-sample" style="font-size:11px;font-weight:400;color:var(--muted);">Cập nhật lần cuối: 11/04/2026 · Phiên bản 3.1 · DSS Vietnam Technology</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPACING & RADIUS -->
+<section class="section" id="spacing">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-num">04 — Spacing & Radius</div>
+      <h2 class="sec-title">Khoảng cách & Bo góc</h2>
+      <p class="sec-desc">Token hoá hoàn toàn — nhất quán trên mọi component và màn hình.</p>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="subsec-title">Spacing tokens</div>
+        <div class="space-item"><div class="space-bar" style="width:4px;"></div><div class="space-label"><b>4px</b> — micro, icon gap</div></div>
+        <div class="space-item"><div class="space-bar" style="width:8px;"></div><div class="space-label"><b>8px</b> — xs, nội dung tight</div></div>
+        <div class="space-item"><div class="space-bar" style="width:12px;"></div><div class="space-label"><b>12px</b> — sm, khoảng giữa items</div></div>
+        <div class="space-item"><div class="space-bar" style="width:16px;"></div><div class="space-label"><b>16px</b> — md, padding card</div></div>
+        <div class="space-item"><div class="space-bar" style="width:24px;"></div><div class="space-label"><b>24px</b> — lg, gap giữa sections</div></div>
+        <div class="space-item"><div class="space-bar" style="width:32px;"></div><div class="space-label"><b>32px</b> — xl, margin lớn</div></div>
+        <div class="space-item"><div class="space-bar" style="width:48px;"></div><div class="space-label"><b>48px</b> — 2xl, padding section</div></div>
+        <div class="space-item"><div class="space-bar" style="width:80px;"></div><div class="space-label"><b>80px</b> — 3xl, section toàn trang</div></div>
+      </div>
+      <div>
+        <div class="subsec-title">Border radius tokens</div>
+        <div class="radius-grid">
+          <div class="r-item">
+            <div class="r-box" style="width:40px;height:40px;border-radius:4px;"></div>
+            <div class="r-name">4px</div>
+            <div class="r-use">Chip nhỏ</div>
+          </div>
+          <div class="r-item">
+            <div class="r-box" style="width:48px;height:40px;border-radius:8px;"></div>
+            <div class="r-name">8px</div>
+            <div class="r-use">Input field</div>
+          </div>
+          <div class="r-item">
+            <div class="r-box" style="width:56px;height:44px;border-radius:12px;"></div>
+            <div class="r-name">12px</div>
+            <div class="r-use">Button, tag</div>
+          </div>
+          <div class="r-item">
+            <div class="r-box" style="width:60px;height:48px;border-radius:16px;"></div>
+            <div class="r-name">16px</div>
+            <div class="r-use">Card chính</div>
+          </div>
+          <div class="r-item">
+            <div class="r-box" style="width:64px;height:52px;border-radius:20px;"></div>
+            <div class="r-name">20px</div>
+            <div class="r-use">Banner, hero</div>
+          </div>
+          <div class="r-item">
+            <div class="r-box" style="width:60px;height:30px;border-radius:99px;"></div>
+            <div class="r-name">99px</div>
+            <div class="r-use">Badge, pill</div>
+          </div>
+          <div class="r-item">
+            <div class="r-box" style="width:48px;height:48px;border-radius:50%;"></div>
+            <div class="r-name">50%</div>
+            <div class="r-use">Avatar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPONENTS -->
+<section class="section bg-white" id="components">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-num">05 — Components</div>
+      <h2 class="sec-title">UI Components</h2>
+      <p class="sec-desc">Bộ component sẵn dùng — tất cả đều nhất quán với hệ màu và typography.</p>
+    </div>
+
+    <div class="comp-grid">
+      <!-- Buttons -->
+      <div class="comp-cell">
+        <div class="comp-label">Buttons</div>
+        <div class="btn-stack">
+          <button class="btn bp" style="width:100%;">Đăng ký serial ngay</button>
+          <button class="btn bs" style="width:100%;">Xem khuyến mãi</button>
+          <button class="btn bo" style="width:100%;">Tìm hiểu thêm</button>
+          <button class="btn bd" style="width:100%;">Xóa tài khoản</button>
+          <div class="btn-row" style="margin-top:4px;">
+            <button class="btn bp btn-sm-style">Tải app</button>
+            <button class="btn bp btn-pill-style" style="padding:9px 20px;font-size:13px;">Đổi quà ngay</button>
+            <button class="btn bs btn-sm-style">Bỏ qua</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Inputs -->
+      <div class="comp-cell">
+        <div class="comp-label">Form inputs</div>
+        <div class="inp-group">
+          <label class="inp-lbl">Mã serial sản phẩm</label>
+          <input class="inp" type="text" placeholder="VD: IPC-HDW2831T-AS...">
+        </div>
+        <div class="inp-group">
+          <label class="inp-lbl">Số điện thoại đại lý</label>
+          <input class="inp state-active" type="text" value="0901 234 567">
+        </div>
+        <div class="inp-group">
+          <label class="inp-lbl">Email xác nhận</label>
+          <input class="inp state-error" type="text" value="email-sai-dinh-dang">
+          <div class="inp-hint err">Email không đúng định dạng. Vui lòng kiểm tra lại.</div>
+        </div>
+      </div>
+
+      <!-- Badges -->
+      <div class="comp-cell">
+        <div class="comp-label">Badges & Tags</div>
+        <div class="badge-flow">
+          <span class="badge b-primary">Đại lý Vàng</span>
+          <span class="badge b-soft">Dahua</span>
+          <span class="badge b-orange">Hot deal</span>
+          <span class="badge b-green">Đã xác nhận</span>
+          <span class="badge b-purple">VIP</span>
+          <span class="badge b-gray">Tạm dừng</span>
+          <span class="badge b-dark">Mới nhất</span>
+          <span class="badge b-cyan">Imou</span>
+          <span class="badge b-primary">+200 điểm</span>
+          <span class="badge b-green">Serial hợp lệ</span>
+          <span class="badge b-orange">Sắp hết hạn</span>
+          <span class="badge b-soft">TP-Link</span>
+        </div>
+      </div>
+
+      <!-- Alerts -->
+      <div class="comp-cell">
+        <div class="comp-label">Alerts & Notifications</div>
+        <div class="alert a-info"><div class="alert-dot"></div><div>Điểm thưởng được cộng trong <strong>24 giờ</strong> sau khi xác nhận serial.</div></div>
+        <div class="alert a-ok"><div class="alert-dot"></div><div>Đăng ký serial thành công! Bạn nhận được <strong>+200 điểm</strong> vào tài khoản.</div></div>
+        <div class="alert a-warn"><div class="alert-dot"></div><div>Tài khoản của bạn sắp hết hạn vào <strong>30/04/2026</strong>. Gia hạn ngay.</div></div>
+        <div class="alert a-err"><div class="alert-dot"></div><div>Serial này đã được đăng ký bởi tài khoản khác. Vui lòng kiểm tra lại.</div></div>
+      </div>
+    </div>
+
+    <!-- Points Card -->
+    <div style="margin-top:1px; background:var(--white); padding:28px; border:1px solid var(--line); border-radius:0 0 20px 20px; border-top:none; margin-top:-1px;">
+      <div class="comp-label" style="margin-bottom:20px;">Points card & Statistics</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <div>
+          <div class="pts-card">
+            <div class="pts-top">
+              <div>
+                <div class="pts-lbl">Điểm tích lũy</div>
+                <div class="pts-val">4.820</div>
+                <div class="pts-sub">180 điểm nữa lên Đại lý Vàng</div>
+              </div>
+              <span class="pts-badge">Lv. 3 — Bạc</span>
+            </div>
+            <div class="pts-progress-lbl">Tiến trình lên cấp: 65%</div>
+            <div class="pts-bar"><div class="pts-fill"></div></div>
+          </div>
+          <div class="stats-row" style="grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;">
+            <div class="stat-box"><div class="stat-val">38</div><div class="stat-lbl">Serial đã đăng ký</div></div>
+            <div class="stat-box"><div class="stat-val" style="color:var(--orange);">12</div><div class="stat-lbl">Quà đã đổi</div></div>
+          </div>
+        </div>
+        <div class="stats-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start;">
+          <div class="stat-box"><div class="stat-val" style="color:var(--green);">+5%</div><div class="stat-lbl">Tăng trưởng tháng</div></div>
+          <div class="stat-box" style="background:var(--blue);border-color:var(--blue);"><div class="stat-val" style="color:#fff;">250+</div><div class="stat-lbl" style="color:rgba(255,255,255,.7);">NPP toàn quốc</div></div>
+          <div class="stat-box" style="grid-column:span 2;"><div class="stat-val" style="font-size:20px;">5.000+</div><div class="stat-lbl">Đại lý tin dùng DSS Club trên toàn quốc</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GRADIENTS -->
+<section class="section" id="gradients">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-num">06 — Gradient system</div>
+      <h2 class="sec-title">Hệ gradient</h2>
+      <p class="sec-desc">4 gradient được thiết kế theo tầng — từ flat đơn giản đến hero dark ấn tượng.</p>
+    </div>
+    <div class="grad-list">
+      <div class="grad-bar" style="background:#0068FF;">
+        <span class="grad-name">Flat Primary — dùng hằng ngày</span>
+        <span class="grad-code">#0068FF — button, CTA, header</span>
+      </div>
+      <div class="grad-bar" style="background:linear-gradient(135deg,#0068FF 0%,#00AAFF 100%);">
+        <span class="grad-name">Sky Gradient — tươi sáng</span>
+        <span class="grad-code">135° · #0068FF → #00AAFF</span>
+      </div>
+      <div class="grad-bar" style="background:linear-gradient(135deg,#0050CC 0%,#0068FF 100%);">
+        <span class="grad-name">Deep Gradient — chắc chắn</span>
+        <span class="grad-code">135° · #0050CC → #0068FF — app icon, banner</span>
+      </div>
+      <div class="grad-bar" style="background:linear-gradient(135deg,#0D1B3E 0%,#0068FF 100%);">
+        <span class="grad-name">Hero Dark — ấn tượng, premium</span>
+        <span class="grad-code">135° · #0D1B3E → #0068FF — splash screen, hero section</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- USAGE -->
+<section class="section bg-white" id="usage">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-num">07 — Real-world usage</div>
+      <h2 class="sec-title">Ứng dụng thực tế</h2>
+      <p class="sec-desc">Cách hệ thống nhận diện hoạt động trong các ấn phẩm, thông báo và màn hình thực tế.</p>
+    </div>
+
+    <div class="banner-ex">
+      <div>
+        <div class="banner-eyebrow">Khuyến mãi đặc biệt cuối tuần</div>
+        <div class="banner-title">2× điểm thưởng<br>cho mọi serial Dahua</div>
+        <button class="banner-cta">Đăng ký ngay →</button>
+      </div>
+      <div class="banner-deco">×2</div>
+    </div>
+
+    <div class="promo-cards" style="margin-bottom:24px;">
+      <div class="promo-card orange">
+        <div class="promo-eyebrow">Flash sale · 48h</div>
+        <div class="promo-title">3× điểm cho<br>Camera 4K Dahua</div>
+        <button class="promo-btn">Xem ngay</button>
+      </div>
+      <div class="promo-card purple">
+        <div class="promo-eyebrow">Dành riêng VIP</div>
+        <div class="promo-title">Quà Premium<br>Dahua NVR 8CH</div>
+        <button class="promo-btn">Đổi ngay</button>
+      </div>
+    </div>
+
+    <div class="notif-list">
+      <div class="notif">
+        <div class="notif-icon" style="background:var(--blue);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z" fill="rgba(255,255,255,.9)"/></svg>
+        </div>
+        <div>
+          <div class="notif-title">Bạn vừa nhận được +200 điểm!</div>
+          <div class="notif-body">Serial IPC-HDW2831T-AS đã được xác nhận thành công. Điểm được cộng tự động vào tài khoản của bạn.</div>
+          <div class="notif-time">Vừa xong · DSS Club</div>
+        </div>
+      </div>
+      <div class="notif">
+        <div class="notif-icon" style="background:var(--orange);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="rgba(255,255,255,.9)" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div class="notif-title">500 điểm sắp hết hạn</div>
+          <div class="notif-body">Điểm của bạn sẽ hết hạn vào 30/04/2026. Hãy đổi quà ngay trước khi quá muộn!</div>
+          <div class="notif-time">2 giờ trước · DSS Club</div>
+        </div>
+      </div>
+      <div class="notif">
+        <div class="notif-icon" style="background:var(--green);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="rgba(255,255,255,.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="notif-title">Đổi quà thành công!</div>
+          <div class="notif-body">Bạn đã đổi 3.000 điểm lấy Tai nghe Dahua. Quà sẽ được giao trong 3–5 ngày làm việc.</div>
+          <div class="notif-time">Hôm qua 14:32 · DSS Club</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BRAND VOICE -->
+<section class="section" id="voice">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-num">08 — Brand voice</div>
+      <h2 class="sec-title">Giọng nói thương hiệu</h2>
+      <p class="sec-desc">Ngôn ngữ DSS Club: thân thiện như Zalo, đáng tin như ngân hàng, rõ ràng như hướng dẫn sử dụng.</p>
+    </div>
+    <div class="voice-grid">
+      <div class="voice-card">
+        <div class="voice-title">Rõ ràng, ngắn gọn</div>
+        <div class="voice-desc">Mỗi câu một ý. Tránh jargon kỹ thuật. Thông tin quan trọng đặt đầu câu — người dùng đọc lướt.</div>
+        <div class="voice-example">"Đăng ký serial ngay — nhận +200 điểm tự động"</div>
+      </div>
+      <div class="voice-card">
+        <div class="voice-title">Thân thiện, nhiệt tình</div>
+        <div class="voice-desc">Xưng "bạn", dùng "ngay", "hôm nay". Luôn có hành động cụ thể — không để người dùng phải đoán.</div>
+        <div class="voice-example">"Chỉ còn 180 điểm nữa là bạn lên Đại lý Vàng rồi!"</div>
+      </div>
+      <div class="voice-card">
+        <div class="voice-title">Đáng tin, cụ thể</div>
+        <div class="voice-desc">Dùng số liệu thực: "+200 điểm", "5.000+ đại lý", "trong 24 giờ". Không hứa hẹn mơ hồ, không phóng đại.</div>
+        <div class="voice-example">"5.000+ đại lý đang tích điểm cùng DSS Club"</div>
+      </div>
+      <div class="voice-card">
+        <div class="voice-title">Tích cực, có giải pháp</div>
+        <div class="voice-desc">Thông báo lỗi luôn kèm hướng giải quyết. Không để người dùng bế tắc — luôn có bước tiếp theo.</div>
+        <div class="voice-example">"Serial đã được đăng ký. Kiểm tra lại mã trên hộp sản phẩm."</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="footer-logo-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="4" width="7" height="7" rx="2" fill="rgba(255,255,255,.9)"/>
+              <rect x="13" y="4" width="7" height="7" rx="2" fill="rgba(255,255,255,.55)"/>
+              <rect x="4" y="13" width="7" height="7" rx="2" fill="rgba(255,255,255,.55)"/>
+              <rect x="13" y="13" width="7" height="7" rx="2" fill="rgba(255,255,255,.25)"/>
+            </svg>
+          </div>
+          <span class="footer-logo-name">DSS Club</span>
+        </div>
+        <p class="footer-desc">Ứng dụng tích điểm & đổi quà chính thức của Công ty Cổ phần Công nghệ DSS Việt Nam — nhà phân phối Dahua tại Việt Nam.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Brand assets</div>
+        <a href="#">Logo files (AI, SVG, PNG)</a>
+        <a href="#">Font: Be Vietnam Pro</a>
+        <a href="#">Color palette (.ase)</a>
+        <a href="#">Icon set</a>
+        <a href="#">Figma template</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Liên hệ</div>
+        <a href="#">dssvietnam.com</a>
+        <a href="#">cskh.dssmiennam@dahua.vn</a>
+        <a href="#">0911 812 888</a>
+        <a href="#">Tầng 4, IOS Building, TP. Thủ Đức</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Công ty Cổ phần Công nghệ DSS Việt Nam. All rights reserved.</span>
+      <span class="footer-version">Brand Identity v1.2 — Zalo Style</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

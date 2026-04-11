@@ -10,10 +10,11 @@
         :root {
             --primary: var(--dss-blue);
             --secondary: var(--dss-deep-blue);
-            --accent: var(--amber); 
-            --bg: var(--navy-dark);
-            --card-bg: var(--glass-bg);
-            --text: var(--slate);
+            --accent: var(--warning-yellow); 
+            --bg: var(--bg-main);
+            --card-bg: var(--white);
+            --text: var(--navy-dark);
+            --border: var(--cool-gray);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-primary); }
@@ -37,8 +38,8 @@
             padding: 20px;
         }
 
-        .hero h1 { font-size: 4rem; font-weight: 900; background: linear-gradient(to right, #fff, #94a3b8); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero p { font-size: 1.2rem; opacity: 0.7; margin: 20px 0; max-width: 700px; }
+        .hero h1 { font-size: 4rem; font-weight: 900; color: var(--navy-dark); }
+        .hero p { font-size: 1.2rem; color: var(--slate); margin: 20px 0; max-width: 700px; }
 
         /* --- Characters Section --- */
         .characters {
@@ -53,7 +54,8 @@
             border-radius: 20px;
             width: 250px;
             text-align: center;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
         }
         .char-img { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 15px; border: 3px solid var(--primary); }
 

@@ -10,10 +10,11 @@
         :root {
             --primary: var(--dss-blue);
             --secondary: var(--dss-deep-blue);
-            --accent: var(--amber);
-            --bg: var(--navy-dark);
-            --card-bg: var(--glass-bg);
-            --text: var(--slate);
+            --accent: var(--energy-orange);
+            --bg: var(--bg-main);
+            --card-bg: var(--white);
+            --text: var(--navy-dark);
+            --border: var(--cool-gray);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-primary); }
@@ -29,12 +30,12 @@
         header {
             padding: 40px 20px;
             text-align: center;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
         }
 
-        h1 { font-size: 2.5rem; color: var(--primary); margin-bottom: 10px; }
-        .tagline { font-size: 1.1rem; opacity: 0.8; }
+        h1 { font-size: 2.5rem; color: var(--navy-dark); margin-bottom: 10px; }
+        .tagline { font-size: 1.1rem; color: var(--slate); }
 
         /* --- Main Content --- */
         .container {

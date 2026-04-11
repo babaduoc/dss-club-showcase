@@ -9,18 +9,15 @@
         :root {
             --primary: var(--dss-blue);
             --secondary: var(--dss-deep-blue);
-            --bg: var(--navy-dark);
-            --card-bg: var(--glass-bg);
-            --text: var(--slate);
+            --bg: var(--bg-main);
+            --card-bg: var(--white);
+            --text: var(--navy-dark);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-primary); }
         
         body {
             background-color: var(--bg);
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(0, 104, 255, 0.15) 0, transparent 50%), 
-                radial-gradient(at 50% 0%, rgba(0, 198, 255, 0.1) 0, transparent 50%);
             color: var(--text);
             min-height: 100vh;
             display: flex;
@@ -57,16 +54,12 @@
             font-weight: 900;
             line-height: 1.1;
             margin-bottom: 20px;
-            background: linear-gradient(to right, #fff, #94a3b8);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: transparent;
+            color: var(--navy-dark);
         }
 
         .hero p {
             font-size: 1.25rem;
-            color: #94a3b8;
+            color: var(--slate);
             max-width: 600px;
             margin: 0 auto;
         }
@@ -80,8 +73,7 @@
 
         .card {
             background: var(--card-bg);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--cool-gray);
             border-radius: 24px;
             padding: 40px;
             text-decoration: none;
@@ -105,8 +97,8 @@
         .card:hover {
             transform: translateY(-10px);
             border-color: var(--primary);
-            background: rgba(255, 255, 255, 0.05);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            background: var(--white);
+            box-shadow: var(--shadow-md);
         }
 
         .card:hover::before { opacity: 1; }

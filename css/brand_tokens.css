@@ -1,43 +1,32 @@
 /* 
    DSS CLUB BRAND TOKENS
-   Single Source of Truth for Design Variables
-   Defined based on DSS_Club_Brand_Identity.md
+   Theme: Light / Zalo Style (v1.2)
 */
 
 :root {
     /* --- CORE COLORS --- */
     --dss-blue: #0068FF;
-    --dss-deep-blue: #0047CC;
-    --dss-ice-blue: #E8F0FF;
-    --dss-ghost-blue: #F5F8FF;
+    --dss-deep-blue: #0050CC;
+    --dss-ice-blue: #E8F1FF;
+    --dss-ghost-blue: #F0F5FF;
 
     /* --- NEUTRALS (NAVY & SLATE FAMILY) --- */
-    --navy-dark: #030712; /* Deep Slate - New Background */
-    --navy-surface: #0D1B3E; /* Second layer background */
-    --slate: #94A3B8; /* Slate 400 - Body Text */
-    --muted-blue: #8A9ABB;
-    --cool-gray: #EEF1F8;
+    --navy-dark: #0D1B3E;
+    --slate: #4A5568;
+    --muted-blue: #8C9BAB;
+    --cool-gray: #E8EDF3;
     --white: #FFFFFF;
+    --bg-main: #F7F9FC;
 
     /* --- ACCENT COLORS --- */
-    --cyan-spark: #00C6FF;
-    --indigo-spark: #6366F1; /* New transition color */
-    --energy-orange: #FF6B2C;
-    --electric-purple: #A259FF;
-    --mint-green: #00D68F;
-    --amber: #FFAA00;
-    --alert-red: #FF3B30;
+    --cyan-spark: #00AAFF;
+    --energy-orange: #FF5C00;
+    --electric-purple: #7B5CFF;
+    --mint-green: #00B96B;
 
     /* --- GRADIENTS --- */
     --gradient-primary: linear-gradient(135deg, var(--dss-blue) 0%, var(--cyan-spark) 100%);
-    --gradient-premium: linear-gradient(135deg, var(--dss-deep-blue) 0%, var(--indigo-spark) 50%, var(--electric-purple) 100%);
-    --gradient-hero-dark: linear-gradient(135deg, #030712 0%, #0D1B3E 40%, var(--dss-blue) 100%);
-    --gradient-overlay: linear-gradient(180deg, rgba(0, 104, 255, 0.25) 0%, rgba(0, 198, 255, 0) 100%);
-
-    /* --- GLASS MORPHISM --- */
-    --glass-bg: rgba(255, 255, 255, 0.03);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --glass-blur: blur(16px);
+    --gradient-premium: linear-gradient(135deg, var(--dss-deep-blue) 0%, var(--dss-blue) 100%);
 
     /* --- TYPOGRAPHY --- */
     --font-primary: 'Be Vietnam Pro', 'Nunito', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
@@ -49,9 +38,8 @@
     --radius-pill: 99px;
 
     /* --- SHADOWS --- */
-    --shadow-sm: 0 2px 8px rgba(13, 27, 62, 0.08); /* Navy based shadow */
-    --shadow-md: 0 8px 24px rgba(13, 27, 62, 0.12);
-    --shadow-lg: 0 12px 32px rgba(0, 104, 255, 0.28); /* Blue tinted shadow */
+    --shadow-sm: 0 2px 8px rgba(13, 27, 62, 0.04);
+    --shadow-md: 0 8px 24px rgba(13, 27, 62, 0.08);
 
     /* --- SPACING --- */
     --space-xs: 4px;
@@ -67,11 +55,11 @@
 
 body {
     font-family: var(--font-primary);
-    background-color: var(--navy-dark);
-    color: var(--slate);
+    background-color: var(--bg-main);
+    color: var(--navy-dark);
     margin: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: var(--white);
+    color: var(--navy-dark);
 }
