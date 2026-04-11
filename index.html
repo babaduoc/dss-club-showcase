@@ -3,113 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DSS CLUB - Showcase Portal</title>
-    <!-- Design System -->
+    <title>DSS CLUB - Portal</title>
+    <!-- Master Design System -->
     <link rel="stylesheet" href="css/brand_tokens.css">
     <link rel="stylesheet" href="css/master_layout.css">
     <style>
-        /* Page Specific Overrides */
-        .portal-bg-pattern {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: 
-                radial-gradient(circle at 10% 20%, rgba(0, 104, 255, 0.03) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(0, 170, 255, 0.03) 0%, transparent 40%);
-            z-index: -1;
+        /* Extra-clean overrides */
+        body {
+            background-color: var(--white); /* Pure white as requested */
         }
-        
-        .hero-illustration {
-            width: 100%;
-            max-width: 800px;
-            margin: var(--space-lg) auto 0;
-            border-radius: var(--radius-modal);
-            overflow: hidden;
-            box-shadow: var(--shadow-premium);
-            border: 1px solid var(--white);
-        }
-
-        .hero-illustration img {
-            width: 100%;
-            display: block;
+        .dss-header {
+            background: white;
+            border-bottom: 1px solid var(--border-subtle);
         }
     </style>
 </head>
 <body>
-
-    <div class="portal-bg-pattern"></div>
 
     <header class="dss-header">
         <a href="#" class="dss-logo">
             <div class="dss-logo-icon">D</div>
             <span class="dss-logo-text">DSS CLUB</span>
         </a>
-        <div class="dss-badge dss-badge-premium" style="margin-bottom: 0;">v2.0 Beta</div>
     </header>
 
     <main class="dss-container dss-section">
         <section class="dss-hero">
-            <h1 class="reveal-up">Technology Showcase</h1>
-            <p class="reveal-up delay-1">Khám phá tương lai của hệ điều hành quản trị DSS CLUB thông qua các bản mô phỏng tương tác cao cấp.</p>
-            
-            <div class="hero-illustration reveal-zoom delay-2">
-                <img src="images/hero.png" alt="DSS CLUB Ecosystem">
-            </div>
+            <h1 class="reveal-up">New Portal</h1>
+            <p class="reveal-up delay-1">Hệ thống đã chuẩn hóa. Sẵn sàng để xây dựng các kịch bản trình diễn mới.</p>
         </section>
 
-        <section class="dss-section">
-            <div class="dss-grid">
-                <!-- Executive Pitch -->
-                <a href="Event_Checkin_Pitch.html" class="dss-card reveal-up delay-3">
-                    <span class="dss-badge dss-badge-boss">Boss-Ready 💎</span>
-                    <h3>The Executive Pitch</h3>
-                    <p>Bản trình bày chiến lược tập trung vào hiệu quả vận hành và an ninh hệ thống dành cho Ban Giám Đốc.</p>
-                    <div style="margin-top: auto; color: var(--dss-blue); font-weight: 800; display: flex; align-items: center; gap: 8px;">
-                        Bắt đầu thuyết trình <span>→</span>
-                    </div>
-                </a>
-
-                <!-- Check-in Showcase -->
-                <a href="Event_Checkin_Showcase_Premium.html" class="dss-card reveal-up delay-4">
-                    <span class="dss-badge dss-badge-premium">Interactive ⚡</span>
-                    <h3>AI Event Check-in</h3>
-                    <p>Trải nghiệm luồng check-in 3 lớp: QR Động, Geofencing và AI Face Recognition (Phát hiện gian lận).</p>
-                    <div style="margin-top: auto; color: var(--dss-blue); font-weight: 800; display: flex; align-items: center; gap: 8px;">
-                        Trình diễn Demo <span>→</span>
-                    </div>
-                </a>
-
-                <!-- App Update -->
-                <a href="App_Update_Showcase.html" class="dss-card reveal-up delay-5">
-                    <span class="dss-badge dss-badge-success">Standard</span>
-                    <h3>Smart App Update</h3>
-                    <p>Mô phỏng cơ chế bảo trì và cập nhật ứng dụng bắt buộc linh hoạt từ phía CMS quản trị.</p>
-                    <div style="margin-top: auto; color: var(--dss-blue); font-weight: 800; display: flex; align-items: center; gap: 8px;">
-                        Xem chi tiết <span>→</span>
-                    </div>
-                </a>
-            </div>
-        </section>
+        <!-- Placeholder for new items -->
+        <div class="dss-grid" id="main-grid" style="min-height: 200px; border: 2px dashed var(--border-subtle); border-radius: var(--radius-card); display: flex; align-items: center; justify-content: center; color: var(--muted-blue);">
+            <p>Chưa có mục trình bày nào được thêm vào</p>
+        </div>
     </main>
 
-    <footer style="padding: var(--space-xxl) 0; text-align: center; border-top: 1px solid var(--border-subtle); background: var(--white);">
-        <div style="opacity: 0.5; font-size: 0.85rem; font-weight: 700; letter-spacing: 1px;">
-            DAHUA DSS CLUB • POWERED BY ANTIGRAVITY AI
-        </div>
+    <footer style="padding: var(--space-xxl) 0; text-align: center;">
+        <p style="opacity: 0.2; font-size: 0.8rem; font-weight: 700;">DSS CLUB • BLANK SLATE</p>
     </footer>
 
-    <script>
-        // Simple Intersection Observer to trigger reveal animations on scroll
-        const observerOptions = { threshold: 0.1 };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible'); // If we needed more complex CSS
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.reveal-up, .reveal-zoom').forEach(el => observer.observe(el));
-    </script>
 </body>
 </html>
