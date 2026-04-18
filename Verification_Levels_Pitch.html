@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phân Cấp Đặc Quyền Tài Khoản — DSS Club Pitch</title>
+  <meta name="description" content="Đề xuất tính năng hệ thống phân cấp đặc quyền tài khoản (Verification Levels) cho ứng dụng DSS Club — Level 1, 2, 3 dựa theo mức độ xác thực danh tính.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+/*
+  pitch-html / base.css — DSS Club
+*/
+:root {
+  --bg: #f8f7f4;
+  --surface: #ffffff;
+  --surface2: #f1efe8;
+  --border: rgba(0,0,0,0.1);
+  --text: #1a1a1a;
+  --muted: #6b6b6b;
+  --accent: #185fa5;    --accent-bg: #e6f1fb;
+  --success: #3b6d11;   --success-bg: #eaf3de;
+  --danger: #a32d2d;    --danger-bg: #fcebeb;
+  --warning: #854f0b;   --warning-bg: #faeeda;
+  --info: #185fa5;      --info-bg: #e6f1fb;
+  --gold: #b45309;      --gold-bg: #fef3c7;
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* ── NAV ── */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 0.5px solid var(--border);
+  padding: 0 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px;
+}
+.nav-brand { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; display: flex; align-items: center; gap: 8px; }
+.nav-pills { display: flex; gap: 4px; }
+.nav-pill {
+  font-size: 12px; padding: 5px 12px; border-radius: 20px;
+  cursor: pointer; color: var(--muted);
+  border: none; background: transparent; font-family: inherit;
+  transition: all .15s; white-space: nowrap;
+}
+.nav-pill:hover { background: var(--surface2); color: var(--text); }
+.nav-pill.active { background: var(--accent-bg); color: var(--accent); font-weight: 600; }
+
+/* ── HERO ── */
+.hero {
+  background: var(--surface); padding: 72px 60px 64px;
+  border-bottom: 0.5px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: -80px; right: -80px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(24,95,165,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero::after {
+  content: ''; position: absolute; bottom: -40px; left: 30%;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(180,83,9,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--accent); background: var(--accent-bg);
+  border-radius: 20px; padding: 5px 14px; margin-bottom: 20px;
+}
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: #3b6d11; animation: blink 1.5s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+
+.hero h1 {
+  font-size: clamp(34px, 5vw, 58px); font-weight: 900;
+  line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 16px;
+}
+.hero-sub { font-size: 17px; color: var(--muted); max-width: 560px; margin-bottom: 32px; line-height: 1.7; }
+.hero-meta { display: flex; flex-wrap: wrap; gap: 10px; }
+.meta-chip {
+  background: var(--surface2); border: 0.5px solid var(--border);
+  border-radius: var(--radius-sm); padding: 7px 14px;
+  font-size: 12px; color: var(--muted);
+}
+.meta-chip strong { color: var(--text); font-weight: 600; }
+
+/* ── LAYOUT ── */
+.container { max-width: 1060px; margin: 0 auto; padding: 0 32px; }
+.section { padding: 64px 0; border-bottom: 0.5px solid var(--border); }
+.section:last-child { border-bottom: none; }
+
+.section-eyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-eyebrow::after { content: ''; flex: 1; max-width: 40px; height: 0.5px; background: var(--border); }
+.section-title { font-size: clamp(22px, 3vw, 30px); font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; }
+.section-lead { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 32px; max-width: 580px; }
+
+/* ── GRID ── */
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+
+/* ── GOAL CARDS ── */
+.goal-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 22px; }
+.goal-icon { font-size: 28px; margin-bottom: 12px; }
+.goal-label { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+.goal-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* ── PHONE MOCK-UP ── */
+.phone-frame {
+  background: var(--surface); border: 0.5px solid var(--border);
+  border-radius: 20px; overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.07);
+}
+.phone-bar {
+  background: var(--surface); border-bottom: 0.5px solid var(--border);
+  padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;
+}
+.phone-bar .app-name { font-size: 14px; font-weight: 700; }
+.icon-row { display: flex; gap: 8px; }
+.icon-btn {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--surface2); border: 0.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; cursor: pointer;
+}
+
+/* ── FEED CARD ── */
+.feed-card { background: var(--surface); border-bottom: 0.5px solid var(--border); padding: 14px 16px; }
+.feed-card:last-child { border-bottom: none; }
+.user-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0;
+}
+.av-blue   { background: var(--accent-bg);  color: var(--accent); }
+.av-green  { background: var(--success-bg); color: var(--success); }
+.av-amber  { background: var(--warning-bg); color: var(--warning); }
+.av-red    { background: var(--danger-bg);  color: var(--danger); }
+.av-gold   { background: var(--gold-bg);    color: var(--gold); }
+.user-name { font-size: 13px; font-weight: 700; }
+.user-meta { font-size: 11px; color: var(--muted); }
+.verified {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 9px; color: var(--accent); background: var(--accent-bg);
+  border-radius: 20px; padding: 1px 6px; margin-left: 4px; font-weight: 700;
+}
+.verified-gold {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 9px; color: var(--gold); background: var(--gold-bg);
+  border-radius: 20px; padding: 1px 6px; margin-left: 4px; font-weight: 700;
+}
+.post-img {
+  width: 100%; height: 82px;
+  background: linear-gradient(135deg, #dce8f2, #b8cfe0);
+  border-radius: 8px; margin: 8px 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; color: #5070a0;
+  border: 0.5px solid rgba(0,0,0,0.06);
+  position: relative; overflow: hidden;
+}
+.post-img::before {
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(255,255,255,.2) 8px, rgba(255,255,255,.2) 16px);
+}
+.post-img span { position: relative; z-index: 1; }
+.post-text { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 10px; }
+.action-row { display: flex; align-items: center; gap: 12px; }
+.action-btn { font-size: 11px; color: var(--muted); cursor: pointer; }
+.action-btn.liked { color: #e24b4a; }
+.point-badge { margin-left: auto; font-size: 10px; color: var(--warning); background: var(--warning-bg); border-radius: 20px; padding: 2px 8px; font-weight: 700; }
+
+/* ── ROLE CARDS ── */
+.role-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.role-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 20px; }
+.role-icon { font-size: 26px; margin-bottom: 10px; }
+.role-name { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.role-level { font-size: 10px; padding: 3px 10px; border-radius: 20px; display: inline-block; margin-bottom: 12px; font-weight: 700; }
+.rl-1     { background: var(--surface2); color: var(--muted); }
+.rl-2     { background: var(--accent-bg); color: var(--accent); }
+.rl-3     { background: var(--gold-bg); color: var(--gold); }
+.rl-admin { background: var(--warning-bg); color: var(--warning); }
+.role-perms { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.role-perms li { font-size: 12px; color: var(--muted); display: flex; gap: 6px; align-items: flex-start; }
+.perm-y { color: var(--success); font-weight: 700; }
+.perm-n { color: var(--danger); font-weight: 700; }
+.perm-lock { color: var(--muted); font-weight: 700; }
+
+/* ── FLOW DIAGRAM ── */
+.flow-step-row { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 0; align-items: center; margin-bottom: 10px; }
+.flow-node { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 18px 14px; text-align: center; }
+.flow-node.blue  { border-color: rgba(24,95,165,.3);  background: var(--accent-bg); }
+.flow-node.green { border-color: rgba(59,109,17,.3);  background: var(--success-bg); }
+.flow-node.gold  { border-color: rgba(180,83,9,.3);   background: var(--gold-bg); }
+.flow-node.red   { border-color: rgba(163,45,45,.3);  background: var(--danger-bg); }
+.fn-icon  { font-size: 26px; margin-bottom: 8px; }
+.fn-label { font-size: 13px; font-weight: 700; }
+.fn-sub   { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+.fn-label-blue  { color: var(--accent); }
+.fn-label-green { color: var(--success); }
+.fn-label-gold  { color: var(--gold); }
+.fn-label-red   { color: var(--danger); }
+.flow-arrow-cell { font-size: 22px; color: var(--muted); text-align: center; padding: 0 6px; }
+
+/* ── CMS MOCK-UP ── */
+.cms-frame { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,.05); }
+.cms-toolbar { background: var(--surface2); border-bottom: 0.5px solid var(--border); padding: 12px 18px; display: flex; align-items: center; gap: 12px; }
+.cms-title { font-size: 13px; font-weight: 700; flex: 1; }
+.cms-badge { font-size: 10px; background: var(--danger-bg); color: var(--danger); border-radius: 20px; padding: 3px 10px; font-weight: 700; }
+.cms-badge-warn { font-size: 10px; background: var(--warning-bg); color: var(--warning); border-radius: 20px; padding: 3px 10px; font-weight: 700; }
+.cms-row { display: flex; align-items: center; gap: 12px; padding: 12px 18px; border-bottom: 0.5px solid var(--border); background: var(--surface); }
+.cms-row:last-child { border-bottom: none; }
+.cms-thumb { width: 44px; height: 44px; border-radius: 8px; background: linear-gradient(135deg, #d0e4f0, #b0c8e0); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.cms-info { flex: 1; min-width: 0; }
+.cms-poster  { font-size: 12px; font-weight: 700; }
+.cms-preview { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cms-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.btn-approve { font-size: 11px; background: var(--success-bg); color: var(--success); border: 0.5px solid rgba(59,109,17,.3); border-radius: 6px; padding: 5px 12px; cursor: pointer; font-family: inherit; font-weight: 700; }
+.btn-reject  { font-size: 11px; background: var(--danger-bg);  color: var(--danger);  border: 0.5px solid rgba(163,45,45,.3);  border-radius: 6px; padding: 5px 12px; cursor: pointer; font-family: inherit; font-weight: 700; }
+.btn-view    { font-size: 11px; background: var(--surface2);  color: var(--muted); border: 0.5px solid var(--border); border-radius: 6px; padding: 5px 12px; cursor: pointer; font-family: inherit; font-weight: 600; }
+
+/* ── INFO BOX ── */
+.info-box { background: var(--accent-bg); border: 0.5px solid rgba(24,95,165,.2); border-radius: var(--radius); padding: 16px 20px; margin-top: 12px; font-size: 13px; line-height: 1.7; color: #0c447c; }
+.info-box strong { font-weight: 700; }
+.warn-box { background: var(--warning-bg); border: 0.5px solid rgba(133,79,11,.2); border-radius: var(--radius); padding: 16px 20px; margin-top: 12px; font-size: 13px; line-height: 1.7; color: #5a3008; }
+
+/* ── RISK CARD ── */
+.risk-card { background: var(--surface); border: 0.5px solid var(--border); border-left: 3px solid var(--danger); border-radius: var(--radius); padding: 18px 20px; }
+.risk-title { font-size: 14px; font-weight: 700; color: var(--danger); margin-bottom: 6px; }
+.risk-solution { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.risk-solution strong { color: var(--success); }
+
+/* ── TABLE ── */
+.table-wrap { overflow-x: auto; border-radius: var(--radius); border: 0.5px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead { background: var(--surface2); }
+th { padding: 12px 16px; text-align: left; font-weight: 700; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+td { padding: 12px 16px; border-top: 0.5px solid var(--border); color: var(--text); vertical-align: top; }
+tr:hover td { background: rgba(24,95,165,0.03); }
+
+/* ── LEVEL COMPARISON TABLE ── */
+.level-table-wrap { border-radius: var(--radius); overflow: hidden; border: 0.5px solid var(--border); box-shadow: 0 4px 24px rgba(0,0,0,.04); }
+.level-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.level-table thead th { padding: 16px 18px; font-size: 12px; font-weight: 800; }
+.level-table tbody td { padding: 13px 18px; border-top: 0.5px solid var(--border); vertical-align: middle; }
+.lt-lv1 { background: var(--surface2); }
+.lt-lv2 { background: var(--accent-bg); }
+.lt-lv3 { background: var(--gold-bg); }
+.lv-badge { font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 20px; display: inline-block; }
+.lv1-badge { background: rgba(0,0,0,0.06); color: var(--muted); }
+.lv2-badge { background: var(--accent); color: white; }
+.lv3-badge { background: var(--gold); color: white; }
+.check { color: var(--success); font-weight: 700; }
+.cross { color: var(--danger); font-weight: 700; }
+
+/* ── POPUP MOCK ── */
+.popup-overlay { position: relative; background: rgba(0,0,0,0.3); border-radius: 16px; padding: 32px; display: flex; align-items: center; justify-content: center; min-height: 220px; }
+.popup-card { background: var(--surface); border-radius: 16px; padding: 24px 22px; max-width: 280px; text-align: center; box-shadow: 0 16px 48px rgba(0,0,0,0.18); }
+.popup-icon { font-size: 36px; margin-bottom: 12px; }
+.popup-title { font-size: 15px; font-weight: 800; margin-bottom: 8px; }
+.popup-desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+.popup-cta { font-size: 13px; font-weight: 700; color: white; background: var(--accent); border: none; border-radius: 8px; padding: 10px 20px; cursor: pointer; font-family: inherit; width: 100%; }
+.popup-skip { font-size: 11px; color: var(--muted); margin-top: 8px; cursor: pointer; }
+
+/* ── MISC ── */
+.reset-note { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 14px 18px; margin-top: 12px; }
+.reset-title { font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+.reset-desc { font-size: 12px; color: var(--muted); line-height: 1.8; }
+.pill-tag { display: inline-flex; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+.pill-high { background: var(--danger-bg); color: var(--danger); }
+.pill-med  { background: var(--warning-bg); color: var(--warning); }
+
+/* ── FOOTER ── */
+.footer { background: var(--surface); border-top: 0.5px solid var(--border); padding: 32px 60px; text-align: center; font-size: 13px; color: var(--muted); }
+.footer strong { color: var(--accent); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 720px) {
+  .hero { padding: 40px 24px; }
+  .grid-3, .role-cards, .level-compare-3 { grid-template-columns: 1fr 1fr; }
+  .grid-2 { grid-template-columns: 1fr; }
+  .flow-step-row { grid-template-columns: 1fr; }
+  .flow-arrow-cell { transform: rotate(90deg); }
+  .nav { padding: 0 16px; }
+  .nav-pills { display: none; }
+  .container { padding: 0 16px; }
+  .section { padding: 40px 0; }
+}
+@media print {
+  .nav { display: none; }
+  .section { page-break-inside: avoid; }
+  body { background: white; }
+}
+  </style>
+</head>
+<body>
+
+<!-- ══════════════ NAV ══════════════ -->
+<nav class="nav">
+  <div class="nav-brand">🛡️ DSS Club · Verification Levels</div>
+  <div class="nav-pills">
+    <button class="nav-pill active" onclick="scrollTo('s1', event)" id="pill-0">Tại sao?</button>
+    <button class="nav-pill" onclick="scrollTo('s2', event)" id="pill-1">3 Cấp Độ</button>
+    <button class="nav-pill" onclick="scrollTo('s3', event)" id="pill-2">Giao diện App</button>
+    <button class="nav-pill" onclick="scrollTo('s4', event)" id="pill-3">Phân quyền</button>
+    <button class="nav-pill" onclick="scrollTo('s5', event)" id="pill-4">Luồng xử lý</button>
+    <button class="nav-pill" onclick="scrollTo('s6', event)" id="pill-5">Admin CMS</button>
+    <button class="nav-pill" onclick="scrollTo('s7', event)" id="pill-6">Rủi ro</button>
+  </div>
+</nav>
+
+<!-- ══════════════ HERO ══════════════ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">
+      <span class="live-dot"></span>
+      FEAT-VERIF-LVL · v1.0 · Draft
+    </div>
+    <h1>Phân Cấp Đặc Quyền<br><span style="color:var(--accent)">Tài Khoản</span> <span style="color:var(--gold)">✦ VIP</span></h1>
+    <p class="hero-sub">Hệ thống chia 3 cấp độ người dùng dựa trên mức độ xác thực danh tính — từ tài khoản cơ bản đến VIP doanh nghiệp. Khoá đúng điểm, mở đúng quyền, thúc đẩy người dùng định danh.</p>
+    <div class="hero-meta">
+      <div class="meta-chip">📅 <strong>09/04/2026</strong></div>
+      <div class="meta-chip">📦 <strong>Mobile · Web · CMS</strong></div>
+      <div class="meta-chip">👥 <strong>Dev Team nhận tài liệu</strong></div>
+      <div class="meta-chip" style="background:var(--warning-bg);color:var(--warning);border-color:rgba(133,79,11,.2);">🔶 <strong>Cần phản hồi số liệu cứng</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ S1: TẠI SAO LÀM ══════════════ -->
+<div id="s1">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">01 · Tại sao</div>
+  <div class="section-title">3 Lý Do Phải Làm Ngay</div>
+  <div class="section-lead">Không có phân cấp xác thực, hệ thống đang mở cửa cho mọi rủi ro. Đây là tính năng nền tảng bảo vệ toàn bộ ecosystem.</div>
+  <div class="grid-3">
+    <div class="goal-card">
+      <div class="goal-icon">🛡️</div>
+      <div class="goal-label">Ngăn Trục Lợi & Gian Lận</div>
+      <div class="goal-desc">Tài khoản ẩn danh đang tự do đổi quà và tích điểm không giới hạn. Cần khoá ngay để bảo vệ ngân sách khuyến mãi khỏi bị "đánh" hàng loạt bằng nick rác.</div>
+    </div>
+    <div class="goal-card">
+      <div class="goal-icon">🚀</div>
+      <div class="goal-label">Thúc Đẩy eKYC & Định Danh</div>
+      <div class="goal-desc">Người dùng có động lực upload CCCD và giấy phép kinh doanh khi thấy lợi ích rõ ràng theo từng cấp: mở kho quà, tăng hạn mức, hiển thị Tích Xanh/Vàng danh giá.</div>
+    </div>
+    <div class="goal-card">
+      <div class="goal-icon">💎</div>
+      <div class="goal-label">Tri Ân Đại Lý Thân Thiết</div>
+      <div class="goal-desc">Level 3 VIP tạo sự khác biệt rõ ràng cho nhóm Doanh nghiệp: không giới hạn quét, đổi quà siêu VIP (Tivi, Vàng miếng), Tích Vàng và ưu tiên trên bản đồ.</div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ══════════════ S2: 3 CẤP ĐỘ ══════════════ -->
+<div id="s2" style="background: var(--surface);">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">02 · Cơ chế</div>
+  <div class="section-title">So Sánh 3 Cấp Độ Đặc Quyền</div>
+  <div class="section-lead">Mỗi Level yêu cầu thêm một lớp xác thực và mở thêm quyền lợi tương ứng. Thiết kế theo kiểu ladder — leo dần.</div>
+
+  <div class="level-table-wrap">
+    <table class="level-table">
+      <thead>
+        <tr>
+          <th style="background:#f1efe8;width:22%">Tiêu chí</th>
+          <th class="lt-lv1" style="text-align:center"><span class="lv-badge lv1-badge">Level 1 · Cơ Bản</span></th>
+          <th class="lt-lv2" style="text-align:center"><span class="lv-badge lv2-badge">✓ Level 2 · KTV</span></th>
+          <th class="lt-lv3" style="text-align:center"><span class="lv-badge lv3-badge">✦ Level 3 · VIP</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="font-weight:700;font-size:12px">Yêu cầu xác thực</td>
+          <td class="lt-lv1" style="text-align:center;font-size:12px">Zalo / SĐT OTP</td>
+          <td class="lt-lv2" style="text-align:center;font-size:12px">CCCD 2 mặt + Selfie + Ảnh cửa hàng + <strong>Họ tên thật</strong></td>
+          <td class="lt-lv3" style="text-align:center;font-size:12px">Level 2 + <strong>Giấy phép kinh doanh</strong></td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;font-size:12px">Hạn mức quét mã</td>
+          <td class="lt-lv1" style="text-align:center;font-size:13px;font-weight:700;color:var(--danger)">20 – 30 mã/tháng</td>
+          <td class="lt-lv2" style="text-align:center;font-size:13px;font-weight:700;color:var(--accent)">300 – 500 mã/tháng</td>
+          <td class="lt-lv3" style="text-align:center;font-size:13px;font-weight:700;color:var(--gold)">♾ Không giới hạn</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;font-size:12px">Đổi quà</td>
+          <td class="lt-lv1" style="text-align:center;font-size:12px"><span class="cross">✗</span> Bị khoá hoàn toàn</td>
+          <td class="lt-lv2" style="text-align:center;font-size:12px"><span class="check">✓</span> Quà &lt; 500K (Voucher, Áo, Nón)</td>
+          <td class="lt-lv3" style="text-align:center;font-size:12px"><span class="check">✓</span> Tất cả (Tivi, Ô tô, Vàng miếng)</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;font-size:12px">Minigame / Điểm</td>
+          <td class="lt-lv1" style="text-align:center;font-size:12px"><span class="check">✓</span> Chơi được (nếu đã Active)</td>
+          <td class="lt-lv2" style="text-align:center;font-size:12px"><span class="check">✓</span> Vòng quay tầm trung</td>
+          <td class="lt-lv3" style="text-align:center;font-size:12px"><span class="check">✓</span> Sự kiện Siêu Khuyến Mãi</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;font-size:12px">Hiển thị cộng đồng</td>
+          <td class="lt-lv1" style="text-align:center;font-size:12px">Nickname đen, ẩn danh</td>
+          <td class="lt-lv2" style="text-align:center;font-size:12px">🔵 <strong>Tích Xanh</strong> · Tên thật</td>
+          <td class="lt-lv3" style="text-align:center;font-size:13px;font-weight:800;color:var(--gold)">✦ Tích Vàng + Bản đồ VIP</td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;font-size:12px">Duyệt bởi</td>
+          <td class="lt-lv1" style="text-align:center;font-size:12px">Hệ thống tự động</td>
+          <td class="lt-lv2" style="text-align:center;font-size:12px">Admin CMS phê duyệt</td>
+          <td class="lt-lv3" style="text-align:center;font-size:12px">Admin CMS phê duyệt</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="info-box" style="margin-top:16px">
+    <strong>📋 Active Rule:</strong> Tài khoản Level 1 chỉ được mở Minigame & kiếm điểm khi đã <strong>đăng ký đủ [Y] ngày</strong> VÀ <strong>có ít nhất 1 mã quét thành công</strong>. Admin cấu hình ngưỡng [Y] trực tiếp trên CMS.
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ══════════════ S3: GIAO DIỆN APP ══════════════ -->
+<div id="s3">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">03 · Giao diện</div>
+  <div class="section-title">Người Dùng Thấy Gì Trên App?</div>
+  <div class="section-lead">Ba màn hình mô phỏng hành trình từ khi bị khoá (Level 1) đến khi được vinh danh (Level 3).</div>
+
+  <div class="grid-3">
+    <!-- Phone 1: Level 1 bị khoá đổi quà -->
+    <div>
+      <div style="font-size:12px;font-weight:700;color:var(--muted);text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Level 1 — Bị khoá đổi quà</div>
+      <div class="phone-frame">
+        <div class="phone-bar">
+          <div class="app-name">🎁 Kho Quà DSS</div>
+          <div class="icon-row"><div class="icon-btn">🔍</div></div>
+        </div>
+        <!-- List quà bị greyed out -->
+        <div style="padding:12px 14px;border-bottom:0.5px solid var(--border)">
+          <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:8px">NỔI BẬT THÁNG NÀY</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div style="background:var(--surface2);border:0.5px solid var(--border);border-radius:8px;padding:10px;text-align:center;opacity:0.45">
+              <div style="font-size:20px;margin-bottom:4px">🎽</div>
+              <div style="font-size:11px;font-weight:700">Áo Thun DSS</div>
+              <div style="font-size:10px;color:var(--muted)">2.500 điểm</div>
+              <div style="font-size:9px;background:var(--danger-bg);color:var(--danger);border-radius:20px;padding:2px 6px;margin-top:4px;font-weight:700">🔒 Cần Level 2</div>
+            </div>
+            <div style="background:var(--surface2);border:0.5px solid var(--border);border-radius:8px;padding:10px;text-align:center;opacity:0.45">
+              <div style="font-size:20px;margin-bottom:4px">🧢</div>
+              <div style="font-size:11px;font-weight:700">Nón Bảo Hiểm</div>
+              <div style="font-size:10px;color:var(--muted)">4.000 điểm</div>
+              <div style="font-size:9px;background:var(--danger-bg);color:var(--danger);border-radius:20px;padding:2px 6px;margin-top:4px;font-weight:700">🔒 Cần Level 2</div>
+            </div>
+            <div style="background:var(--surface2);border:0.5px solid var(--border);border-radius:8px;padding:10px;text-align:center;opacity:0.25">
+              <div style="font-size:20px;margin-bottom:4px">📺</div>
+              <div style="font-size:11px;font-weight:700">Smart TV 43"</div>
+              <div style="font-size:10px;color:var(--muted)">180.000 điểm</div>
+              <div style="font-size:9px;background:var(--gold-bg);color:var(--gold);border-radius:20px;padding:2px 6px;margin-top:4px;font-weight:700">✦ Chỉ Level 3</div>
+            </div>
+            <div style="background:var(--surface2);border:0.5px solid var(--border);border-radius:8px;padding:10px;text-align:center;opacity:0.25">
+              <div style="font-size:20px;margin-bottom:4px">🏆</div>
+              <div style="font-size:11px;font-weight:700">Vàng miếng SJC</div>
+              <div style="font-size:10px;color:var(--muted)">500.000 điểm</div>
+              <div style="font-size:9px;background:var(--gold-bg);color:var(--gold);border-radius:20px;padding:2px 6px;margin-top:4px;font-weight:700">✦ Chỉ Level 3</div>
+            </div>
+          </div>
+        </div>
+        <!-- Popup upgrade -->
+        <div style="padding:12px 14px">
+          <div style="background:var(--danger-bg);border:0.5px solid rgba(163,45,45,.2);border-radius:10px;padding:12px;text-align:center">
+            <div style="font-size:18px;margin-bottom:6px">🔒</div>
+            <div style="font-size:12px;font-weight:800;color:var(--danger);margin-bottom:4px">Tài khoản chưa xác thực</div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:8px;line-height:1.5">Bổ sung CCCD để mở khoá đổi quà và tăng hạn mức quét mã</div>
+            <button style="font-size:11px;font-weight:700;color:white;background:var(--accent);border:none;border-radius:6px;padding:7px 14px;cursor:pointer;font-family:inherit;width:100%">→ Nâng cấp lên Level 2</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phone 2: Level 2 community feed -->
+    <div>
+      <div style="font-size:12px;font-weight:700;color:var(--muted);text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Level 2 — Tích Xanh cộng đồng</div>
+      <div class="phone-frame">
+        <div class="phone-bar">
+          <div class="app-name">🏘️ Cộng Đồng DSS</div>
+          <div class="icon-row"><div class="icon-btn">✏️</div><div class="icon-btn">🔔</div></div>
+        </div>
+        <div class="feed-card">
+          <div class="user-row">
+            <div class="avatar av-blue">NT</div>
+            <div>
+              <div class="user-name">Nguyễn Tuấn <span class="verified">✓ KTV</span></div>
+              <div class="user-meta">TP.HCM · 2 giờ trước</div>
+            </div>
+          </div>
+          <div class="post-text">Vừa lắp xong hệ thống camera AI cho xưởng sản xuất bên Q.12. Dahua IPC-HDW3849H chạy mượt với NVR 5216 🔥</div>
+          <div class="post-img"><span>📷 Hình công trình camera</span></div>
+          <div class="action-row">
+            <div class="action-btn liked">❤️ 47</div>
+            <div class="action-btn">💬 12</div>
+            <div class="point-badge">+180 điểm</div>
+          </div>
+        </div>
+        <div class="feed-card">
+          <div class="user-row">
+            <div class="avatar av-green">PL</div>
+            <div>
+              <div class="user-name">Phạm Long <span class="verified">✓ KTV</span></div>
+              <div class="user-meta">Đà Nẵng · 5 giờ trước</div>
+            </div>
+          </div>
+          <div class="post-text">Quét được 287/300 mã tháng này 💪 Còn 13 mã nữa là đụng hạn mức Level 2, chắc phải nộp GPKD để lên VIP rồi.</div>
+          <div class="action-row">
+            <div class="action-btn liked">❤️ 23</div>
+            <div class="action-btn">💬 8</div>
+            <div class="point-badge">+90 điểm</div>
+          </div>
+        </div>
+        <div class="feed-card">
+          <div class="user-row">
+            <div class="avatar av-amber">TH</div>
+            <div>
+              <div class="user-name">Trần Hùng</div>
+              <div class="user-meta">Hà Nội · 1 ngày trước</div>
+            </div>
+          </div>
+          <div class="post-text">Nộp hồ sơ level 2 từ sáng, chiều Admin duyệt liền. Tích Xanh hiện ra ngay trên profile thích lắm 😄</div>
+          <div class="action-row">
+            <div class="action-btn liked">❤️ 61</div>
+            <div class="action-btn">💬 19</div>
+            <div class="point-badge">+60 điểm</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phone 3: Level 3 VIP Profile -->
+    <div>
+      <div style="font-size:12px;font-weight:700;color:var(--muted);text-align:center;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Level 3 VIP — Trang đại lý</div>
+      <div class="phone-frame">
+        <div class="phone-bar">
+          <div class="app-name">👤 Hồ Sơ</div>
+          <div class="icon-row"><div class="icon-btn">⚙️</div></div>
+        </div>
+        <!-- Profile header -->
+        <div style="padding:20px 16px;background:linear-gradient(135deg,#fef3c7,#fde68a);text-align:center;border-bottom:0.5px solid var(--border)">
+          <div style="width:52px;height:52px;border-radius:50%;background:var(--gold);color:white;font-weight:800;font-size:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;">VH</div>
+          <div style="font-size:15px;font-weight:800;color:#5a3008">Vũ Hoàng <span style="font-size:13px">✦</span></div>
+          <div style="display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--gold);background:white;border-radius:20px;padding:3px 10px;margin:6px 0">✦ Doanh nghiệp VIP · Level 3</div>
+          <div style="font-size:11px;color:#7a5020">Công ty TNHH Kỹ Thuật Số Việt · TP.HCM</div>
+        </div>
+        <!-- Stats -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-bottom:0.5px solid var(--border)">
+          <div style="padding:12px;text-align:center;border-right:0.5px solid var(--border)">
+            <div style="font-size:16px;font-weight:800;color:var(--gold)">♾</div>
+            <div style="font-size:10px;color:var(--muted)">Hạn mức quét</div>
+          </div>
+          <div style="padding:12px;text-align:center;border-right:0.5px solid var(--border)">
+            <div style="font-size:16px;font-weight:800;color:var(--success)">1,284</div>
+            <div style="font-size:10px;color:var(--muted)">Điểm tích lũy</div>
+          </div>
+          <div style="padding:12px;text-align:center">
+            <div style="font-size:16px;font-weight:800;color:var(--accent)">Top 3</div>
+            <div style="font-size:10px;color:var(--muted)">Bảng xếp hạng</div>
+          </div>
+        </div>
+        <!-- Privileges -->
+        <div style="padding:12px 16px">
+          <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:8px">ĐẶC QUYỀN CỦA BẠN</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="font-size:12px;color:var(--success)">✓ Đổi quà cao cấp (Tivi, Vàng)</div>
+            <div style="font-size:12px;color:var(--success)">✓ Vé đặc quyền sự kiện VIP</div>
+            <div style="font-size:12px;color:var(--success)">✓ Hiển thị trên bản đồ "Anh em quanh đây"</div>
+            <div style="font-size:12px;color:var(--success)">✓ Tích Vàng ✦ trên mọi bình luận</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ══════════════ S4: PHÂN QUYỀN VAI TRÒ ══════════════ -->
+<div id="s4" style="background: var(--surface);">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">04 · Phân quyền</div>
+  <div class="section-title">Ai Được Làm Gì?</div>
+  <div class="section-lead">Bốn nhóm vai trò trong hệ thống với quyền hạn được phân tách rõ ràng, tránh chồng chéo trách nhiệm.</div>
+
+  <div class="role-cards">
+    <div class="role-card">
+      <div class="role-icon">👤</div>
+      <div class="role-name">Người Dùng Level 1</div>
+      <div class="role-level rl-1">Level 1 · Cơ Bản</div>
+      <ul class="role-perms">
+        <li><span class="perm-y">✓</span> Quét mã sản phẩm (≤30/tháng)</li>
+        <li><span class="perm-y">✓</span> Xem bài đăng cộng đồng</li>
+        <li><span class="perm-y">✓</span> Chơi Minigame (sau khi Active)</li>
+        <li><span class="perm-n">✗</span> Đổi quà bằng điểm</li>
+        <li><span class="perm-n">✗</span> Hiện tên thật / Tích Xanh</li>
+        <li><span class="perm-n">✗</span> Tham gia Vòng Quay VIP</li>
+      </ul>
+    </div>
+    <div class="role-card" style="border-color:rgba(24,95,165,.2)">
+      <div class="role-icon">🔧</div>
+      <div class="role-name">KTV / Thợ (Level 2)</div>
+      <div class="role-level rl-2">✓ Level 2 · Đã xác thực</div>
+      <ul class="role-perms">
+        <li><span class="perm-y">✓</span> Quét mã (≤500/tháng)</li>
+        <li><span class="perm-y">✓</span> Đổi quà &lt; 500K</li>
+        <li><span class="perm-y">✓</span> Tích Xanh + Tên thật trên profile</li>
+        <li><span class="perm-y">✓</span> Vòng Quay Tầm Trung</li>
+        <li><span class="perm-n">✗</span> Đổi quà siêu VIP</li>
+        <li><span class="perm-n">✗</span> Không giới hạn mã</li>
+      </ul>
+    </div>
+    <div class="role-card" style="border-color:rgba(180,83,9,.25)">
+      <div class="role-icon">🏢</div>
+      <div class="role-name">Đại Lý / Doanh Nghiệp VIP</div>
+      <div class="role-level rl-3">✦ Level 3 · VIP</div>
+      <ul class="role-perms">
+        <li><span class="perm-y">✓</span> Quét mã không giới hạn</li>
+        <li><span class="perm-y">✓</span> Đổi MỌI quà (Tivi, Vàng, Ô tô)</li>
+        <li><span class="perm-y">✓</span> Tích Vàng ✦ mọi nơi trên App</li>
+        <li><span class="perm-y">✓</span> Sự kiện Siêu Khuyến Mãi</li>
+        <li><span class="perm-y">✓</span> Hiển thị "Anh em quanh đây"</li>
+        <li><span class="perm-y">✓</span> Ưu tiên trên bản đồ</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="margin-top:14px">
+    <div class="role-card" style="background:var(--warning-bg);border-color:rgba(133,79,11,.25)">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="font-size:26px">⚙️</div>
+        <div>
+          <div class="role-name">Admin / CSKH — Phía DSS</div>
+          <div class="role-level rl-admin">Quản Trị Hệ Thống</div>
+        </div>
+      </div>
+      <ul class="role-perms" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px">
+        <li><span class="perm-y">✓</span> Phê duyệt / Từ chối hồ sơ xác thực</li>
+        <li><span class="perm-y">✓</span> Cấu hình hạn mức mã quét theo Level</li>
+        <li><span class="perm-y">✓</span> Bật/Tắt module xác thực độc lập</li>
+        <li><span class="perm-y">✓</span> Nhập Threshold [X] điểm đổi quà</li>
+        <li><span class="perm-y">✓</span> Cấu hình ngưỡng kích hoạt [Y] ngày</li>
+        <li><span class="perm-y">✓</span> Xuất danh sách tên thật để giao quà/check-in</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ══════════════ S5: LUỒNG VẬN HÀNH ══════════════ -->
+<div id="s5">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">05 · Luồng xử lý</div>
+  <div class="section-title">Hành Trình Leo Cấp Của Người Dùng</div>
+  <div class="section-lead">Từ lúc đăng ký đến khi trở thành VIP Level 3 — mỗi bước đều có Admin CMS kiểm soát.</div>
+
+  <!-- Row 1: Đăng ký → Level 1 → Active -->
+  <div style="margin-bottom:24px">
+    <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px">Giai đoạn 1 — Đăng ký & Kích hoạt</div>
+    <div class="flow-step-row">
+      <div class="flow-node">
+        <div class="fn-icon">📱</div>
+        <div class="fn-label">Đăng Ký</div>
+        <div class="fn-sub">Xác thực Zalo OTP / SĐT</div>
+      </div>
+      <div class="flow-arrow-cell">→</div>
+      <div class="flow-node blue">
+        <div class="fn-icon">1️⃣</div>
+        <div class="fn-label fn-label-blue">Level 1</div>
+        <div class="fn-sub">Giới hạn 20–30 mã/tháng. Chưa được đổi quà.</div>
+      </div>
+      <div class="flow-arrow-cell">→</div>
+      <div class="flow-node green">
+        <div class="fn-icon">⚡</div>
+        <div class="fn-label fn-label-green">Kích Hoạt</div>
+        <div class="fn-sub">Đủ [Y] ngày + 1 mã quét → Mở Minigame & điểm</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 2: Nộp hồ sơ → Admin duyệt → Level 2 -->
+  <div style="margin-bottom:24px">
+    <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px">Giai đoạn 2 — Xác thực lên Level 2</div>
+    <div class="flow-step-row">
+      <div class="flow-node">
+        <div class="fn-icon">🪪</div>
+        <div class="fn-label">Nộp Hồ Sơ</div>
+        <div class="fn-sub">CCCD 2 mặt + Selfie + Ảnh cửa hàng + Họ tên thật</div>
+      </div>
+      <div class="flow-arrow-cell">→</div>
+      <div class="flow-node" style="border-color:rgba(133,79,11,.25);background:var(--warning-bg)">
+        <div class="fn-icon">🔎</div>
+        <div class="fn-label" style="color:var(--warning)">Admin Xét Duyệt</div>
+        <div class="fn-sub">CMS hiển thị ảnh để đối chiếu. Duyệt / Từ chối + lý do.</div>
+      </div>
+      <div class="flow-arrow-cell">→</div>
+      <div class="flow-node blue">
+        <div class="fn-icon">2️⃣ ✓</div>
+        <div class="fn-label fn-label-blue">Level 2 · KTV</div>
+        <div class="fn-sub">Mở đổi quà &lt;500K. Tích Xanh + Push Notification.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 3: Nộp GPKD → Admin duyệt → Level 3 -->
+  <div>
+    <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px">Giai đoạn 3 — Nâng cấp VIP Level 3</div>
+    <div class="flow-step-row">
+      <div class="flow-node">
+        <div class="fn-icon">📄</div>
+        <div class="fn-label">Nộp GPKD</div>
+        <div class="fn-sub">Giấy phép kinh doanh — yêu cầu đang ở Level 2</div>
+      </div>
+      <div class="flow-arrow-cell">→</div>
+      <div class="flow-node" style="border-color:rgba(133,79,11,.25);background:var(--warning-bg)">
+        <div class="fn-icon">🔎</div>
+        <div class="fn-label" style="color:var(--warning)">Admin Kiểm Tra</div>
+        <div class="fn-sub">Có thể duyệt thủ công bằng mắt ở giai đoạn đầu (chưa có OCR tự động)</div>
+      </div>
+      <div class="flow-arrow-cell">→</div>
+      <div class="flow-node gold">
+        <div class="fn-icon">✦ VIP</div>
+        <div class="fn-label fn-label-gold">Level 3 Doanh Nghiệp</div>
+        <div class="fn-sub">Không giới hạn mã. Đổi Tivi, Vàng. Tích Vàng + Bản đồ.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="warn-box" style="margin-top:20px">
+    <strong>⚠️ Luồng Từ Chối:</strong> Khi Admin bấm "Từ chối", hệ thống <strong>bắt buộc nhập lý do</strong> → Bắn Push Notification về máy User kèm lý do cụ thể → User có thể chụp lại và nộp lại.
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ══════════════ S6: ADMIN CMS ══════════════ -->
+<div id="s6" style="background: var(--surface);">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">06 · Admin CMS</div>
+  <div class="section-title">Màn Hình Quản Trị Admin</div>
+  <div class="section-lead">Hai công cụ chính: bảng duyệt hồ sơ trực quan và panel cấu hình tham số linh hoạt.</div>
+
+  <div class="grid-2">
+    <!-- CMS Approval -->
+    <div>
+      <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px">Bảng Phê Duyệt Hồ Sơ</div>
+      <div class="cms-frame">
+        <div class="cms-toolbar">
+          <div class="cms-title">📋 Danh sách hồ sơ chờ duyệt</div>
+          <div class="cms-badge">3 đang chờ</div>
+        </div>
+        <!-- Row 1: Level 2 request -->
+        <div class="cms-row">
+          <div class="cms-thumb">🪪</div>
+          <div class="cms-info">
+            <div class="cms-poster">Nguyễn Minh Khoa · <span style="color:var(--accent);font-size:10px">→ Xin lên Level 2</span></div>
+            <div class="cms-preview">CCCD: 079xxxxxx · Selfie: ✅ · Cửa hàng: ✅ · TP.HCM</div>
+          </div>
+          <div class="cms-actions">
+            <button class="btn-view">👁 Xem</button>
+            <button class="btn-approve">✓ Duyệt</button>
+            <button class="btn-reject">✗ Từ chối</button>
+          </div>
+        </div>
+        <!-- Row 2: Level 3 request -->
+        <div class="cms-row">
+          <div class="cms-thumb">📄</div>
+          <div class="cms-info">
+            <div class="cms-poster">Trần Văn Đức · <span style="color:var(--gold);font-size:10px">→ Xin lên Level 3 VIP</span></div>
+            <div class="cms-preview">GPKD: Cty TNHH Đức Khang · Hca Đinh số 88/2024 · Đà Nẵng</div>
+          </div>
+          <div class="cms-actions">
+            <button class="btn-view">👁 Xem</button>
+            <button class="btn-approve">✓ Duyệt</button>
+            <button class="btn-reject">✗ Từ chối</button>
+          </div>
+        </div>
+        <!-- Row 3: ảnh mờ -->
+        <div class="cms-row" style="background:var(--danger-bg)">
+          <div class="cms-thumb" style="background:linear-gradient(135deg,#f0c0c0,#e09090)">📷</div>
+          <div class="cms-info">
+            <div class="cms-poster">Lê Thị Lan · <span style="color:var(--danger);font-size:10px">⚠ Ảnh không rõ</span></div>
+            <div class="cms-preview">CCCD: Ảnh mờ nhòe — Cần chụp lại tại nơi đủ ánh sáng</div>
+          </div>
+          <div class="cms-actions">
+            <button class="btn-view">👁 Xem</button>
+            <button class="btn-reject" style="background:var(--danger);color:white">✗ Từ chối</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CMS Settings -->
+    <div>
+      <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px">Panel Cấu Hình Tham Số</div>
+      <div class="cms-frame">
+        <div class="cms-toolbar">
+          <div class="cms-title">⚙️ Cấu Hình Module Xác Thực</div>
+          <div class="cms-badge-warn">Thay đổi tức thì</div>
+        </div>
+        <!-- Toggle rows -->
+        <div style="padding:14px 18px;border-bottom:0.5px solid var(--border)">
+          <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px">Bật / Tắt Xác Thực Theo Module</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;justify-content:space-between;font-size:13px">
+              <span>📷 Quét mã sản phẩm</span>
+              <span style="font-size:11px;background:var(--success-bg);color:var(--success);border-radius:20px;padding:3px 10px;font-weight:700">● BẬT</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;font-size:13px">
+              <span>🎁 Module Đổi Quà</span>
+              <span style="font-size:11px;background:var(--success-bg);color:var(--success);border-radius:20px;padding:3px 10px;font-weight:700">● BẬT</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;font-size:13px">
+              <span>🎮 Minigame / Điểm</span>
+              <span style="font-size:11px;background:var(--danger-bg);color:var(--danger);border-radius:20px;padding:3px 10px;font-weight:700">○ TẮT</span>
+            </div>
+          </div>
+        </div>
+        <!-- Threshold settings -->
+        <div style="padding:14px 18px;border-bottom:0.5px solid var(--border)">
+          <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px">Ngưỡng Giá Trị Quà [X]</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div style="background:var(--surface2);border-radius:8px;padding:12px;font-size:12px">
+              <div style="font-weight:700;margin-bottom:4px">Level 1 — Giới hạn quà</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--danger);font-weight:700">0 ₫</div>
+              <div style="font-size:10px;color:var(--muted)">Không được đổi quà</div>
+            </div>
+            <div style="background:var(--accent-bg);border-radius:8px;padding:12px;font-size:12px">
+              <div style="font-weight:700;color:var(--accent);margin-bottom:4px">Level 2 — Giới hạn quà</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--accent);font-weight:700">500.000 ₫</div>
+              <div style="font-size:10px;color:var(--muted)">Quà dưới ngưỡng này</div>
+            </div>
+          </div>
+        </div>
+        <!-- Active Rule -->
+        <div style="padding:14px 18px">
+          <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px">Active Rule — Kích Hoạt Tài Khoản</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div style="background:var(--surface2);border-radius:8px;padding:12px;font-size:12px;text-align:center">
+              <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Số ngày tối thiểu [Y]</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:800;color:var(--accent)">7</div>
+              <div style="font-size:10px;color:var(--muted)">ngày sau đăng ký</div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:12px;font-size:12px;text-align:center">
+              <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Số mã quét tối thiểu</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:800;color:var(--accent)">1</div>
+              <div style="font-size:10px;color:var(--muted)">mã thành công</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box" style="margin-top:16px">
+    <strong>📦 Đồng bộ dữ liệu:</strong> Sau khi Admin duyệt Level 2/3, "Họ và tên thật" tự động được đồng bộ sang: <strong>In phiếu giao hàng (Shipping Labels)</strong> · <strong>Danh sách khách mời Workshop</strong> · <strong>Mã QR Check-in sự kiện</strong> — không cần nhập lại thủ công.
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ══════════════ S7: RỦI RO ══════════════ -->
+<div id="s7">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">07 · Rủi ro & Giải pháp</div>
+  <div class="section-title">Điểm Cần Lưu Ý Trước Khi Triển Khai</div>
+  <div class="section-lead">Hai rủi ro đã được xác định, mỗi cái đều có giải pháp cụ thể trong đặc tả.</div>
+
+  <div class="grid-2">
+    <div class="risk-card">
+      <div class="risk-title">⚡ Khoá đột ngột gây phẫn nộ user</div>
+      <div class="risk-solution">Hiện tại nhiều user đang dùng app mà không bị giới hạn. Nếu bật cơ chế block đột ngột, sẽ có đợt review 1 sao và khiếu nại CSKH hàng loạt.<br><br><strong>Giải pháp:</strong> Chuỗi thông báo truyền thông + popup cảnh báo <strong>2 tuần trước</strong> khi áp dụng. Cho người dùng thời gian chuẩn bị và nộp hồ sơ.</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-title">📄 Chưa có OCR tự động cho GPKD</div>
+      <div class="risk-solution">Tính năng này không bao gồm OCR bóc tách thông tin giấy tờ tự động. Admin phải kiểm tra bằng mắt thường ở giai đoạn đầu, tốn nhân lực nếu lượng hồ sơ lớn.<br><br><strong>Giải pháp:</strong> Thiết kế CMS với layout đối chiếu ảnh trực quan (xem S6). Giai đoạn 2 có thể tích hợp OCR sau khi volume ổn định.</div>
+    </div>
+  </div>
+
+  <div style="margin-top:14px">
+    <div class="risk-card" style="border-left-color:var(--warning)">
+      <div class="risk-title" style="color:var(--warning)">📊 Chưa chốt số liệu cứng — Cần Marketing &amp; Vận Hành phản hồi</div>
+      <div class="risk-solution">Dev Team cần các con số sau trước khi bắt đầu code:<br><br>
+        <strong>• Hạn mức mã Level 1:</strong> 20 hay 30 mã/tháng?<br>
+        <strong>• Hạn mức mã Level 2:</strong> 300 hay 500 mã/tháng?<br>
+        <strong>• Threshold đổi quà Level 2:</strong> 500.000đ hay mức khác?<br>
+        <strong>• Ngưỡng kích hoạt [Y]:</strong> Bao nhiêu ngày sau khi đăng ký?
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<div class="footer">
+  <p>Đặc tả tính năng <strong>FEAT-VERIF-LVL v1.0</strong> · DSS Club — Ứng dụng Chăm Sóc Khách Hàng</p>
+  <p style="margin-top:6px">Soạn ngày 09/04/2026 · Người nhận: Dev Team · Trạng thái: <span style="color:var(--warning);font-weight:700">Draft — Chờ phê duyệt số liệu</span></p>
+</div>
+
+<script>
+function scrollTo(id, event) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.querySelectorAll('.nav-pill').forEach(p => p.classList.remove('active'));
+  if (event && event.target) event.target.classList.add('active');
+}
+
+// Active nav highlight on scroll
+const sections = ['s1','s2','s3','s4','s5','s6','s7'];
+const pills = document.querySelectorAll('.nav-pill');
+window.addEventListener('scroll', () => {
+  let current = 0;
+  sections.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 80) current = i;
+  });
+  pills.forEach((p, i) => p.classList.toggle('active', i === current));
+});
+</script>
+</body>
+</html>
