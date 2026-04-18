@@ -3,228 +3,284 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cộng đồng Social & Hệ thống điểm cống hiến - DSS CLUB v10.0</title>
+    <title>CỘNG ĐỒNG SOCIAL & HỆ THỐNG ĐIỂM CỐNG HIẾN - DSS CLUB v1.2</title>
     
-    <!-- Standard Executive Font: Be Vietnam Pro -->
+    <!-- Standard Executive Font: Be Vietnam Pro (MANDATORY) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- Design System -->
-    <link rel="stylesheet" href="css/brand_tokens.css">
+    <!-- Dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     
     <style>
-        /* BENTO & VERBATIM SYSTEM v10.0 (Premium) */
+        /* DSS CLUB BRAND v1.2 - PORTABLE SYSTEM */
         :root {
-            --reveal-distance: 30px;
+            --dss-blue: #0068FF;
+            --dss-deep-blue: #0047CC;
+            --navy-dark: #0D1B3E;
+            --slate: #4A5568;
+            --muted-blue: #8C9BAB;
+            --cool-gray: #E8EDF3;
+            --mint-green: #00B96B;
+            --mint-green-bg: #E8FBF2;
+            --energy-orange: #FF5C00;
+            --energy-orange-bg: #FFF0E8;
+            --red-error: #C0392B;
+            --red-error-bg: #FFF0EE;
+            --white: #FFFFFF;
+            --surface: #F7F9FC;
+            --glass: rgba(255, 255, 255, 0.8);
+            --reveal-distance: 40px;
         }
 
         * { font-family: 'Be Vietnam Pro', sans-serif !important; box-sizing: border-box; }
-        body { background: #F7F9FC; color: #0D1B3E; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+        body { background: var(--surface); color: var(--navy-dark); margin: 0; padding: 0; -webkit-font-smoothing: antialiased; overflow-x: hidden; scroll-behavior: smooth; }
         
         .executive-container { max-width: 1300px; margin: 0 auto; padding: 0 40px; }
         
-        /* HER0 ANIMATION */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(var(--reveal-distance)); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .reveal { opacity: 0; transform: translateY(var(--reveal-distance)); transition: opacity 0.8s ease, transform 0.8s ease; }
+        /* Entrance Animations */
+        .reveal { opacity: 0; transform: translateY(var(--reveal-distance)); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* 1. BENTO SUMMARY SECTION */
-        .executive-hero { text-align: center; padding: 120px 0 80px; animation: fadeInUp 1s ease both; }
-        .executive-hero span.badge { font-weight:900; color:#0068ff; letter-spacing:5px; text-transform:uppercase; font-size:0.8rem; background: #E8F1FF; padding: 8px 16px; border-radius: 99px; }
-        .executive-hero h1 { font-size: 4.5rem; font-weight: 900; letter-spacing: -4px; margin: 30px 0 10px; line-height: 0.95; color: #0D1B3E; }
-        .executive-hero p { font-size: 1.4rem; color: #4A5568; margin-top: 20px; font-weight: 500; max-width: 800px; margin-inline: auto; }
+        /* 1. HERO SECTION */
+        .executive-hero { text-align: center; padding: 140px 0 100px; position: relative; }
+        .executive-hero::before { content: 'PREMIUM EXECUTIVE'; position: absolute; top: 110px; left: 50%; transform: translateX(-50%); font-weight: 900; color: var(--dss-blue); opacity: 0.1; font-size: 5rem; letter-spacing: 15px; z-index: -1; white-space: nowrap; }
+        .badge-standard { display: inline-block; background: var(--mint-green-bg); color: var(--mint-green); padding: 8px 24px; border-radius: 99px; font-weight: 900; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 4px 12px rgba(0, 185, 107, 0.1); }
+        .executive-hero h1 { font-size: 4.8rem; font-weight: 800; letter-spacing: -5px; margin: 30px 0 15px; line-height: 0.9; color: var(--navy-dark); }
+        .executive-hero p { font-size: 1.4rem; color: var(--slate); font-weight: 500; max-width: 850px; margin: 30px auto 0; line-height: 1.5; }
 
-        .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; margin-bottom: 100px; }
+        /* 2. BENTO GRID SYSTEM (12-COL) */
+        .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; margin-bottom: 120px; }
         .bento-card { 
-            background: white; 
-            border-radius: 32px; 
+            background: var(--white); 
+            border-radius: 24px; 
             padding: 40px; 
-            border: 1px solid rgba(13,27,62,0.06); 
-            box-shadow: 0 20px 60px -10px rgba(13,27,62,0.05); 
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); 
+            border: 1px solid rgba(13, 27, 62, 0.04); 
+            box-shadow: 0 20px 60px -10px rgba(13, 27, 62, 0.04); 
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
         }
         .bento-card:hover { 
-            transform: translateY(-10px) scale(1.02); 
-            border-color: #0068FF; 
-            box-shadow: 0 40px 100px -20px rgba(0, 104, 255, 0.1);
+            transform: translateY(-12px) scale(1.01); 
+            border-color: var(--dss-blue); 
+            box-shadow: 0 40px 100px -20px rgba(0, 104, 255, 0.12);
         }
         
-        .card-label { display: inline-block; background: #E8F1FF; color: #0068FF; padding: 6px 12px; border-radius: 99px; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 1px; }
-        .card-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 15px; letter-spacing: -1px; line-height: 1.2; }
-        .card-desc { color: #4A5568; line-height: 1.6; font-size: 1.05rem; }
+        .card-header { margin-bottom: 25px; }
+        .card-label { display: inline-block; background: var(--surface); color: var(--muted-blue); padding: 6px 12px; border-radius: 99px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; border: 1px solid var(--cool-gray); }
+        .card-title { font-size: 1.7rem; font-weight: 800; margin: 15px 0 0; letter-spacing: -1.2px; line-height: 1.1; color: var(--navy-dark); }
+        .card-content { flex-grow: 1; color: var(--slate); line-height: 1.6; font-size: 1rem; }
         
-        /* Card Helper Classes */
-        .span-12 { grid-column: span 12; } 
-        .span-8 { grid-column: span 8; } 
-        .span-6 { grid-column: span 6; } 
-        .span-4 { grid-column: span 4; }
-
+        /* Bento Sizes */
+        .span-12 { grid-column: span 12; } .span-8 { grid-column: span 8; } .span-6 { grid-column: span 6; } .span-4 { grid-column: span 4; }
+        
+        /* List inside Bento */
         .bento-list { list-style: none; padding: 0; margin: 20px 0 0; }
-        .bento-list li { padding: 12px 0; border-bottom: 1px solid #E8EDF3; display: flex; gap: 15px; align-items: flex-start; }
+        .bento-list li { padding: 12px 0; border-bottom: 1px solid var(--cool-gray); display: flex; gap: 15px; align-items: flex-start; }
         .bento-list li:last-child { border: none; }
-        .bento-dot { min-width: 12px; height: 12px; border-radius: 50%; background: #0068FF; margin-top: 6px; flex-shrink: 0; }
-        .bento-list li strong { color: #0D1B3E; }
-
-        /* Icon background deco */
-        .bento-deco { position: absolute; bottom: -20px; right: -20px; font-size: 8rem; opacity: 0.03; font-weight: 900; pointer-events: none; }
-
-        /* 2. VERBATIM SPEC SECTION */
-        .raw-spec-divider { border-top: 2px dashed #D1D9E2; margin: 120px 0 80px; position: relative; text-align: center; }
-        .raw-spec-divider span { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: #F7F9FC; padding: 0 40px; font-weight: 900; color: #8C9BAB; letter-spacing: 5px; font-size: 0.8rem; text-transform: uppercase; }
+        .bento-i { min-width: 20px; text-align: center; color: var(--dss-blue); font-weight: 800; }
         
-        .full-raw-spec-container { background: white; border-top: 1px solid #E8EDF3; padding: 120px 0; }
-        .full-raw-spec-content { max-width: 900px; margin: 0 auto; line-height: 1.8; color: #4A5568; font-size: 1.1rem; }
-        .full-raw-spec-content h1, .full-raw-spec-content h2, .full-raw-spec-content h3 { color: #0D1B3E; font-weight: 800; margin-top: 60px; }
-        .full-raw-spec-content h2 { font-size: 2.2rem; letter-spacing: -1px; border-left: 8px solid #0068FF; padding-left: 20px; }
-        .full-raw-spec-content table { width: 100%; border-collapse: collapse; margin: 40px 0; font-size: 0.95rem; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
-        .full-raw-spec-content th, .full-raw-spec-content td { padding: 20px; border: 1px solid #E8EDF3; text-align: left; vertical-align: top; }
-        .full-raw-spec-content th { background: #F7F9FC; font-weight: 900; color: #0D1B3E; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; }
-        .full-raw-spec-content blockquote { background: #F0F5FF; border-left: 6px solid #0068FF; padding: 30px; margin: 40px 0; border-radius: 0 16px 16px 0; color: #0050CC; font-style: italic; font-weight: 500; }
-        .full-raw-spec-content hr { border: none; border-top: 1px solid #E8EDF3; margin: 60px 0; }
+        /* Special Bento Variants */
+        .card-premium { background: linear-gradient(135deg, var(--navy-dark) 0%, var(--dss-blue) 100%); color: var(--white); }
+        .card-premium .card-title { color: var(--white); }
+        .card-premium .card-label { background: rgba(255,255,255,0.1); color: var(--white); border-color: rgba(255,255,255,0.2); }
+        .card-premium .card-content { color: rgba(255,255,255,0.85); }
 
-        .mermaid { margin: 60px auto; padding: 20px; background: #F7F9FC; border-radius: 24px; }
+        .metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 30px; }
+        .metric-box { background: rgba(255,255,255,0.08); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
+        .metric-box .val { font-size: 1.8rem; font-weight: 900; display: block; color: #00AAFF; }
+        .metric-box .lbl { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; opacity: 0.7; margin-top: 5px; }
 
-        /* Highlighting success ACs */
-        .ac-list { list-style: none; padding: 0; }
-        .ac-list li { margin-bottom: 15px; padding-left: 35px; position: relative; }
-        .ac-list li::before { content: '✓'; position: absolute; left: 0; color: #00B96B; font-weight: 900; font-size: 1.4rem; top: -4px; }
-
-        footer { padding: 120px 0; text-align: center; font-weight: 800; font-size: 0.8rem; letter-spacing: 5px; color: #8C9BAB; text-transform: uppercase; }
+        /* 3. VERBATIM DOCUMENTATION SECTION */
+        .verbatim-divider { border-top: 4px solid var(--navy-dark); margin: 150px 0 80px; position: relative; }
+        .verbatim-divider::after { content: 'DOCUMENT FIDELITY VERBATIM'; position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: var(--surface); padding: 0 40px; font-weight: 900; color: var(--navy-dark); font-size: 0.85rem; letter-spacing: 8px; }
         
+        .spec-surface { background: var(--white); border-radius: 40px; box-shadow: 0 10px 100px rgba(0,0,0,0.02); padding: 120px 0; border: 1px solid var(--cool-gray); }
+        .spec-body { max-width: 900px; margin: 0 auto; }
+        
+        .spec-body h1 { font-size: 3.2rem; font-weight: 800; border-bottom: 12px solid var(--dss-blue); display: inline-block; margin-bottom: 60px; letter-spacing: -2px; }
+        .spec-body h2 { font-size: 2.2rem; font-weight: 800; margin-top: 80px; letter-spacing: -1px; border-left: 10px solid var(--dss-blue); padding-left: 25px; color: var(--navy-dark); }
+        .spec-body h3 { font-size: 1.5rem; font-weight: 700; margin-top: 40px; color: var(--dss-deep-blue); }
+        
+        .spec-body table { width: 100%; border-collapse: collapse; margin: 40px 0; border-radius: 16px; overflow: hidden; border: 1px solid var(--cool-gray); }
+        .spec-body th { background: var(--surface); color: var(--navy-dark); font-weight: 800; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; padding: 22px; text-align: left; }
+        .spec-body td { padding: 22px; border: 1px solid var(--cool-gray); vertical-align: top; color: var(--slate); line-height: 1.6; }
+        .spec-body tr:hover td { background: #F9FBFF; }
+        
+        .spec-body blockquote { background: var(--surface); border-left: 8px solid var(--navy-dark); padding: 40px; margin: 50px 0; border-radius: 0 24px 24px 0; color: var(--slate); font-style: italic; font-weight: 500; font-size: 1.2rem; }
+        .spec-body hr { border: none; border-top: 2px solid var(--cool-gray); margin: 60px 0; }
+        
+        .mermaid { margin: 60px auto; padding: 40px; background: var(--surface); border-radius: 32px; text-align: center; }
+
+        footer { padding: 140px 0; text-align: center; font-weight: 900; font-size: 0.8rem; letter-spacing: 10px; color: var(--muted-blue); text-transform: uppercase; }
+
         @media (max-width: 1024px) {
-            .executive-hero h1 { font-size: 3rem; }
+            .executive-hero h1 { font-size: 3.5rem; }
             .span-8, .span-6, .span-4 { grid-column: span 12; }
+            .metric-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
     <header class="executive-container">
-        <div class="executive-hero">
-            <span class="badge">DSS CLUB EXECUTIVE PORTAL v10.0</span>
-            <h1>Cộng đồng Social & Điểm Cống hiến</h1>
-            <p>Kiến tạo hệ sinh thái gắn kết qua tri thức và vinh danh những chuyên gia dẫn đầu trong ngành Camera.</p>
+        <div class="executive-hero reveal">
+            <div class="badge-standard">Executive Summary v1.2</div>
+            <h1>Cộng đồng Social & Điểm cống hiến</h1>
+            <p>Kiến tạo hệ sinh thái gắn kết qua tri thức và vinh danh những chuyên gia dẫn đầu trong ngành thiết bị an ninh Việt Nam.</p>
         </div>
     </header>
 
     <main class="executive-container">
-        <!-- PHASE 1: EXECUTIVE BENTO SUMMARY (30s FOR BOSS) -->
+        <!-- 1. BENTO GRID (8 CARDS - PREMIUM CLARITY) -->
         <div class="bento-grid">
             
-            <!-- Card 1: Strategic Goals -->
-            <div class="bento-card span-6 reveal">
-                <span class="card-label">Strategic Goals</span>
-                <div class="card-title">Mục tiêu Chiến lược</div>
-                <ul class="bento-list">
-                    <li><div class="bento-dot"></div><span><strong>Tăng tỷ lệ giữ chân:</strong> Biến App thành thói quen hàng ngày của KTV/Đại lý.</span></li>
-                    <li><div class="bento-dot"></div><span><strong>Kho tri thức UGC:</strong> Tận dụng nguồn lực cộng đồng để tự đào tạo kỹ thuật chéo.</span></li>
-                    <li><div class="bento-dot"></div><span><strong>Vinh danh uy tín:</strong> Xây dựng hệ thống Leaderboard minh bạch để bảo chứng tay nghề.</span></li>
-                </ul>
-                <div class="bento-deco">GOAL</div>
+            <!-- Card 1: Strategic Vision -->
+            <div class="bento-card span-4 reveal">
+                <div class="card-header">
+                    <span class="card-label">01 Vision</span>
+                    <h2 class="card-title">Mục tiêu Chiến lược</h2>
+                </div>
+                <div class="card-content">
+                    <ul class="bento-list">
+                        <li><span class="bento-i">⚡</span> <span><strong>Retention:</strong> Tăng tỷ lệ giữ chân người dùng.</span></li>
+                        <li><span class="bento-i">⚡</span> <span><strong>UGC:</strong> Xây dựng kho nội dung đào tạo kỹ thuật chéo.</span></li>
+                        <li><span class="bento-i">⚡</span> <span><strong>Trust:</strong> Tạo sân chơi công bằng, vinh danh uy tín.</span></li>
+                    </ul>
+                </div>
             </div>
 
-            <!-- Card 2: Membership Roles -->
-            <div class="bento-card span-6 reveal" style="transition-delay: 0.1s;">
-                <span class="card-label">Roles & Permissions</span>
-                <div class="card-title">Phân quyền Thành viên</div>
-                <ul class="bento-list">
-                    <li><div class="bento-dot" style="background:#8C9BAB;"></div><span><strong>Level 1 (New):</strong> Chỉ được Xem & Bình luận ẩn danh (Nickname đen).</span></li>
-                    <li><div class="bento-dot" style="background:#00B96B;"></div><span><strong>Level 2+ (Verified):</strong> Toàn quyền Đăng bài, Tích điểm & Hiển thị Tích xanh.</span></li>
-                    <li><div class="bento-dot" style="background:#0D1B3E;"></div><span><strong>Admin/Mod:</strong> Quản trị dữ liệu, Phê duyệt nội dung & Cấu hình điểm.</span></li>
-                </ul>
-                <div class="bento-deco">USER</div>
+            <!-- Card 2: Roles -->
+            <div class="bento-card span-4 reveal" style="transition-delay: 0.1s;">
+                <div class="card-header">
+                    <span class="card-label">02 Participation</span>
+                    <h2 class="card-title">Đối tượng & Vai trò</h2>
+                </div>
+                <div class="card-content">
+                    <ul class="bento-list">
+                        <li><span class="bento-i">●</span> <span><strong>Level 1:</strong> Chỉ được Xem & Bình luận ẩn danh.</span></li>
+                        <li><span class="bento-i">●</span> <span><strong>Level 2+:</strong> Đăng bài, Tích điểm, Hiển thị Tích xanh.</span></li>
+                        <li><span class="bento-i">●</span> <span><strong>Admin:</strong> Kiểm duyệt & Cấu hình hệ số CMS.</span></li>
+                    </ul>
+                </div>
             </div>
 
-            <!-- Card 3: Gamification Engine -->
-            <div class="bento-card span-12 reveal" style="background: var(--gradient-premium); color: white; transition-delay: 0.2s;">
-                <span class="card-label" style="background: rgba(255,255,255,0.2); color: white;">Gamification Engine</span>
-                <div class="card-title" style="color: white; font-size: 2.2rem;">Hệ thống Tính điểm Cống hiến</div>
-                <div style="display: flex; gap: 40px; margin-top: 30px; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 250px;">
-                        <p style="opacity: 0.9; font-size: 1.1rem;">Cơ chế điểm thưởng tự động dựa trên mức độ hấp dẫn của nội dung:</p>
-                        <ul class="bento-list">
-                            <li style="border-color: rgba(255,255,255,0.1);"><div class="bento-dot" style="background: white;"></div><span><strong>Lượt xem (View):</strong> +0.1 điểm / user duy nhất.</span></li>
-                            <li style="border-color: rgba(255,255,255,0.1);"><div class="bento-dot" style="background: white;"></div><span><strong>Lượt thích (Like):</strong> +1 điểm / tương tác.</span></li>
-                            <li style="border-color: rgba(255,255,255,0.1);"><div class="bento-dot" style="background: white;"></div><span><strong>Bình luận (Comment):</strong> +2 điểm / tương tác.</span></li>
-                            <li style="border-color: rgba(255,255,255,0.1);"><div class="bento-dot" style="background: white;"></div><span><strong>Bài đăng (Post):</strong> +5 điểm / bài được duyệt.</span></li>
-                        </ul>
-                    </div>
-                    <div style="flex: 1; background: rgba(255,255,255,0.1); border-radius: 24px; padding: 30px; border: 1px solid rgba(255,255,255,0.2); align-self: center;">
-                        <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 900; margin-bottom: 10px; opacity: 0.7;">Formulas Configurable by Admin</div>
-                        <div style="font-size: 2rem; font-weight: 900; letter-spacing: -1px;">Score = <span style="color:#00AAFF;">(A*V)</span> + <span style="color:#00AAFF;">(B*L)</span> + <span style="color:#00AAFF;">(C*C)</span> + <span style="color:#00AAFF;">(D*P)</span></div>
+            <!-- Card 3: Gamification (Mega Card) -->
+            <div class="bento-card card-premium span-8 reveal" style="transition-delay: 0.2s;">
+                <div class="card-header">
+                    <span class="card-label">03 Gamification Engine</span>
+                    <h2 class="card-title">Hệ thống Điểm cống hiến</h2>
+                </div>
+                <div class="card-content">
+                    <p>Cơ chế tích lũy điểm thưởng tự động dựa trên mức độ hấp dẫn của nội dung chia sẻ thực tế.</p>
+                    <div class="metric-grid">
+                        <div class="metric-box"><span class="val">0.1</span><span class="lbl">Per View</span></div>
+                        <div class="metric-box"><span class="val">1.0</span><span class="lbl">Per Like</span></div>
+                        <div class="metric-box"><span class="val">2.0</span><span class="lbl">Per Comment</span></div>
+                        <div class="metric-box"><span class="val">5.0</span><span class="lbl">Per Approved Post</span></div>
                     </div>
                 </div>
-                <div class="bento-deco" style="color: white; opacity: 0.1;">POINT</div>
             </div>
 
-            <!-- Card 4: Moderation Mode -->
+            <!-- Card 4: Moderation -->
             <div class="bento-card span-4 reveal" style="transition-delay: 0.3s;">
-                <span class="card-label">Control Center</span>
-                <div class="card-title">Quản trị Thông minh</div>
-                <p class="card-desc">Admin tùy chỉnh 3 chế độ kiểm duyệt: Tự động đăng, Duyệt thủ công, hoặc Lọc theo từ khóa nhạy cảm.</p>
-                <div class="bento-deco">CMS</div>
+                <div class="card-header">
+                    <span class="card-label">04 Workflow</span>
+                    <h2 class="card-title">Cơ chế Kiểm duyệt</h2>
+                </div>
+                <div class="card-content">
+                    <p>Admin tùy chỉnh 3 chế độ vận hành:</p>
+                    <ul class="bento-list">
+                        <li><span class="bento-i">1.</span> <strong>Auto-approve:</strong> Đăng ngay lập tức.</li>
+                        <li><span class="bento-i">2.</span> <strong>Manual:</strong> Đội ngũ Admin duyệt bài.</li>
+                        <li><span class="bento-i">3.</span> <strong>Smart Filter:</strong> Chặn bài theo từ khóa.</li>
+                    </ul>
+                </div>
             </div>
 
             <!-- Card 5: Anti-Spam -->
             <div class="bento-card span-4 reveal" style="transition-delay: 0.4s;">
-                <span class="card-label">Security</span>
-                <div class="card-title">Chống Spam & Farming</div>
-                <p class="card-desc">Cơ chế giới hạn trần (Limit Caps) theo ngày và theo bài đăng giúp đảm bảo bảng xếp hạng luôn trung thực.</p>
-                <div class="bento-deco">SAFE</div>
-            </div>
-
-            <!-- Card 6: Leaderboard -->
-            <div class="bento-card span-4 reveal" style="transition-delay: 0.5s;">
-                <span class="card-label">Recognition</span>
-                <div class="card-title">Vinh danh & Xếp hạng</div>
-                <p class="card-desc">Bảng xếp hạng Tuần/Tháng/Năm tự động reset. Push Notification vinh danh Top 3 hàng tháng.</p>
-                <div class="bento-deco">TOP</div>
-            </div>
-
-            <!-- Card 7: Business Value -->
-            <div class="bento-card span-12 reveal" style="transition-delay: 0.6s; border-left: 10px solid #00B96B;">
-                <span class="card-label" style="background: #D1FAE5; color: #00B96B;">Executive Value</span>
-                <div class="card-title">Giá trị Cốt lõi cho Doanh nghiệp</div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 20px;">
-                    <div>
-                        <p class="card-desc">Xây dựng <strong>"Tủ sách tri thức sống"</strong> của ngành Camera, nơi mọi giải pháp kỹ thuật đều được đóng góp và bảo chứng bởi uy tín của chính người dùng.</p>
-                    </div>
-                    <div>
-                        <p class="card-desc">Tạo ra cộng đồng chuyên gia trung thành, giảm thiểu chi phí hỗ trợ kỹ thuật trực tiếp nhờ cơ chế giải đáp chéo từ các thành viên Top Level.</p>
-                    </div>
+                <div class="card-header">
+                    <span class="card-label">05 Compliance</span>
+                    <h2 class="card-title">Chống Gian lận (Anti-Spam)</h2>
                 </div>
-                <div class="bento-deco">DSS</div>
+                <div class="card-content">
+                    <ul class="bento-list">
+                        <li><span class="bento-i">🛡️</span> <strong>Limit Caps:</strong> Giới hạn điểm/bài (Max 500).</li>
+                        <li><span class="bento-i">🛡️</span> <strong>Daily Cap:</strong> Giới hạn điểm/ngày (Max 200).</li>
+                        <li><span class="bento-i">🛡️</span> <strong>Unique IP:</strong> Chỉ tính View duy nhất 24h.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Card 6: Risks -->
+            <div class="bento-card span-4 reveal" style="transition-delay: 0.5s;">
+                <div class="card-header">
+                    <span class="card-label">06 Security & Risk</span>
+                    <h2 class="card-title">Phụ thuộc & Rủi ro</h2>
+                </div>
+                <div class="card-content">
+                    <p><strong>Rủi ro:</strong> Point Farming (Tương tác chéo).</p>
+                    <p><strong>Giải pháp:</strong> Thuật toán Unique Device + Limit Caps.</p>
+                    <p><strong>Hạ tầng:</strong> CDN ổn định & Background Jobs xử lý điểm số.</p>
+                </div>
+            </div>
+
+            <!-- Card 7: Leaderboard -->
+            <div class="bento-card span-4 reveal" style="transition-delay: 0.6s;">
+                <div class="card-header">
+                    <span class="card-label">07 Recognition</span>
+                    <h2 class="card-title">Bảng xếp hạng (Leaderboard)</h2>
+                </div>
+                <div class="card-content">
+                    <p>Tự động cập nhật thứ hạng thực tế theo 3 mốc thời gian:</p>
+                    <ul class="bento-list">
+                        <li><span class="bento-i">📅</span> Tuần (Reset 00:00 Thứ 2)</li>
+                        <li><span class="bento-i">🗓️</span> Tháng (Vinh danh Top 3)</li>
+                        <li><span class="bento-i">⏳</span> Năm (Chuyên gia cao cấp)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Card 8: Value Prop -->
+            <div class="bento-card span-4 reveal" style="transition-delay: 0.7s; background: var(--mint-green-bg); border-color: var(--mint-green);">
+                <div class="card-header">
+                    <span class="card-label" style="background: var(--mint-green); color: white;">08 Business Value</span>
+                    <h2 class="card-title" style="color: var(--mint-green);">Giá trị Kỹ thuật</h2>
+                </div>
+                <div class="card-content" style="color: var(--mint-green);">
+                    <p>Biến dữ liệu người dùng thành tài sản tri thức. Tạo dựng uy tín thực tế cho Đại lý qua điểm số minh bạch.</p>
+                </div>
             </div>
 
         </div>
-    </main>
 
-    <!-- PHASE 2: ABSOLUTE VERBATIM SPEC (100% RAW FIDELITY) -->
-    <div class="raw-spec-divider reveal">
-        <span>TÀI LIỆU KỸ THUẬT NGUYÊN BẢN (VERBATIM)</span>
-    </div>
+        <!-- 2. VERBATIM DOCUMENTATION -->
+        <div class="verbatim-divider reveal"></div>
 
-    <section class="full-raw-spec-container reveal">
-        <div class="executive-container">
-            <div class="full-raw-spec-content">
-                <h1 style="font-size: 2.8rem; font-weight: 900; border-bottom: 8px solid #0068FF; display: inline-block; margin-bottom: 40px;">CHI TIẾT ĐẶC TẢ SPEC</h1>
+        <section class="spec-surface reveal">
+            <div class="spec-body">
+                <h1>ĐẶC TẢ TÍNH NĂNG</h1>
+                <h2>CỘNG ĐỒNG SOCIAL & HỆ THỐNG ĐIỂM CỐNG HIẾN</h2>
+                <p><strong>Ứng dụng Chăm Sóc Khách Hàng — Mobile (iOS/Android) & Admin CMS</strong></p>
                 
-                <p><strong>Dự án:</strong> Ứng dụng Chăm Sóc Khách Hàng — Mobile (iOS/Android) & Admin CMS</p>
-                <p><strong>Mã tính năng:</strong> FEAT-SOCIAL-GAMIFY | <strong>Phiên bản:</strong> v1.0 | <strong>Ngày:</strong> 09/04/2026</p>
+                <p>
+                    <strong>Tên tính năng:</strong> Mạng xã hội nội bộ & Xếp hạng Điểm cống hiến<br>
+                    <strong>Mã tính năng:</strong> FEAT-SOCIAL-GAMIFY<br>
+                    <strong>Phiên bản tài liệu:</strong> v1.0 | <strong>Ngày tạo:</strong> 09/04/2026<br>
+                    <strong>Người viết:</strong> AI DSSCLUB | <strong>Trạng thái:</strong> Draft / Review
+                </p>
 
                 <hr>
 
                 <h2>1. Tổng Quan</h2>
                 <h3>1.1 Mô tả tính năng</h3>
                 <p>Xây dựng một không gian "Cộng đồng" ngay trong App DSS Club, nơi người dùng (Kỹ thuật viên, Đại lý) có thể chia sẻ kinh nghiệm, hình ảnh công trình và thảo luận. Để tăng tính tương tác, hệ thống áp dụng cơ chế <strong>Điểm cống hiến</strong> — loại điểm tích lũy dựa trên mức độ phổ biến của bài đăng (Lượt xem, Thích, Bình luận). Điểm này dùng để xếp hạng thành viên theo tuần/tháng/năm và vinh danh những người đóng góp tích cực nhất.</p>
-                
+
                 <h3>1.2 Mục tiêu (Goals)</h3>
                 <ul>
                     <li>Tăng tỷ lệ giữ chân người dùng (Retention Rate) và thời gian sử dụng App (Time spent).</li>
@@ -240,135 +296,130 @@
                 </blockquote>
 
                 <h2>2. Đối Tượng Người Dùng</h2>
+                <h3>2.1 Vai trò liên quan</h3>
                 <table>
                     <thead>
-                        <tr>
-                            <th>Vai trò</th>
-                            <th>Mô tả</th>
-                            <th>Quyền thực hiện</th>
-                        </tr>
+                        <tr><th>Vai trò</th><th>Mô tả</th><th>Quyền thực hiện</th></tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Thành viên (Level 1)</td>
-                            <td>Người dùng mới</td>
-                            <td>Xem bài viết, Bình luận ẩn danh (Nickname đen). Không được đăng bài hoặc tích điểm.</td>
-                        </tr>
-                        <tr>
-                            <td>Thành viên (Level 2+)</td>
-                            <td>KTV/Đại lý đã xác thực</td>
-                            <td>Đăng bài (Ảnh/Video), Tương tác, Tích lũy điểm cống hiến, Hiển thị Tích xanh.</td>
-                        </tr>
-                        <tr>
-                            <td>Admin / Moderator</td>
-                            <td>Ban quản trị DSS</td>
-                            <td>Cấu hình tham số tính điểm, phê duyệt nội dung, quản lý bảng xếp hạng.</td>
-                        </tr>
+                        <tr><td>Thành viên (Level 1)</td><td>Người dùng mới</td><td>Xem bài viết, Bình luận ẩn danh (Nickname đen). Không được đăng bài hoặc tích điểm.</td></tr>
+                        <tr><td>Thành viên (Level 2+)</td><td>KTV/Đại lý đã xác thực</td><td>Đăng bài (Ảnh/Video), Tương tác, Tích lũy điểm cống hiến, Hiển thị Tích xanh.</td></tr>
+                        <tr><td>Admin / Moderator</td><td>Ban quản trị DSS</td><td>Cấu hình tham số tính điểm, phê duyệt nội dung, quản lý bảng xếp hạng.</td></tr>
                     </tbody>
                 </table>
 
-                <h2>3. Yêu Cầu Chức Năng</h2>
+                <h3>2.2 User Stories</h3>
+                <ul>
+                    <li>[US-01] Là KTV, tôi muốn chia sẻ ảnh "Giải pháp lắp đặt camera khó" của mình để tích lũy điểm cống hiến lên Top bảng xếp hạng.</li>
+                    <li>[US-02] Là người dùng, tôi muốn xem các bài viết Hot nhất trong tuần để cập nhật mẹo kỹ thuật mới.</li>
+                    <li>[US-03] Là Admin, tôi muốn có thể điều chỉnh công thức tính điểm khi có chiến dịch Marketing đặc biệt.</li>
+                </ul>
+
+                <h2>3. Yêu Cầu Chức Năng (Configurable)</h2>
                 <table>
                     <thead>
-                        <tr>
-                            <th>Mã</th>
-                            <th>Mô tả yêu cầu</th>
-                            <th>Ưu tiên</th>
-                            <th>Ghi chú</th>
-                        </tr>
+                        <tr><th>Mã</th><th>Mô tả yêu cầu</th><th>Độ ưu tiên</th><th>Ghi chú</th></tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>FR-01</td>
-                            <td><strong>Bảng tin (Community Feed):</strong> Hiển thị danh sách bài đăng theo thời gian thực hoặc theo thuật toán "Hot". Hỗ trợ Text, Image (9), Video.</td>
-                            <td>Cao</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>FR-02</td>
-                            <td><strong>Quyền Đăng bài:</strong> Admin cài đặt Level tối thiểu. Mặc định Level 2.</td>
-                            <td>Cao</td>
-                            <td>Configurable</td>
-                        </tr>
-                        <tr>
-                            <td>FR-04</td>
-                            <td><strong>Hệ thống Điểm cống hiến:</strong> Tự động cộng điểm dựa trên tương tác. Admin thay đổi hệ số nhân trên CMS.</td>
-                            <td>Cao</td>
-                            <td>Configurable</td>
-                        </tr>
-                        <tr>
-                            <td>FR-06</td>
-                            <td><strong>Admin - Cơ chế kiểm duyệt:</strong> 3 chế độ: Auto, Manual Review, Keyword Filter.</td>
-                            <td>Cao</td>
-                            <td>Configurable</td>
-                        </tr>
+                        <tr><td>FR-01</td><td>**Bảng tin (Community Feed):** Hiển thị theo thời gian thực hoặc Hot. Hỗ trợ Text, Image, Video.</td><td>Cao</td><td></td></tr>
+                        <tr><td>FR-02</td><td>**Quyền Đăng bài (Posting Permission):** Admin cài đặt Level tối thiểu (Mặc định: Level 2).</td><td>Cao</td><td>Configurable</td></tr>
+                        <tr><td>FR-03</td><td>**Tương tác:** Like, Comment, Share, View count.</td><td>Cao</td><td></td></tr>
+                        <tr><td>FR-04</td><td>**Hệ thống Điểm cống hiến:** Tự động cộng điểm. Admin thay đổi hệ số nhân (Multipliers) trên CMS.</td><td>Cao</td><td>Configurable</td></tr>
+                        <tr><td>FR-05</td><td>**Bảng xếp hạng (Leaderboard):** Top 10/50 theo Tuần, Tháng, Năm.</td><td>Cao</td><td></td></tr>
+                        <tr><td>FR-06</td><td>**Admin - Cơ chế kiểm duyệt:** 3 chế độ: Auto, Manual, Smart Filter.</td><td>Cao</td><td>Configurable</td></tr>
+                        <tr><td>FR-07</td><td>**Huy hiệu Vinh danh:** Tự động gắn "Top Tuần", "Chuyên gia".</td><td>Trung bình</td><td></td></tr>
                     </tbody>
                 </table>
 
                 <h2>4. Đặc tả logic Điểm Cống Hiến</h2>
-                <p>Hệ thống tính điểm dựa trên sự kiện (Event-based calculation).</p>
                 <h3>4.1 Công thức mặc định</h3>
-                <p><code>Tổng điểm = (Lượt xem * A) + (Lượt thích * B) + (Bình luận * C) + (Bài đăng * D)</code></p>
+                <code>Tổng điểm = (Lượt xem * A) + (Lượt thích * B) + (Bình luận * C) + (Bài đăng * D)</code>
+                <ul style="margin-top:20px;">
+                    <li><strong>A (View):</strong> 0.1 điểm | <strong>B (Like):</strong> 1 điểm</li>
+                    <li><strong>C (Comment):</strong> 2 điểm | <strong>D (Post):</strong> 5 điểm</li>
+                </ul>
+
+                <h3>4.2 Cấu hình chống gian lận (Anti-Spam)</h3>
                 <ul>
-                    <li>A (Hệ số View): 0.1 điểm / View.</li>
-                    <li>B (Hệ số Like): 1 điểm / Like.</li>
-                    <li>C (Hệ số Comment): 2 điểm / Comment.</li>
-                    <li>D (Hệ số Post): 5 điểm / Bài đăng được duyệt.</li>
+                    <li>Giới hạn điểm tối đa từ 1 bài đăng (E.g: Max 500 điểm).</li>
+                    <li>Giới hạn điểm tối đa mỗi ngày (E.g: Max 200 điểm).</li>
+                    <li>Chỉ tính Unique View trong vòng 24h.</li>
                 </ul>
 
                 <h2>5. Luồng Xử Lý (Flowchart)</h2>
                 <div class="mermaid">
                     flowchart TD
-                        A[User Level 2+ Đăng bài] --> B{Chế độ Kiểm duyệt?}:::warning
+                        A[User Level 2+ Đăng bài]:::process --> B{Chế độ Kiểm duyệt?}:::warning
                         B -->|Duyệt manual| C[Admin CMS Review]:::admin
                         B -->|Auto-approve| D[Bài đăng hiển thị Feed]:::success
                         C -->|Từ chối| E[Thông báo cho User]:::error
                         C -->|Đồng ý| D
-                        D --> F[User khác tương tác: Xem/Like/Comment]:::process
+                        D --> F[User khác tương tác]:::process
                         F --> G[Hệ thống cập nhật Analytics]:::process
-                        G --> H[Chạy Job tính điểm Cống hiến]:::process
-                        H --> I[Cập nhật vào Bảng Xếp Hạng Tuần/Tháng/Năm]:::success
+                        G --> H[Chạy Job tính điểm]:::process
+                        H --> I[Cập nhật Leaderboard]:::success
 
-                        classDef success fill:#dcfce7,stroke:#22c55e,stroke-width:2px;
-                        classDef warning fill:#fef9c3,stroke:#eab308,stroke-width:2px;
-                        classDef error fill:#fee2e2,stroke:#ef4444,stroke-width:2px;
-                        classDef process fill:#dbeafe,stroke:#3b82f6,stroke-width:2px;
-                        classDef admin fill:#1e293b,stroke:#0f172a,stroke-width:2px,color:#fff;
+                        classDef success fill: #E8FBF2, stroke: #00B96B, stroke-width: 2px, color: #00B96B;
+                        classDef warning fill: #FFF0E8, stroke: #FF5C00, stroke-width: 2px, color: #FF5C00;
+                        classDef error fill: #FFF0EE, stroke: #C0392B, stroke-width: 2px, color: #C0392B;
+                        classDef process fill: #E8F1FF, stroke: #0068FF, stroke-width: 2px, color: #0068FF;
+                        classDef admin fill: #0D1B3E, stroke: #0D1B3E, stroke-width: 2px, color: #fff;
                 </div>
 
+                <h2>6. Xử Lý Lỗi & Trường Hợp Ngoại Lệ</h2>
+                <table>
+                    <thead>
+                        <tr><th>Tình huống</th><th>Thông báo</th><th>Hành động</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Level 1 cố đăng bài</td><td>"Yêu cầu định danh Level 2..."</td><td>Chuyển hướng trang eKYC</td></tr>
+                        <tr><td>Từ khóa cấm</td><td>"Nội dung không phù hợp..."</td><td>Đẩy vào Chờ duyệt (Pending)</td></tr>
+                        <tr><td>Lỗi mạng upload</td><td>"Kết nối không ổn định..."</td><td>Resume upload sau X giây</td></tr>
+                    </tbody>
+                </table>
+
                 <h2>7. Tiêu Chí Chấp Nhận (Acceptance Criteria)</h2>
-                <ul class="ac-list">
-                    <li>[AC-01] Admin thay đổi hệ số nhân (A, B, C, D) trên CMS áp dụng ngay lập tức cho các tương tác sau đó.</li>
-                    <li>[AC-02] Bảng xếp hạng Tuần tự động reset vào 00:00 sáng Thứ Hai.</li>
-                    <li>[AC-03] Top 3 Bảng xếp hạng tháng nhận thông báo Push vinh danh.</li>
-                    <li>[AC-04] Không tính điểm cho những tương tác tự Like/Comment bởi chính chủ.</li>
+                <ul class="ac-list" style="list-style:none; padding:0;">
+                    <li style="margin-bottom:15px; padding-left:35px; position:relative;"><span style="position:absolute; left:0; color:var(--mint-green); font-weight:900;">✅</span> [AC-01] Hệ số (A, B, C, D) update real-time trên CMS.</li>
+                    <li style="margin-bottom:15px; padding-left:35px; position:relative;"><span style="position:absolute; left:0; color:var(--mint-green); font-weight:900;">✅</span> [AC-02] BXH Tuần reset 00:00 Thứ Hai.</li>
+                    <li style="margin-bottom:15px; padding-left:35px; position:relative;"><span style="position:absolute; left:0; color:var(--mint-green); font-weight:900;">✅</span> [AC-03] Top 3 Tháng nhận Push vinh danh.</li>
+                    <li style="margin-bottom:15px; padding-left:35px; position:relative;"><span style="position:absolute; left:0; color:var(--mint-green); font-weight:900;">✅</span> [AC-04] Không tính điểm tự tương tác (Self-engagement).</li>
                 </ul>
 
                 <h2>8. Phụ Thuộc & Rủi Ro</h2>
+                <h3>8.1 Phụ thuộc</h3>
+                <p>Hạ tầng S3/CDN đảm bảo tốc độ. Background Job xử lý hàng ngàn tương tác đồng thời.</p>
                 <h3>8.2 Rủi ro</h3>
-                <ul>
-                    <li><strong>Point Farming:</strong> Giải pháp: Áp dụng IP/Device duy nhất và giới hạn trần (Limit Caps).</li>
-                    <li><strong>Nội dung độc hại:</strong> Giải pháp: Lọc từ khóa tự động và nút "Báo cáo bài viết".</li>
-                </ul>
+                <p><strong>Point Farming:</strong> Giải pháp Unique ID & Limit Caps. <strong>Nội dung độc hại:</strong> Bộ lọc AI & Báo cáo cộng đồng.</p>
 
+                <h2>9. Lịch Sử Thay Đổi</h2>
+                <table>
+                    <thead>
+                        <tr><th>Version</th><th>Date</th><th>Author</th><th>Changes</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>v1.0</td><td>09/04/2026</td><td>AI DSSCLUB</td><td>Khởi tạo tài liệu Community Feed & Gamification.</td></tr>
+                    </tbody>
+                </table>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
     <footer>
-        © 2026 DSS CLUB • MASTER SPEC v10.0 • BENTO & VERBATIM SYSTEM
+        DSS CLUB EXECUTIVE PORTAL • BRAND v1.2 • PREMIUM FIDELITY
     </footer>
 
     <script>
-        // Init Mermaid
+        // Mermaid Initializer
         mermaid.initialize({ startOnLoad: true, theme: 'neutral', flowchart: { useMaxWidth: true, htmlLabels: true } });
 
-        // Scroll Animation (Intersection Observer)
-        const observerOptions = { threshold: 0.1 };
+        // Reveal Animation Logic
+        const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -50px 0px' };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Reveal once
                 }
             });
         }, observerOptions);
