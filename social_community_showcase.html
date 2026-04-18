@@ -349,15 +349,15 @@
                 <h2>5. Luồng Xử Lý (Flowchart)</h2>
                 <div class="mermaid">
                     flowchart TD
-                        A[User Level 2+ Đăng bài]:::process --> B{Chế độ Kiểm duyệt?}:::warning
-                        B -->|Duyệt manual| C[Admin CMS Review]:::admin
-                        B -->|Auto-approve| D[Bài đăng hiển thị Feed]:::success
-                        C -->|Từ chối| E[Thông báo cho User]:::error
+                        A["User Level 2+ Đăng bài"]:::process --> B{"Chế độ Kiểm duyệt?"}:::warning
+                        B -->|Duyệt manual| C["Admin CMS Review"]:::admin
+                        B -->|Auto-approve| D["Bài đăng hiển thị Feed"]:::success
+                        C -->|Từ chối| E["Thông báo cho User"]:::error
                         C -->|Đồng ý| D
-                        D --> F[User khác tương tác]:::process
-                        F --> G[Hệ thống cập nhật Analytics]:::process
-                        G --> H[Chạy Job tính điểm]:::process
-                        H --> I[Cập nhật Leaderboard]:::success
+                        D --> F["User khác tương tác"]:::process
+                        F --> G["Hệ thống cập nhật Analytics"]:::process
+                        G --> H["Chạy Job tính điểm"]:::process
+                        H --> I["Cập nhật Leaderboard"]:::success
 
                         classDef success fill: #E8FBF2, stroke: #00B96B, stroke-width: 2px, color: #00B96B;
                         classDef warning fill: #FFF0E8, stroke: #FF5C00, stroke-width: 2px, color: #FF5C00;
