@@ -3,297 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHECK-IN SỰ KIỆN - DSS CLUB v9.7.1 Ultimate</title>
+    <title>CHECK-IN SỰ KIỆN - DSS CLUB v10.0</title>
     
-    <!-- Executive Standard Font: Inter -->
+    <!-- Standard Executive Font: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- Master Design System -->
+    <!-- Design System -->
     <link rel="stylesheet" href="css/brand_tokens.css">
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     
     <style>
-        /* THE ULTIMATE EXECUTIVE SYSTEM v9.7.1 */
+        /* THE COLORIZED FIDELITY SYSTEM v10.0 */
         * { font-family: 'Inter', sans-serif !important; box-sizing: border-box; }
         body { background: #f8fafc; color: #0f172a; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
         
-        .executive-container { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
+        .executive-container { max-width: 1300px; margin: 0 auto; padding: 0 40px; }
         
-        /* 1. BENTO GRID AREA */
-        .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; margin: 40px 0; }
-        .bento-card { background: white; border-radius: 32px; padding: 40px; border: 1px solid rgba(13,27,62,0.05); box-shadow: 0 20px 60px -10px rgba(13,27,62,0.04); transition: transform 0.5s ease; }
+        /* 1. BENTO SUMMARY SECTION */
+        .executive-hero { text-align: center; padding: 100px 0 60px; }
+        .executive-hero h1 { font-size: 4.2rem; font-weight: 900; letter-spacing: -4px; margin: 0; line-height: 1; color: #0f172a; }
+        .executive-hero p { font-size: 1.3rem; color: #64748b; margin-top: 20px; font-weight: 500; }
+
+        .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; margin-bottom: 80px; }
+        .bento-card { background: white; border-radius: 32px; padding: 40px; border: 1px solid rgba(13,27,62,0.05); box-shadow: 0 20px 60px -10px rgba(13,27,62,0.04); transition: transform 0.4s ease; }
         .bento-card:hover { transform: translateY(-5px); border-color: #0068FF; }
+        
+        .card-label { display: inline-block; background: #e8f1ff; color: #0068FF; padding: 6px 12px; border-radius: 99px; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 1px; }
+        .card-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 15px; letter-spacing: -1px; }
+        
+        /* Card Helper Classes */
         .span-12 { grid-column: span 12; } .span-8 { grid-column: span 8; } .span-6 { grid-column: span 6; } .span-4 { grid-column: span 4; }
-        
-        .card-label { display: inline-block; background: #e8f1ff; color: #0068FF; padding: 6px 12px; border-radius: 99px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-bottom: 20px; }
-        .card-title { font-size: 1.6rem; font-weight: 800; margin: 0 0 15px; letter-spacing: -1px; }
 
-        /* 2. COLORED MERMAID AREA */
-        .mermaid-section { background: white; border-radius: 40px; margin: 60px 0; padding: 80px 40px; text-align: center; box-shadow: 0 40px 100px rgba(0,0,0,0.03); }
-        .mermaid { margin: 40px auto; }
-        
-        /* Mermaid Color Classes */
-        .mermaid .node rect { stroke-width: 2px !important; rx: 10; ry: 10; }
-        .mermaid .success rect { fill: #e6f7ff !important; stroke: #0068FF !important; }
-        .mermaid .active rect { fill: #e6f7ed !important; stroke: #00B96B !important; }
-        .mermaid .warning rect { fill: #fff7e6 !important; stroke: #FF5C00 !important; }
-        .mermaid .error rect { fill: #fff1f0 !important; stroke: #F5222D !important; }
-        .mermaid .start rect { fill: #0f172a !important; stroke: #0f172a !important; color: white !important; }
-
-        /* 3. FULL RAW SPEC AREA (ABSOLUTE 100% CONTENT) */
+        /* 2. VERBATIM SPEC SECTION */
         .raw-spec-divider { border-top: 2px dashed #cbd5e1; margin: 100px 0 60px; position: relative; text-align: center; }
-        .raw-spec-divider span { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: #f8fafc; padding: 0 30px; font-weight: 900; color: #64748b; letter-spacing: 2px; }
+        .raw-spec-divider span { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: #f8fafc; padding: 0 30px; font-weight: 900; color: #94a3b8; letter-spacing: 3px; font-size: 0.75rem; }
         
-        .full-spec-container { background: #ffffff; border-radius: 40px 40px 0 0; border: 1px solid #e2e8f0; padding: 80px; box-shadow: 0 -20px 100px rgba(0,0,0,0.02); }
-        .full-spec-content { max-width: 1000px; margin: 0 auto; line-height: 1.8; color: #334155; }
-        .full-spec-content h1, .full-spec-content h2, .full-spec-content h3 { color: #0f172a; margin-top: 50px; font-weight: 800; }
-        .full-spec-content table { width: 100%; border-collapse: collapse; margin: 30px 0; font-size: 0.85rem; }
-        .full-spec-content th, .full-spec-content td { padding: 15px; border: 1px solid #e2e8f0; text-align: left; vertical-align: top; }
-        .full-spec-content th { background: #f8fafc; font-weight: 900; }
+        .full-raw-spec-container { background: white; border-top: 1px solid #e2e8f0; padding: 100px 0; box-shadow: 0 -20px 100px rgba(0,0,0,0.02); }
+        .full-raw-spec-content { max-width: 900px; margin: 0 auto; line-height: 1.8; color: #334155; font-size: 1rem; }
+        .full-raw-spec-content h1, .full-raw-spec-content h2, .full-raw-spec-content h3 { color: #0f172a; font-weight: 800; margin-top: 60px; }
+        .full-raw-spec-content table { width: 100%; border-collapse: collapse; margin: 30px 0; font-size: 0.85rem; }
+        .full-raw-spec-content th, .full-raw-spec-content td { padding: 15px; border: 1px solid #e2e8f0; text-align: left; vertical-align: top; }
+        .full-raw-spec-content th { background: #f8fafc; font-weight: 900; color: #0f172a; }
         
-        .executive-hero { text-align: center; padding: 120px 0 80px; }
-        .executive-hero h1 { font-size: 4.5rem; font-weight: 900; letter-spacing: -4px; margin: 0; line-height: 1; }
-        .executive-hero p { font-size: 1.4rem; color: #64748b; margin-top: 25px; font-weight: 500; }
-        
-        ul.check-list { list-style: none; padding: 0; }
-        ul.check-list li { padding: 8px 0; display: flex; gap: 10px; align-items: flex-start; }
-        .bullet { min-width: 8px; height: 8px; border-radius: 50%; background: #0068FF; margin-top: 8px; }
+        .bento-list { list-style: none; padding: 0; margin: 0; }
+        .bento-list li { padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; gap: 12px; align-items: flex-start; }
+        .bento-list li:last-child { border: none; }
+        .bento-dot { min-width: 8px; height: 8px; border-radius: 50%; background: #0068FF; margin-top: 8px; }
+        .mermaid { margin: 40px auto; text-align: center; }
     </style>
 </head>
 <body>
     <header class="executive-container">
         <div class="executive-hero">
-            <span style="font-weight:900; color:#0068ff; letter-spacing:4px; text-transform:uppercase; font-size:0.8rem;">DSS CLUB ULTIMATE v9.7.1</span>
+            <span style="font-weight:900; color:#0068ff; letter-spacing:5px; text-transform:uppercase; font-size:0.8rem;">DSS CLUB EXECUTIVE PORTAL v10.0</span>
             <h1>Check-in Sự kiện</h1>
-            <p>Hệ thống AI Face & Dynamic QR - Trình diễn Chiến lược & Đặc tả Chi tiết</p>
+            <p>Hệ thống AI Face & Dynamic QR - Chiến lược Vận hành thông minh</p>
         </div>
     </header>
 
     <main class="executive-container">
-        <!-- PHASE 1: BENTO SUMMARY (30s FOR BOSS) -->
+        <!-- PHASE 1: EXPANDED EXECUTIVE BENTO SUMMARY -->
         <div class="bento-grid">
-            <div class="bento-card span-6">
-                <span class="card-label">Giá trị cho Người dùng</span>
-                <h2 class="card-title">Cá nhân hóa & Tiện lợi</h2>
-                <ul class="check-list">
-                    <li><div class="bullet"></div> <b>Thiệp mời AI:</b> Lồng ghép chân dung khách mời cá nhân hóa.</li>
-                    <li><div class="bullet"></div> <b>QR Động (TOTP):</b> Chống gian lận bằng ảnh chụp màn hình.</li>
-                    <li><div class="bullet"></div> <b>Geofencing:</b> Chỉ mở mã check-in khi khách thực sự có mặt.</li>
+            <div class="bento-card span-4">
+                <span class="card-label">Mục tiêu Chiến lược</span>
+                <h2 class="card-title">Tại sao chúng ta làm?</h2>
+                <ul class="bento-list">
+                    <li><div class="bento-dot"></div> <b>An toàn tuyệt đối:</b> Loại bỏ 100% check-in hộ qua mã QR.</li>
+                    <li><div class="bento-dot"></div> <b>Tăng trải nghiệm:</b> Giảm thời gian đón khách & cá nhân hóa thiệp mời.</li>
+                    <li><div class="bento-dot"></div> <b>Data Real-time:</b> Theo dõi sát sao tỉ lệ khách tham dự thực tế.</li>
                 </ul>
             </div>
-            <div class="bento-card span-6">
-                <span class="card-label">Giá trị cho Vận hành</span>
-                <h2 class="card-title">Chính xác & Minh bạch</h2>
-                <ul class="check-list">
-                    <li><div class="bullet"></div> <b>AI Face Match:</b> Đối soát khuôn mặt với dữ liệu KYC Level 2.</li>
-                    <li><div class="bullet"></div> <b>Duyệt 2 lớp:</b> Kết hợp AI và Staff đối chiếu trực quan.</li>
-                    <li><div class="bullet"></div> <b>Đồng bộ Dashboard:</b> Báo cáo khách tham dự theo thời gian thực.</li>
+            <div class="bento-card span-4">
+                <span class="card-label">Công nghệ lõi</span>
+                <h2 class="card-title">Tam giác Bảo mật</h2>
+                <ul class="bento-list">
+                    <li><div class="bento-dot"></div> <b>QR Động (TOTP):</b> Mã tự đổi mỗi 30s.</li>
+                    <li><div class="bento-dot"></div> <b>GPS Geofencing:</b> Chỉ mở mã khi khách ở gần hội trường.</li>
+                    <li><div class="bento-dot"></div> <b>AI Face Match:</b> Đối soát khuôn mặt tại quầy đón.</li>
                 </ul>
             </div>
-            <div class="bento-card span-12" style="background: linear-gradient(135deg, #0068FF 0%, #00AAFF 100%); color:white; text-align:center;">
-                <h2 class="card-title" style="color:white; margin:0; font-size: 2.2rem;">GIẢI QUYẾT TRIỆT ĐỂ BÀI TOÁN CHECK-IN HỘ</h2>
+            <div class="bento-card span-4">
+                <span class="card-label">Quy trình Vận hành</span>
+                <h2 class="card-title">Luồng công việc Staff</h2>
+                <ul class="bento-list">
+                    <li><div class="bento-dot"></div> <b>Quét mã:</b> Tốc độ quét &lt; 500ms qua Staff App.</li>
+                    <li><div class="bento-dot"></div> <b>Duyệt 2 lớp:</b> Kết hợp AI tự động và Staff đối chiếu thủ công.</li>
+                </ul>
+            </div>
+
+            <div class="bento-card span-8" style="background: linear-gradient(135deg, #091e42 0%, #0068FF 100%); color:white;">
+                <h2 class="card-title" style="color:white; font-size: 1.8rem;">GIÁ TRỊ: Bảo mật hội viên DSS Club cao cấp nhất.</h2>
+                <p style="opacity:0.8; margin-top:10px;">Thay vì chỉ quét tập trung, chúng ta kết hợp vị trí GPS và Nhận diện khuôn mặt để đảm bảo "Đúng người - Đúng lúc - Đúng địa điểm".</p>
+            </div>
+            <div class="bento-card span-4" style="background: #fff1f0; border: 1px solid #F5222D;">
+                <span class="card-label" style="background:#F5222D; color:white;">Rủi ro & Giải pháp</span>
+                <ul class="bento-list">
+                    <li><div class="bento-dot" style="background:#F5222D;"></div> GPS yếu -> Tăng bán kính R.</li>
+                    <li><div class="bento-dot" style="background:#F5222D;"></div> Khách hết pin -> Staff tra cứu SĐT.</li>
+                </ul>
             </div>
         </div>
-
-        <!-- PHASE 2: COLORED FLOWCHART -->
-        <section class="mermaid-section">
-            <span class="card-label">Sơ đồ Vận hành & Logic Hệ thống</span>
-            <h2 style="font-size: 2.2rem; font-weight: 900; letter-spacing: -1px; margin-bottom: 10px;">Quy trình Check-in v9.7</h2>
-            <div class="mermaid">
-                %%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#0068FF', 'edgeLabelBackground':'#ffffff', 'fontSize': '14px' }}}%%
-                flowchart TD
-                A[Admin Tạo Sự Kiện]:::start --> B[Khách Chụp Avatar & Xem Thiệp]:::success
-                B --> C{"Check GPS?"}:::warning
-                C -->|"Ngoài R"| D["Khóa mã QR — Cảnh báo"]:::error
-                C -->|"Trong R"| E["App hiện QR Động TOTP"]:::active
-                E --> F["Staff Quét & Đối soát Face AI"]:::success
-                F --> G{"Khớp > 80%?"}:::warning
-                G -->|"Không"| H["Staff đối chiếu thủ công"]:::error
-                G -->|"Có"| I["Duyệt & Cộng điểm thưởng"]:::active
-                I --> J["Update Dashboard Admin"]:::success
-
-                classDef start fill:#0f172a,stroke:#0f172a,color:#fff
-                classDef success fill:#e6f7ed,stroke:#00B96B,color:#00B96B
-                classDef active fill:#e6f7ff,stroke:#0068FF,color:#0068FF
-                classDef warning fill:#fff7e6,stroke:#FF5C00,color:#FF5C00
-                classDef error fill:#fff1f0,stroke:#F5222D,color:#F5222D
-            </div>
-        </section>
     </main>
 
-    <!-- PHASE 3: 100% NGUYÊN BẢN (KHÔNG LƯỢC BỎ) -->
+    <!-- PHASE 2: ABSOLUTE VERBATIM SPEC WITH COLORIZED FLOWCHART -->
     <div class="raw-spec-divider">
-        <span>100% NỘI DUNG ĐẶC TẢ CHI TIẾT</span>
+        <span>TÀI LIỆU KỸ THUẬT NGUYÊN BẢN (100% FIDELITY)</span>
     </div>
 
-    <section class="full-spec-container">
-        <div class="full-spec-content">
-            <h1 style="font-size: 2.8rem; font-weight: 900; color: #0f172a; margin-bottom: 20px; border-bottom: 8px solid #0068FF; display: inline-block;">ĐẶC TẢ TÍNH NĂNG</h1>
-            <h2 style="margin-top:0;">HỆ THỐNG CHECK-IN SỰ KIỆN (AI FACE & DYNAMIC QR)</h2>
-            <p><strong>Ứng dụng Chăm Sóc Khách Hàng — Mobile (User App), Staff App & Admin CMS</strong></p>
+    <section class="full-raw-spec-container">
+        <div class="executive-container">
+            <div class="full-raw-spec-content">
+                <h1 style="font-size: 3rem; font-weight: 900; border-bottom: 8px solid #0068FF; display: inline-block; margin-bottom: 40px;">ĐẶC TẢ TÍNH NĂNG</h1>
+                <h2>HỆ THỐNG CHECK-IN SỰ KIỆN (AI FACE & DYNAMIC QR)</h2>
+                <p><strong>Ứng dụng Chăm Sóc Khách Hàng — Mobile (User App), Staff App & Admin CMS</strong></p>
+                <p>
+                    <strong>Tên tính năng:</strong> Check-in sự kiện thông minh (AI Face & Dynamic QR)<br>
+                    <strong>Mã tính năng:</strong> FEAT-EVENT-CHECKIN<br>
+                    <strong>Phiên bản tài liệu:</strong> v1.1 | <strong>Ngày tạo:</strong> 10/04/2026<br>
+                    <strong>Người viết:</strong> AI DSSCLUB<br>
+                    <strong>Trạng thái:</strong> Draft / Review
+                </p>
 
-            <p>
-                <strong>Tên tính năng:</strong> Check-in sự kiện thông minh (AI Face & Dynamic QR)<br>
-                <strong>Mã tính năng:</strong> FEAT-EVENT-CHECKIN<br>
-                <strong>Phiên bản tài liệu:</strong> v1.1 | <strong>Ngày tạo:</strong> 10/04/2026<br>
-                <strong>Người viết:</strong> AI DSSCLUB<br>
-                <strong>Trạng thái:</strong> Draft / Review
-            </p>
+                <hr style="border:0; border-top:1px solid #e2e8f0; margin: 50px 0;">
 
-            <hr style="border:0; border-top:1px solid #e2e8f0; margin: 40px 0;">
+                <h2>1. Tổng Quan</h2>
+                <h3>1.1 Mô tả tính năng</h3>
+                <p>Xây dựng quy trình Check-in sự kiện (Workshop, Hội nghị khách hàng) khép kín, bảo mật và chuyên nghiệp. Tính năng cho phép tự động hóa việc xác thực danh tính khách mời bằng sự kết hợp giữa <strong>Mã QR Động</strong> (chống gian lận ảnh chụp màn hình), <strong>Định vị GPS</strong> (đảm bảo khách có mặt tại điểm tập kết) và <strong>AI Face Recognition</strong> (đối soát khuôn mặt khách với dữ liệu xác minh KYC).</p>
+                
+                <h3>1.2 Mục tiêu (Goals)</h3>
+                <ul>
+                    <li>Loại bỏ hoàn toàn tình trạng check-in hộ hoặc sử dụng thẻ mời giả.</li>
+                    <li>Rút ngắn thời gian đón khách, tăng tính trải nghiệm công nghệ tại sự kiện.</li>
+                    <li>Tự động hóa việc cộng điểm thưởng cho khách tham dự đúng giờ.</li>
+                    <li>Thu thập dữ liệu check-in thời gian thực phục vụ báo cáo và in thẻ đeo tại chỗ.</li>
+                </ul>
 
-            <h2>1. Tổng Quan</h2>
-            <h3>1.1 Mô tả tính năng</h3>
-            <p>Xây dựng quy trình Check-in sự kiện (Workshop, Hội nghị khách hàng) khép kín, bảo mật và chuyên nghiệp. Tính năng cho phép tự động hóa việc xác thực danh tính khách mời bằng sự kết hợp giữa <strong>Mã QR Động</strong> (chống gian lận ảnh chụp màn hình), <strong>Định vị GPS</strong> (đảm bảo khách có mặt tại điểm tập kết) và <strong>AI Face Recognition</strong> (đối soát khuôn mặt khách với dữ liệu xác minh KYC).</p>
-            
-            <h3>1.2 Mục tiêu (Goals)</h3>
-            <ul>
-                <li>Loại bỏ hoàn toàn tình trạng check-in hộ hoặc sử dụng thẻ mời giả.</li>
-                <li>Rút ngắn thời gian đón khách, tăng tính trải nghiệm công nghệ tại sự kiện.</li>
-                <li>Tự động hóa việc cộng điểm thưởng cho khách tham dự đúng giờ.</li>
-                <li>Thu thập dữ liệu check-in thời gian thực phục vụ báo cáo và in thẻ đeo tại chỗ.</li>
-            </ul>
+                <h3>1.3 Ngoài phạm vi (Non-goals)</h3>
+                <p>⚠️ Tính năng này KHÔNG bao gồm: Không tích hợp trực tiếp với hệ thống kiểm soát cửa vật lý; Không thay thế quy trình kiểm tra CCCD thủ công.</p>
 
-            <h3>1.3 Ngoài phạm vi (Non-goals)</h3>
-            <p>⚠️ Tính năng này KHÔNG bao gồm:</p>
-            <ul>
-                <li>Không tích hợp trực tiếp với hệ thống kiểm soát cửa vật lý (access control hardware).</li>
-                <li>Không thay thế quy trình kiểm tra CCCD thủ công khi có tranh chấp pháp lý.</li>
-                <li>Không xử lý trường hợp khách vãng lai chưa có tài khoản trong hệ thống.</li>
-            </ul>
+                <h2>2. Đối Tượng Người Dùng</h2>
+                <h3>2.1 Vai trò liên quan</h3>
+                <table>
+                    <thead><tr><th>Vai trò</th><th>Mô tả</th><th>Quyền thực hiện</th></tr></thead>
+                    <tbody>
+                        <tr><td>Khách mời (User)</td><td>Người dùng app cấp Level 2+ (đã KYC)</td><td>Chụp ảnh Avatar sự kiện, nhận thiệp mời, xuất mã QR để check-in.</td></tr>
+                        <tr><td>Nhân viên (Staff)</td><td>Nhân viên DSS trực tại quầy check-in</td><td>Dùng Staff App quét mã QR của khách.</td></tr>
+                        <tr><td>Quản trị viên (Admin)</td><td>Người quản lý sự kiện trên CMS</td><td>Tạo sự kiện, cấu hình tọa độ GPS, bán kính, điểm thưởng.</td></tr>
+                    </tbody>
+                </table>
 
-            <h2>2. Đối Tượng Người Dùng</h2>
-            <h3>2.1 Vai trò liên quan</h3>
-            <table>
-                <thead><tr><th>Vai trò</th><th>Mô tả</th><th>Quyền thực hiện</th></tr></thead>
-                <tbody>
-                    <tr><td>Khách mời (User)</td><td>Người dùng app cấp Level 2+ (đã KYC)</td><td>Chụp ảnh Avatar sự kiện, nhận thiệp mời, xuất mã QR để check-in.</td></tr>
-                    <tr><td>Nhân viên (Staff)</td><td>Nhân viên DSS trực tại quầy check-in</td><td>Dùng Staff App quét mã QR của khách, xác nhận khuôn mặt trùng khớp và duyệt vào cửa.</td></tr>
-                    <tr><td>Quản trị viên (Admin)</td><td>Người quản lý sự kiện trên CMS</td><td>Tạo sự kiện, cấu hình tọa độ GPS, bán kính, điểm thưởng, thời gian làm mới QR và xuất báo cáo.</td></tr>
-                </tbody>
-            </table>
+                <h2>3. Yêu Cầu Chức Năng</h2>
+                <h3>3.1 Đối với Người dùng (Guest App)</h3>
+                <table>
+                    <thead><tr><th>Mã</th><th>Mô tả yêu cầu</th><th>Độ ưu tiên</th><th>Ghi chú</th></tr></thead>
+                    <tbody>
+                        <tr><td>FR-01</td><td><strong>Thông báo sự kiện:</strong> Gửi Push & Inbox cho user.</td><td>Cao</td><td></td></tr>
+                        <tr><td>FR-04</td><td><strong>Mã QR Động (Dynamic QR):</strong> Tự động làm mới sau X giây (TOTP). Mặc định 30s.</td><td>Cao</td><td></td></tr>
+                        <tr><td>FR-05</td><td><strong>Rào cản GPS (Geofencing):</strong> Mã QR chỉ hiển thị khi tọa độ khách nằm trong bán kính R.</td><td>Cao</td><td></td></tr>
+                    </tbody>
+                </table>
 
-            <h3>2.2 User Stories</h3>
-            <ul>
-                <li><strong>[US-01]</strong> Là khách mời, tôi muốn nhận được thiệp mời điện tử có in hình mình vừa chụp để cảm thấy được trân trọng và thể hiện tính cá nhân hóa.</li>
-                <li><strong>[US-02]</strong> Là nhân viên check-in, tôi muốn khi quét mã của khách, hệ thống phải báo ngay khuôn mặt khách có đúng với ảnh đã xác minh (KYC) không để tôi cho phép họ vào cửa.</li>
-                <li><strong>[US-03]</strong> Là Admin, tôi muốn quy định mã QR của khách cứ 30 giây phải đổi một lần để tránh việc khách chụp ảnh màn hình gửi cho đồng nghiệp check-in thay.</li>
-                <li><strong>[US-04]</strong> Là Admin, tôi muốn xem báo cáo thời gian thực gồm số khách đã vào cửa và xuất danh sách cuối buổi ra Excel.</li>
-            </ul>
+                <h3>3.2 Đối với Nhân viên (Staff App)</h3>
+                <table>
+                    <thead><tr><th>Mã</th><th>Mô tả yêu cầu</th><th>Độ ưu tiên</th><th>Ghi chú</th></tr></thead>
+                    <tbody>
+                        <tr><td>FR-07</td><td><strong>Đối soát Face AI:</strong> So sánh ảnh Camera tablet tại quầy với Ảnh KYC.</td><td>Cao</td><td>Hiển thị % trùng khớp</td></tr>
+                        <tr><td>FR-08</td><td><strong>Màn hình xác nhận:</strong> Hiển thị song song 2 ảnh đối chiếu trực quan.</td><td>Cao</td><td></td></tr>
+                    </tbody>
+                </table>
 
-            <h2>3. Yêu Cầu Chức Năng</h2>
-            <p>Các tham số có ký hiệu <code>[X]</code>, <code>[R]</code>, <code>[Z]</code> là <strong>Configurable</strong> — Admin có thể cấu hình linh hoạt trên CMS.</p>
+                <h2>5. Luồng Xử Lý (Flowchart) - HIỆU ỨNG THỊ GIÁC v10.0</h2>
+                <div class="mermaid">
+                    flowchart TD
+                        A["Admin Tạo Sự Kiện"]:::start --> B["Khách Chụp Avatar & Xem Thiệp"]:::success
+                        B --> C{"Check GPS?"}:::warning
+                        C -->|"Ngoài R"| D["Khóa mã QR — Cảnh báo"]:::error
+                        C -->|"Trong R"| E["App hiện QR Động TOTP"]:::active
+                        E --> F["Staff Quét & Đối soát Face AI"]:::success
+                        F --> G{"Khớp > 80%?"}:::warning
+                        G -->|"Không"| H["Staff đối chiếu thủ công"]:::error
+                        G -->|"Có"| I["Duyệt & Cộng điểm thưởng"]:::active
+                        I --> J["Update Dashboard Admin"]:::success
 
-            <h3>3.1 Đối với Người dùng (Guest App)</h3>
-            <table>
-                <thead><tr><th>Mã</th><th>Mô tả yêu cầu</th><th>Độ ưu tiên</th><th>Ghi chú</th></tr></thead>
-                <tbody>
-                    <tr><td>FR-01</td><td><strong>Thông báo sự kiện:</strong> Gửi Push Notification và Inbox cho user khi có thiệp mời mới.</td><td>Cao</td><td></td></tr>
-                    <tr><td>FR-02</td><td><strong>Cung cấp Avatar sự kiện:</strong> Yêu cầu user chụp một tấm hình chân dung mới trực tiếp từ camera để làm Avatar trên thiệp mời điện tử.</td><td>Cao</td><td>Không cho phép chọn ảnh từ thư viện.</td></tr>
-                    <tr><td>FR-03</td><td><strong>Xem Thiệp mời (Invitation Preview):</strong> Render thiệp mời điện tử đẹp mắt (Template do Admin cấu hình), hiển thị Tên, Avatar và tọa độ/thời gian sự kiện.</td><td>Cao</td><td>Xem trong app, có nút chia sẻ.</td></tr>
-                    <tr><td>FR-04</td><td><strong>Mã QR Động (Dynamic QR):</strong> Hiển thị mã QR duy nhất cho mỗi user. Mã này tự động làm mới sau <code>[X]</code> giây dựa trên thuật toán TOTP.</td><td>Cao</td><td><code>[X]</code> configurable, mặc định 30s.</td></tr>
-                    <tr><td>FR-05</td><td><strong>Rào cản GPS (Geofencing):</strong> Mã QR chỉ hiển thị khi tọa độ khách nằm trong bán kính <code>[R]</code> mét quanh tọa độ sự kiện. Nếu ngoài bán kính, ẩn QR và hiển thị: <em>"Vui lòng di chuyển đến khu vực sự kiện để nhận mã check-in."</em></td><td>Cao</td><td><code>[R]</code> configurable, mặc định 200m.</td></tr>
-                </tbody>
-            </table>
+                        classDef start fill:#0f172a,stroke:#0f172a,color:#fff
+                        classDef success fill:#e6f7ed,stroke:#00B96B,color:#00B96B
+                        classDef active fill:#e6f7ff,stroke:#0068FF,color:#0068FF
+                        classDef warning fill:#fff7e6,stroke:#FF5C00,color:#FF5C00
+                        classDef error fill:#fff1f0,stroke:#F5222D,color:#F5222D
+                </div>
 
-            <h3>3.2 Đối với Nhân viên (Staff App)</h3>
-            <table>
-                <thead><tr><th>Mã</th><th>Mô tả yêu cầu</th><th>Độ ưu tiên</th><th>Ghi chú</th></tr></thead>
-                <tbody>
-                    <tr><td>FR-06</td><td><strong>Quét mã (Scan Mode):</strong> Sử dụng camera máy tính bảng/điện thoại quét mã QR động của khách.</td><td>Cao</td><td>Tốc độ quét &lt; 500ms.</td></tr>
-                    <tr><td>FR-07</td><td><strong>Đối soát Face AI:</strong> Hệ thống tự động gọi API nhận diện khuôn mặt — so sánh ảnh từ Camera tablet tại quầy với Ảnh KYC (Level 2) của tài khoản vừa quét QR.</td><td>Cao</td><td>Hiển thị % trùng khớp.</td></tr>
-                    <tr><td>FR-08</td><td><strong>Màn hình xác nhận:</strong> Hiển thị đồng thời Ảnh KYC và ảnh Camera thực tế, tên thật, công ty, kết quả Face AI (%). Nhân viên bấm <strong>"Xác nhận"</strong> để hoàn tất.</td><td>Cao</td><td>Hiển thị song song 2 ảnh để đối chiếu nhanh.</td></tr>
-                    <tr><td>FR-09</td><td><strong>Tra cứu thủ công:</strong> Cho phép Staff tìm kiếm khách theo Số điện thoại khi thiết bị của khách hết pin. Check-in thủ công sẽ không cộng điểm tự động.</td><td>Trung bình</td><td>Ghi log "Manual Check-in".</td></tr>
-                </tbody>
-            </table>
+                <h2>8. Tiêu Chí Chấp Nhận (Acceptance Criteria)</h2>
+                <ul>
+                    <li>[AC-01] QR tự cập nhật sau X giây sai lệch &lt; 500ms.</li>
+                    <li>[AC-04] Staff App hiển thị đồng thời 2 ảnh (KYC vs Camera).</li>
+                    <li>[AC-05] Điểm thưởng cộng chính xác trong vòng 5 giây.</li>
+                    <li>[AC-08] Dashboard Admin phản ánh số liệu mới sau tối đa 5 giây.</li>
+                </ul>
 
-            <h3>3.3 Đối với Quản trị viên (Admin CMS)</h3>
-            <table>
-                <thead><tr><th>Mã</th><th>Mô tả yêu cầu</th><th>Độ ưu tiên</th><th>Ghi chú</th></tr></thead>
-                <tbody>
-                    <tr><td>FR-10</td><td><strong>Cấu hình sự kiện:</strong> Tạo sự kiện mới, thiết lập tọa độ GPS (Kinh độ/Vĩ độ), bán kính <code>[R]</code>, điểm thưởng <code>[Z]</code>, và template thiệp mời.</td><td>Cao</td><td></td></tr>
-                    <tr><td>FR-11</td><td><strong>Cấu hình QR TTL:</strong> Ô nhập số giây <code>[X]</code> để mã QR tự làm mới. Phạm vi hợp lệ: 15s – 300s. Mặc định 30s.</td><td>Trung bình</td><td></td></tr>
-                    <tr><td>FR-12</td><td><strong>Dashboard Real-time:</strong> Hiển thị tổng số khách được mời, số khách đã vào cửa, biểu đồ thời gian khách đến nhiều nhất.</td><td>Cao</td><td>Cập nhật tối đa sau 5 giây.</td></tr>
-                    <tr><td>FR-13</td><td><strong>Xuất báo cáo Excel:</strong> Cho phép Admin xuất danh sách khách tham dự (Tên, SĐT, Thời gian vào cửa) ra file <code>.xlsx</code> sau khi sự kiện kết thúc.</td><td>Cao</td><td></td></tr>
-                </tbody>
-            </table>
-
-            <h2>4. Yêu Cầu Phi Chức Năng</h2>
-            <h3>4.1 Hiệu năng</h3>
-            <ul>
-                <li>API xử lý quét QR và đối soát Face AI phản hồi trong vòng <strong>3 giây</strong> dưới điều kiện mạng 4G.</li>
-                <li>Màn hình QR của user phải tự refresh đúng thời điểm, sai lệch không quá <strong>500ms</strong> so với TTL cài đặt.</li>
-                <li>Dashboard Admin cập nhật dữ liệu check-in không quá <strong>5 giây/lần</strong>.</li>
-            </ul>
-            <h3>4.2 Bảo mật</h3>
-            <ul>
-                <li>Payload trong mã QR Động được mã hóa; không thể decode để lấy UserID bằng QR reader thông thường.</li>
-                <li>Ảnh KYC của người dùng chỉ được truy xuất theo thời điểm (on-demand) và không cache lại trên thiết bị Staff.</li>
-            </ul>
-            <h3>4.3 Khả dụng & Tương thích</h3>
-            <ul>
-                <li>Hoạt động trên <strong>iOS 14+</strong> và <strong>Android 10+</strong>.</li>
-                <li>Staff App tương thích với máy tính bảng tối thiểu <strong>9 inch</strong>.</li>
-            </ul>
-
-            <h2>5. Đặc tả Logic Kỹ Thuật</h2>
-            <h3>5.1 Cơ chế QR Động (TOTP)</h3>
-            <p>Hệ thống sử dụng một chuỗi Secret Key duy nhất kết hợp với Timestep hệ thống để tạo mã QR.</p>
-            <p><code>QR_Payload = Encrypt(UserID + EventID + TOTP(Secret, Timestamp, TTL))</code></p>
-
-            <h3>5.2 Logic Đối soát Khuôn mặt (Face AI)</h3>
-            <ul>
-                <li><strong>Reference Image:</strong> Ảnh xác minh danh tính (KYC Level 2).</li>
-                <li><strong>Ngưỡng chấp nhận:</strong> Nếu tỷ lệ trùng khớp > <strong>80%</strong>, hệ thống tự động hiển thị tick xanh.</li>
-            </ul>
-
-            <h3>5.3 Cơ chế Điểm thưởng (Reward Points)</h3>
-            <p>Sau khi Staff bấm "Xác nhận", hệ thống tạo Task cộng <code>[Z]</code> điểm và bắn Push Notification ngay lập tức.</p>
-
-            <h2>7. Xử Lý Lỗi & Trường Hợp Ngoại Lệ</h2>
-            <table>
-                <thead><tr><th>Tình huống lỗi</th><th>Thông báo hiển thị</th><th>Hành động tiếp theo</th></tr></thead>
-                <tbody>
-                    <tr><td>Khách dùng QR chụp màn hình cũ</td><td>"Mã QR đã hết hạn, vui lòng mở App..."</td><td>Yêu cầu khách lấy mã mới.</td></tr>
-                    <tr><td>Vị trí ngoài bán kính</td><td>"Bạn đang ở cách điểm sự kiện [XXX]m..."</td><td>Hướng dẫn di chuyển lại gần.</td></tr>
-                    <tr><td>Face AI không nhận diện</td><td>"Khuôn mặt không rõ ràng. Vui lòng bỏ khẩu trang..."</td><td>Staff nhắc nhở khách.</td></tr>
-                    <tr><td>Thiết bị khách hết pin</td><td>(Staff thông báo trên Staff App)</td><td>Staff tra cứu bằng SĐT thủ công.</td></tr>
-                </tbody>
-            </table>
-
-            <h2>8. Tiêu Chí Chấp Nhận (Acceptance Criteria)</h2>
-            <ul>
-                <li><strong>[AC-01]</strong> Mã QR tự thay đổi sau đúng <code>[X]</code> giây, sai lệch &lt; 500ms.</li>
-                <li><strong>[AC-02]</strong> Nút "Lấy mã Check-in" ẩn/hiện đúng logic khi ngoài bán kính <code>[R]</code>.</li>
-                <li><strong>[AC-04]</strong> Staff App hiển thị đồng thời 2 ảnh (KYC và Camera thực tế).</li>
-                <li><strong>[AC-05]</strong> Điểm thưởng cộng chính xác trong vòng 5 giây.</li>
-                <li><strong>[AC-07]</strong> Admin xuất file .xlsx đầy đủ dữ liệu tham dự.</li>
-                <li><strong>[AC-08]</strong> Dashboard Admin phản ánh số liệu mới sau tối đa 5 giây.</li>
-            </ul>
-
-            <h2>9. Phụ Thuộc & Rủi Ro</h2>
-            <table>
-                <thead><tr><th>Rủi ro</th><th>Mức độ</th><th>Giải pháp đề xuất</th></tr></thead>
-                <tbody>
-                    <tr><td>GPS yếu trong hội trường kín</td><td>Cao</td><td>Admin cấu hình bán kính <code>[R]</code> lớn hơn (200-500m).</td></tr>
-                    <tr><td>Điện thoại khách hết pin</td><td>Trung bình</td><td>Staff tra cứu SĐT + check-in thủ công.</td></tr>
-                    <tr><td>Ánh sáng yếu làm Face AI sai</td><td>Trung bình</td><td>Yêu cầu setup đèn chiếu sáng tại quầy.</td></tr>
-                </tbody>
-            </table>
-
-            <h2>10. Lịch Sự Thay Đổi</h2>
-            <p><strong>v1.1 (11/04/2026):</strong> Tái cấu trúc theo chuẩn v9.7 Ultimate.</p>
+                <h2>10. Lịch Sử Thay Đổi</h2>
+                <p><strong>v1.1 (11/04/2026):</strong> Tái cấu trúc theo chuẩn v10.0 Professional.</p>
+            </div>
         </div>
     </section>
 
-    <footer style="padding: 100px 0; text-align: center; opacity: 0.1; font-weight: 900; font-size: 0.8rem; letter-spacing: 5px;">
-        © 2026 DSS CLUB • MASTER SPEC v9.7.1 • ULTIMATE FIDELITY
-    </footer>
-
     <script>
-        mermaid.initialize({ startOnLoad: true, theme: 'base' });
+        mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
     </script>
 </body>
 </html>
