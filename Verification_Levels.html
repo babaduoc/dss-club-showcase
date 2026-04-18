@@ -142,21 +142,21 @@
                 <h2>1. Luồng Xử Lý (Happy Path)</h2>
                 <div class="mermaid">
                     flowchart TD
-                        A["User Mới Đăng Ký"]:::admin --> B(("Level 1")):::success
-                        B --> C{"Check Active Rule?"}:::warning
-                        C -->|"Chưa duyệt"| D["Chế độ Trial"]:::error
-                        C -->|"Đã duyệt"| E{"Hành động User"}:::process
-                        E -->|"Bổ sung eKYC"| I["Admin CMS Duyệt"]:::warning
-                        I -->|"Từ chối"| J["Gửi Push Báo Lỗi"]:::error
-                        I -->|"Duyệt"| K(("Level 2")):::process
-                        K -->|"Bổ sung GPKD"| O["Admin CMS Duyệt"]:::warning
-                        O -->|"Duyệt"| Q(("Level 3 VIP")):::success
+                        A["User Mới Đăng Ký"]:::admin -- "Khởi tạo" --> B(("Level 1")):::success
+                        B -- "Kiểm tra" --> C{"Check Active Rule?"}:::warning
+                        C -- "Chưa duyệt" --> D["Chế độ Trial"]:::error
+                        C -- "Đã duyệt" --> E{"Hành động User"}:::process
+                        E -- "Bổ sung eKYC" --> I["Admin CMS Duyệt"]:::warning
+                        I -- "Từ chối" --> J["Gửi Push Báo Lỗi"]:::error
+                        I -- "Duyệt" --> K(("Level 2")):::process
+                        K -- "Bổ sung GPKD" --> O["Admin CMS Duyệt"]:::warning
+                        O -- "Duyệt" --> Q(("Level 3 VIP")):::success
 
-                        classDef success fill: #E8FBF2, stroke: #00B96B, stroke-width: 2px, color: #00B96B;
-                        classDef warning fill: #FFF0E8, stroke: #FF5C00, stroke-width: 2px, color: #FF5C00;
-                        classDef error fill: #FFF0EE, stroke: #C0392B, stroke-width: 2px, color: #C0392B;
-                        classDef process fill: #E8F1FF, stroke: #0068FF, stroke-width: 2px, color: #0068FF;
-                        classDef admin fill: #0D1B3E, stroke: #0D1B3E, stroke-width: 2px, color: #fff;
+                        classDef success fill:#E8FBF2,stroke:#00B96B,stroke-width:2px,color:#00B96B
+                        classDef warning fill:#FFF0E8,stroke:#FF5C00,stroke-width:2px,color:#FF5C00
+                        classDef error fill:#FFF0EE,stroke:#C0392B,stroke-width:2px,color:#C0392B
+                        classDef process fill:#E8F1FF,stroke:#0068FF,stroke-width:2px,color:#0068FF
+                        classDef admin fill:#0D1B3E,stroke:#0D1B3E,stroke-width:2px,color:#fff
                 </div>
             </div>
         </div>

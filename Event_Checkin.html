@@ -140,21 +140,21 @@
                 <h2>1. Luồng Xử Lý (Flowchart)</h2>
                 <div class="mermaid">
                     flowchart TD
-                        A["Admin Tạo Sự Kiện"]:::admin --> B["Khách Chụp Avatar & Xem Thiệp"]:::success
-                        B --> C{"Check GPS?"}:::warning
-                        C -->|"Ngoài R"| D["Khóa mã QR — Cảnh báo"]:::error
-                        C -->|"Trong R"| E["App hiện QR Động TOTP"]:::process
-                        E --> F["Staff Quét & Đối soát Face AI"]:::success
-                        F --> G{"Khớp > 80%?"}:::warning
-                        G -->|"Không"| H["Staff đối chiếu thủ công"]:::error
-                        G -->|"Có"| I["Duyệt & Cộng điểm thưởng"]:::process
-                        I --> J["Update Dashboard Admin"]:::success
+                        A["Admin Tạo Sự Kiện"]:::admin -- "Khởi tạo" --> B["Khách Chụp Avatar & Xem Thiệp"]:::success
+                        B -- "Check" --> C{"Check GPS?"}:::warning
+                        C -- "Ngoài R" --> D["Khóa mã QR — Cảnh báo"]:::error
+                        C -- "Trong R" --> E["App hiện QR Động TOTP"]:::process
+                        E -- "Quét" --> F["Staff Quét & Đối soát Face AI"]:::success
+                        F -- "Kiểm tra" --> G{"Khớp > 80%?"}:::warning
+                        G -- "Không" --> H["Staff đối chiếu thủ công"]:::error
+                        G -- "Có" --> I["Duyệt & Cộng điểm thưởng"]:::process
+                        I -- "Hoàn thành" --> J["Update Dashboard Admin"]:::success
 
-                        classDef success fill: #E8FBF2, stroke: #00B96B, stroke-width: 2px, color: #00B96B;
-                        classDef warning fill: #FFF0E8, stroke: #FF5C00, stroke-width: 2px, color: #FF5C00;
-                        classDef error fill: #FFF0EE, stroke: #C0392B, stroke-width: 2px, color: #C0392B;
-                        classDef process fill: #E8F1FF, stroke: #0068FF, stroke-width: 2px, color: #0068FF;
-                        classDef admin fill: #0D1B3E, stroke: #0D1B3E, stroke-width: 2px, color: #fff;
+                        classDef success fill:#E8FBF2,stroke:#00B96B,stroke-width:2px,color:#00B96B
+                        classDef warning fill:#FFF0E8,stroke:#FF5C00,stroke-width:2px,color:#FF5C00
+                        classDef error fill:#FFF0EE,stroke:#C0392B,stroke-width:2px,color:#C0392B
+                        classDef process fill:#E8F1FF,stroke:#0068FF,stroke-width:2px,color:#0068FF
+                        classDef admin fill:#0D1B3E,stroke:#0D1B3E,stroke-width:2px,color:#fff
                 </div>
 
                 <h2>2. Tiêu Chí Chấp Nhận (Acceptance Criteria)</h2>
