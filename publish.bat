@@ -25,8 +25,11 @@ echo.
 echo ==========================================================
 echo [THANH CONG] Website Showcase da duoc cap nhat v1.2!
 echo.
-echo LINK TRUY CAP CUA BAN:
-echo https://babaduoc.github.io/dss-club-showcase/
+echo LIEN KET TRUY CAP CAC FILE (.HTML):
+set "BASE_URL=https://babaduoc.github.io/dss-club-showcase"
+for %%f in (*.html) do (
+    echo - !BASE_URL!/%%f
+)
 echo ==========================================================
 echo.
 pause
