@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSS CLUB · Hệ Thống Check-in Sự Kiện V2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f8f7f4;
+  --surface: #ffffff;
+  --surface2: #f1efe8;
+  --border: rgba(0,0,0,0.1);
+  --text: #1a1a1a;
+  --muted: #6b6b6b;
+  --accent: #185fa5;    --accent-bg: #e6f1fb;
+  --success: #3b6d11;   --success-bg: #eaf3de;
+  --danger: #a32d2d;    --danger-bg: #fcebeb;
+  --warning: #854f0b;   --warning-bg: #faeeda;
+  --info: #185fa5;      --info-bg: #e6f1fb;
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Be Vietnam Pro', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+/* NAV */
+.nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-bottom: 0.5px solid var(--border); padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+.nav-brand { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; display: flex; align-items: center; gap: 8px; }
+.nav-pills { display: flex; gap: 4px; }
+.nav-pill { font-size: 12px; padding: 5px 12px; border-radius: 20px; cursor: pointer; color: var(--muted); border: none; background: transparent; font-family: inherit; transition: all .15s; white-space: nowrap; }
+.nav-pill:hover { background: var(--surface2); color: var(--text); }
+.nav-pill.active { background: var(--accent-bg); color: var(--accent); font-weight: 600; }
+
+/* HERO */
+.hero { background: var(--surface); padding: 72px 60px 64px; border-bottom: 0.5px solid var(--border); position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: -80px; right: -80px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(24,95,165,0.07) 0%, transparent 70%); pointer-events: none; }
+.hero-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-tag { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); background: var(--accent-bg); border-radius: 20px; padding: 5px 14px; margin-bottom: 20px; }
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: #3b6d11; animation: blink 1.5s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+.hero h1 { font-size: clamp(34px, 5vw, 58px); font-weight: 900; line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 16px; }
+.hero-sub { font-size: 17px; color: var(--muted); max-width: 620px; margin-bottom: 32px; line-height: 1.7; }
+.hero-meta { display: flex; flex-wrap: wrap; gap: 10px; }
+.meta-chip { background: var(--surface2); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 7px 14px; font-size: 12px; color: var(--muted); }
+.meta-chip strong { color: var(--text); font-weight: 600; }
+
+/* LAYOUT */
+.container { max-width: 1060px; margin: 0 auto; padding: 0 32px; }
+.section { padding: 64px 0; border-bottom: 0.5px solid var(--border); }
+.section:last-child { border-bottom: none; }
+.section-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+.section-eyebrow::after { content: ''; flex: 1; max-width: 40px; height: 0.5px; background: var(--border); }
+.section-title { font-size: clamp(22px, 3vw, 30px); font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; }
+.section-lead { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 32px; max-width: 680px; }
+
+/* GRID */
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+
+/* GOAL CARDS */
+.goal-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 22px; }
+.goal-icon { font-size: 28px; margin-bottom: 12px; }
+.goal-label { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+.goal-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.goal-stat { font-size: 28px; font-weight: 900; color: var(--accent); margin-top: 8px; letter-spacing: -1px; }
+.goal-stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+/* PHONE MOCK-UP */
+.phone-frame { background: var(--surface); border: 3px solid #1a1a1a; border-radius: 28px; overflow: hidden; box-shadow: 0 12px 50px rgba(0,0,0,0.12); max-width: 300px; margin: 0 auto; }
+.phone-notch { background: #1a1a1a; height: 22px; border-radius: 0 0 16px 16px; width: 120px; margin: 0 auto; }
+.phone-bar { background: var(--surface); border-bottom: 0.5px solid var(--border); padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; }
+.phone-bar .app-name { font-size: 13px; font-weight: 700; }
+.icon-row { display: flex; gap: 6px; }
+.icon-btn { width: 26px; height: 26px; border-radius: 50%; background: var(--surface2); border: 0.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; }
+.phone-screen { min-height: 380px; padding: 16px; background: var(--bg); }
+
+/* INVITATION CARD */
+.inv-card { background: linear-gradient(145deg, #1a3a5c, #0c2340); color: #fff; border-radius: 14px; padding: 24px 20px; text-align: center; position: relative; overflow: hidden; margin-bottom: 10px; }
+.inv-card::before { content: ''; position: absolute; top: -30px; right: -30px; width: 100px; height: 100px; background: radial-gradient(circle, rgba(255,215,100,0.3) 0%, transparent 70%); }
+.inv-badge { font-size: 9px; color: #ffd764; letter-spacing: 2px; font-weight: 700; }
+.inv-event { font-size: 18px; font-weight: 800; margin: 6px 0 3px; letter-spacing: -0.3px; }
+.inv-photo-box { width: 72px; height: 72px; background: linear-gradient(135deg, #f4d784, #d4a754); border-radius: 50%; margin: 14px auto 10px; display: flex; align-items: center; justify-content: center; font-size: 28px; border: 3px solid rgba(255,255,255,0.2); }
+.inv-name { font-size: 15px; font-weight: 800; }
+.inv-sub { font-size: 10px; opacity: 0.85; margin-top: 2px; }
+.inv-qr { background: #fff; width: 90px; height: 90px; margin: 12px auto 0; border-radius: 6px; position: relative; }
+.inv-qr::before { content: ''; position: absolute; inset: 8px; background: repeating-linear-gradient(45deg, #1a1a1a, #1a1a1a 3px, transparent 3px, transparent 6px), repeating-linear-gradient(-45deg, #1a1a1a, #1a1a1a 3px, transparent 3px, transparent 6px); background-size: 12px 12px; }
+.inv-info { font-size: 10px; opacity: 0.85; margin-top: 10px; line-height: 1.5; }
+.inv-btns { display: flex; gap: 8px; margin-top: 12px; }
+.inv-btn { flex: 1; padding: 10px; border-radius: 10px; font-size: 11px; font-weight: 700; text-align: center; }
+.inv-btn-primary { background: var(--accent); color: #fff; }
+.inv-btn-secondary { background: var(--surface); color: var(--text); border: 0.5px solid var(--border); }
+
+/* SUCCESS POPUP */
+.popup-frame { background: #fff; border-radius: 14px; padding: 22px 18px; text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.1); position: relative; overflow: hidden; }
+.popup-frame::before { content: ''; position: absolute; top: -40px; left: -40px; right: -40px; height: 100px; background: radial-gradient(ellipse, rgba(255,215,100,0.3) 0%, transparent 70%); }
+.confetti { font-size: 38px; margin-bottom: 8px; position: relative; }
+.popup-title { font-size: 18px; font-weight: 900; color: var(--success); margin-bottom: 8px; }
+.popup-body { font-size: 12px; color: var(--muted); margin-bottom: 14px; line-height: 1.5; }
+.popup-prize { background: linear-gradient(135deg, var(--warning-bg), #f9e5bc); border-radius: 12px; padding: 14px; margin-bottom: 14px; border: 1px dashed var(--warning); }
+.prize-icon { font-size: 32px; margin-bottom: 4px; }
+.prize-name { font-size: 14px; font-weight: 800; color: var(--warning); }
+.prize-code { font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono', monospace; margin-top: 4px; }
+.point-box { background: var(--accent-bg); border-radius: 10px; padding: 12px; margin-bottom: 12px; }
+.point-num { font-size: 22px; font-weight: 900; color: var(--accent); }
+.point-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+.popup-btn { display: block; background: var(--success); color: #fff; padding: 11px; border-radius: 10px; font-size: 12px; font-weight: 700; margin-top: 8px; text-align: center; }
+
+/* WELCOME SCREEN (TV mock) */
+.tv-frame { background: #0a0a0a; border: 6px solid #1a1a1a; border-radius: 14px; overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,0.2); }
+.tv-screen { background: linear-gradient(145deg, #1a3a5c 0%, #0c2340 100%); padding: 40px 30px; text-align: center; color: #fff; min-height: 320px; position: relative; overflow: hidden; }
+.tv-screen::before { content: ''; position: absolute; top: -80px; left: -80px; width: 250px; height: 250px; background: radial-gradient(circle, rgba(255,215,100,0.2) 0%, transparent 70%); }
+.tv-screen::after { content: ''; position: absolute; bottom: -80px; right: -80px; width: 250px; height: 250px; background: radial-gradient(circle, rgba(24,95,165,0.25) 0%, transparent 70%); }
+.tv-welcome { font-size: 12px; color: #ffd764; letter-spacing: 3px; font-weight: 700; position: relative; }
+.tv-photo { width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, #f4d784, #d4a754); margin: 16px auto; display: flex; align-items: center; justify-content: center; font-size: 42px; border: 4px solid rgba(255,215,100,0.4); position: relative; }
+.tv-name { font-size: 28px; font-weight: 900; letter-spacing: -1px; position: relative; }
+.tv-company { font-size: 13px; opacity: 0.85; margin-top: 4px; position: relative; }
+.tv-event { font-size: 10px; color: #ffd764; letter-spacing: 2px; margin-top: 16px; font-weight: 700; position: relative; }
+
+/* FLOW DIAGRAM */
+.flow-step-row { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 0; align-items: center; margin-bottom: 16px; }
+.flow-node { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 18px 14px; text-align: center; }
+.flow-node.blue  { border-color: rgba(24,95,165,.3);  background: var(--accent-bg); }
+.flow-node.green { border-color: rgba(59,109,17,.3);  background: var(--success-bg); }
+.flow-node.amber { border-color: rgba(133,79,11,.3);  background: var(--warning-bg); }
+.fn-icon  { font-size: 26px; margin-bottom: 8px; }
+.fn-label { font-size: 13px; font-weight: 700; }
+.fn-sub   { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+.fn-label-blue  { color: var(--accent); }
+.fn-label-green { color: var(--success); }
+.fn-label-amber { color: var(--warning); }
+.flow-arrow-cell { font-size: 22px; color: var(--muted); text-align: center; padding: 0 6px; }
+
+/* INFRA DIAGRAM */
+.infra-diagram { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 30px; }
+.infra-router { background: var(--accent); color: #fff; width: 200px; margin: 0 auto 10px; padding: 14px; border-radius: 10px; text-align: center; font-weight: 700; font-size: 13px; }
+.infra-router-sub { font-size: 10px; opacity: 0.9; margin-top: 3px; }
+.infra-line { width: 2px; height: 30px; background: var(--border); margin: 0 auto; }
+.infra-bus { height: 2px; background: var(--border); max-width: 700px; margin: 0 auto; position: relative; }
+.infra-bus::before, .infra-bus::after { content: ''; position: absolute; top: 0; width: 2px; height: 10px; background: var(--border); }
+.infra-bus::before { left: 0; }
+.infra-bus::after { right: 0; }
+.infra-pcs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; max-width: 780px; margin: 0 auto; padding-top: 20px; }
+.infra-pc { background: var(--surface2); border: 0.5px solid var(--border); border-radius: 10px; padding: 14px 10px; text-align: center; position: relative; }
+.infra-pc::before { content: ''; position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 2px; height: 20px; background: var(--border); }
+.infra-pc.special { background: var(--accent-bg); border-color: rgba(24,95,165,0.3); }
+.infra-pc-icon { font-size: 26px; margin-bottom: 6px; }
+.infra-pc-name { font-size: 12px; font-weight: 700; }
+.infra-pc-sub { font-size: 10px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+.infra-tv { background: #1a1a1a; color: #ffd764; padding: 10px 8px; border-radius: 8px; margin-top: 10px; font-size: 10px; font-weight: 700; }
+.infra-tv-arrow { font-size: 14px; color: var(--muted); margin: 6px 0; }
+
+/* FORMULA / POINTS TABLE */
+.points-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.points-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; padding: 18px 14px; text-align: center; }
+.points-event { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+.points-val { font-size: 32px; font-weight: 900; color: var(--accent); letter-spacing: -1px; }
+.points-unit { font-size: 11px; color: var(--muted); font-weight: 600; }
+
+/* MINI-GAME WHEELS */
+.wheels-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.wheel-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 12px; padding: 16px 14px; text-align: center; position: relative; }
+.wheel-num { position: absolute; top: -10px; left: 14px; background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+.wheel-icon { font-size: 32px; margin: 6px 0 8px; }
+.wheel-name { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+.wheel-target { font-size: 10px; color: var(--muted); line-height: 1.5; background: var(--surface2); border-radius: 6px; padding: 6px 8px; margin-top: 8px; }
+
+/* INFO BOX */
+.info-box { background: var(--accent-bg); border: 0.5px solid rgba(24,95,165,.2); border-radius: var(--radius); padding: 16px 20px; margin-top: 12px; font-size: 13px; line-height: 1.7; color: #0c447c; }
+.info-box strong { font-weight: 700; }
+
+/* RISK CARD */
+.risk-card { background: var(--surface); border: 0.5px solid var(--border); border-left: 3px solid var(--danger); border-radius: var(--radius); padding: 18px 20px; }
+.risk-title { font-size: 14px; font-weight: 700; color: var(--danger); margin-bottom: 6px; }
+.risk-solution { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.risk-solution strong { color: var(--success); }
+
+/* TABLE */
+.table-wrap { overflow-x: auto; border-radius: var(--radius); border: 0.5px solid var(--border); background: var(--surface); }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead { background: var(--surface2); }
+th { padding: 12px 16px; text-align: left; font-weight: 700; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+td { padding: 12px 16px; border-top: 0.5px solid var(--border); color: var(--text); vertical-align: top; }
+tr:hover td { background: rgba(24,95,165,0.03); }
+.chk-yes { color: var(--success); font-weight: 700; }
+.chk-no { color: var(--danger); font-weight: 700; }
+.chk-warn { color: var(--warning); font-weight: 700; }
+
+/* ROADMAP */
+.roadmap-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.roadmap-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 20px; position: relative; }
+.roadmap-phase { font-size: 10px; font-weight: 700; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+.roadmap-title { font-size: 15px; font-weight: 800; margin-bottom: 8px; }
+.roadmap-duration { font-size: 11px; color: var(--muted); margin-bottom: 12px; background: var(--surface2); display: inline-block; padding: 3px 10px; border-radius: 20px; }
+.roadmap-items { list-style: none; }
+.roadmap-items li { font-size: 11px; color: var(--muted); padding: 4px 0; padding-left: 16px; position: relative; line-height: 1.5; }
+.roadmap-items li::before { content: '✓'; position: absolute; left: 0; color: var(--success); font-weight: 700; }
+
+/* COST BREAKDOWN */
+.cost-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 24px; }
+.cost-total { font-size: 38px; font-weight: 900; color: var(--accent); letter-spacing: -1.5px; margin-bottom: 4px; }
+.cost-total-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 18px; }
+.cost-items { list-style: none; }
+.cost-items li { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 0.5px solid var(--border); font-size: 13px; }
+.cost-items li:last-child { border-bottom: none; }
+.cost-items .cost-name { color: var(--text); }
+.cost-items .cost-val { font-weight: 700; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+
+/* COMPARISON */
+.compare-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.compare-side { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 22px; }
+.compare-side.bad { border-left: 3px solid var(--danger); }
+.compare-side.good { border-left: 3px solid var(--success); }
+.compare-title { font-size: 13px; font-weight: 800; margin-bottom: 12px; }
+.compare-title.bad { color: var(--danger); }
+.compare-title.good { color: var(--success); }
+.compare-list { list-style: none; }
+.compare-list li { font-size: 12px; color: var(--muted); padding: 6px 0; padding-left: 20px; position: relative; line-height: 1.5; }
+.compare-list.bad li::before { content: '✗'; position: absolute; left: 0; color: var(--danger); font-weight: 700; }
+.compare-list.good li::before { content: '✓'; position: absolute; left: 0; color: var(--success); font-weight: 700; }
+
+/* FOOTER */
+.footer { background: var(--surface); border-top: 0.5px solid var(--border); padding: 32px 60px; text-align: center; font-size: 13px; color: var(--muted); }
+.footer strong { color: var(--accent); }
+
+/* RESPONSIVE */
+@media (max-width: 720px) {
+  .hero { padding: 40px 24px; }
+  .grid-3, .grid-4, .wheels-row, .points-grid, .roadmap-row, .infra-pcs { grid-template-columns: 1fr 1fr; }
+  .grid-2, .compare-row { grid-template-columns: 1fr; }
+  .flow-step-row { grid-template-columns: 1fr; }
+  .flow-arrow-cell { transform: rotate(90deg); padding: 8px 0; }
+  .nav { padding: 0 16px; }
+  .nav-pills { display: none; }
+  .container { padding: 0 16px; }
+  .section { padding: 40px 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-brand">🎟 DSS CLUB · Event Check-in</div>
+  <div class="nav-pills">
+    <button class="nav-pill active" onclick="scrollTo2('s1')">Tại sao</button>
+    <button class="nav-pill" onclick="scrollTo2('s2')">Trải nghiệm</button>
+    <button class="nav-pill" onclick="scrollTo2('s3')">Luồng</button>
+    <button class="nav-pill" onclick="scrollTo2('s4')">Hạ tầng</button>
+    <button class="nav-pill" onclick="scrollTo2('s5')">Điểm & Game</button>
+    <button class="nav-pill" onclick="scrollTo2('s6')">Offline</button>
+    <button class="nav-pill" onclick="scrollTo2('s7')">Lộ trình</button>
+    <button class="nav-pill" onclick="scrollTo2('s8')">Chi phí</button>
+    <button class="nav-pill" onclick="scrollTo2('s9')">Rủi ro</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag"><span class="live-dot"></span>FEAT-EVENT-CHECKIN · v2.3 · Draft/Review</div>
+    <h1>Hệ Thống Check-in Sự Kiện<br>Độc Lập, <span style="color:var(--accent)">Offline-First</span></h1>
+    <p class="hero-sub">Hệ thống check-in do DSS CLUB sở hữu 100%, dùng được từ Workshop 30 khách đến Gala 1000 khách. QR là chính, Face ID là plug-in tuỳ chọn. Chạy được kể cả mất internet. Tích hợp thẳng vào App CSKH hiện có — khách nhận điểm thưởng và thông báo trúng giải ngay trong app.</p>
+    <div class="hero-meta">
+      <div class="meta-chip">📅 <strong>23/04/2026</strong></div>
+      <div class="meta-chip">👥 <strong>AI DSSCLUB</strong></div>
+      <div class="meta-chip">🎯 Phase 1-4 · <strong>13-17 tuần</strong></div>
+      <div class="meta-chip">💰 Đầu tư hạ tầng <strong>~32 triệu</strong></div>
+      <div class="meta-chip">🏢 Scale <strong>30 → 1000 khách</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 1 — TẠI SAO -->
+<div id="s1">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">01 · Tại sao làm</div>
+  <div class="section-title">3 Vấn Đề Mà Sự Kiện Trước Đã Gặp Phải</div>
+  <div class="section-lead">Từ kinh nghiệm sự kiện vừa qua, 3 điểm đau nhất cần giải quyết: check-in chậm gây ùn tắc, khách không có cảm giác "wow", và chi phí vendor vượt kiểm soát.</div>
+
+  <div class="grid-3">
+    <div class="goal-card">
+      <div class="goal-icon">🚀</div>
+      <div class="goal-label">Check-in Nhanh Gấp 6 Lần</div>
+      <div class="goal-desc">QR webcam quét < 1 giây. Face ID (nếu bật) < 2 giây. Không còn cảnh xếp hàng 60 giây/khách.</div>
+      <div class="goal-stat">&lt; 10s</div>
+      <div class="goal-stat-label">Thời gian/khách (bao gồm đối chiếu)</div>
+    </div>
+    <div class="goal-card">
+      <div class="goal-icon">🎉</div>
+      <div class="goal-label">Trải Nghiệm "Wow" Cho Khách</div>
+      <div class="goal-desc">Welcome Screen hiện thiệp + ảnh khách; popup chúc mừng trên app + tặng điểm; trúng mini-game hiện popup full màn hình.</div>
+      <div class="goal-stat">3 lớp</div>
+      <div class="goal-stat-label">Thông báo đa kênh: TV + App + Zalo</div>
+    </div>
+    <div class="goal-card">
+      <div class="goal-icon">💰</div>
+      <div class="goal-label">DSS Làm Chủ, Không Lock-in</div>
+      <div class="goal-desc">Toàn bộ hệ thống của DSS. Face ID chỉ là plug-in, đổi vendor không cần sửa code. Tiết kiệm phí dài hạn.</div>
+      <div class="goal-stat">0 đ</div>
+      <div class="goal-stat-label">Phí vendor Face ID nếu event nhỏ</div>
+    </div>
+  </div>
+
+  <div class="info-box" style="margin-top: 24px;">
+    <strong>Điểm khác biệt chính vs lần trước:</strong> Lần trước phụ thuộc 100% vào vendor Face ID → khi vendor chậm/lỗi thì cả sự kiện gián đoạn. Giờ đây hệ thống chạy **độc lập** bằng QR, Face ID chỉ là "tăng tốc" khi cần.
+  </div>
+</div>
+</div>
+</div>
+
+<!-- SECTION 2 — KHÁCH TRẢI NGHIỆM -->
+<div id="s2" style="background: var(--surface);">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">02 · Trải nghiệm khách</div>
+  <div class="section-title">Khách Thấy Gì Trên Điện Thoại & TV Chào Mừng</div>
+  <div class="section-lead">4 khoảnh khắc cảm xúc chính trong hành trình của khách: nhận thiệp mời, check-in tại cửa, thông báo điểm thưởng, và (nếu may mắn) popup trúng giải mini-game.</div>
+
+  <div class="grid-2" style="margin-bottom: 32px;">
+    <!-- PHONE 1: THIỆP MỜI -->
+    <div>
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-bar">
+          <div class="app-name">DSS CLUB · Sự kiện</div>
+          <div class="icon-row"><div class="icon-btn">🔔</div></div>
+        </div>
+        <div class="phone-screen">
+          <div class="inv-card">
+            <div class="inv-badge">⭐ GALA YEAR-END 2026</div>
+            <div class="inv-event">Tri Ân Khách Hàng VIP</div>
+            <div class="inv-photo-box">👤</div>
+            <div class="inv-name">Nguyễn Minh Tuấn</div>
+            <div class="inv-sub">Giám đốc · Công ty ABC</div>
+            <div class="inv-qr"></div>
+            <div class="inv-info">📅 19:00 · 23/04/2026<br>📍 Khách sạn InterContinental Saigon</div>
+          </div>
+          <div class="inv-btns">
+            <div class="inv-btn inv-btn-primary">📥 Tải về (có QR)</div>
+            <div class="inv-btn inv-btn-secondary">📤 Chia sẻ</div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align: center; font-size: 12px; color: var(--muted); margin-top: 14px; font-weight: 600;">① Thiệp mời trong app CSKH</div>
+    </div>
+
+    <!-- PHONE 2: POPUP CHECK-IN THÀNH CÔNG -->
+    <div>
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-bar">
+          <div class="app-name">DSS CLUB</div>
+          <div class="icon-row"><div class="icon-btn">✕</div></div>
+        </div>
+        <div class="phone-screen" style="display: flex; align-items: center; padding: 24px 18px;">
+          <div class="popup-frame">
+            <div class="confetti">🎊</div>
+            <div class="popup-title">Check-in thành công!</div>
+            <div class="popup-body">Chào mừng anh <strong>Nguyễn Minh Tuấn</strong> đến với Gala Year-End 2026</div>
+            <div class="point-box">
+              <div class="point-num">+500 điểm</div>
+              <div class="point-label">Số dư: 12,500 đ</div>
+            </div>
+            <div style="font-size: 10px; color: var(--muted); margin-bottom: 12px;">📍 Cửa số 2 · 🕐 19:30 · 23/04/2026</div>
+            <div class="popup-btn">Xem ưu đãi từ điểm →</div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align: center; font-size: 12px; color: var(--muted); margin-top: 14px; font-weight: 600;">② Popup chúc mừng + điểm thưởng</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <!-- PHONE 3: POPUP TRÚNG GIẢI -->
+    <div>
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-bar">
+          <div class="app-name">DSS CLUB</div>
+          <div class="icon-row"><div class="icon-btn">🎁</div></div>
+        </div>
+        <div class="phone-screen" style="display: flex; align-items: center; padding: 24px 18px;">
+          <div class="popup-frame">
+            <div class="confetti">🎊🎊🎊</div>
+            <div class="popup-title" style="color: var(--warning);">CHÚC MỪNG!</div>
+            <div class="popup-body">Bạn đã trúng giải trong vòng quay mini-game số 2:</div>
+            <div class="popup-prize">
+              <div class="prize-icon">📺</div>
+              <div class="prize-name">Smart TV Samsung 55"</div>
+              <div class="prize-code">Mã: WIN-2026-042</div>
+            </div>
+            <div style="font-size: 11px; color: var(--muted); margin-bottom: 12px;">Vui lòng đến quầy lễ tân để nhận quà</div>
+            <div class="popup-btn" style="background: var(--warning);">Tôi đã hiểu · Đến quầy →</div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align: center; font-size: 12px; color: var(--muted); margin-top: 14px; font-weight: 600;">③ Popup trúng giải Mini-game (full màn hình)</div>
+    </div>
+
+    <!-- TV WELCOME SCREEN -->
+    <div>
+      <div class="tv-frame">
+        <div class="tv-screen">
+          <div class="tv-welcome">CHÀO MỪNG QUÝ KHÁCH</div>
+          <div class="tv-photo">👤</div>
+          <div class="tv-name">Nguyễn Minh Tuấn</div>
+          <div class="tv-company">Giám đốc · Công ty ABC</div>
+          <div class="tv-event">⭐ GALA YEAR-END 2026 · DSS CLUB ⭐</div>
+        </div>
+      </div>
+      <div style="text-align: center; font-size: 12px; color: var(--muted); margin-top: 14px; font-weight: 600;">④ Welcome Screen tại sảnh (TV 55")</div>
+    </div>
+  </div>
+
+  <div class="info-box" style="margin-top: 28px;">
+    <strong>Điểm nổi bật:</strong> Trong lúc khách đang đi vào sảnh sau khi check-in, TV lớn hiện thiệp + ảnh họ để cả sự kiện thấy — **cảm giác VIP** mà không cần tốn hiệu ứng phức tạp. Đồng thời, chính khách đó nhận popup +500 điểm trên app = double emotional reward.
+  </div>
+</div>
+</div>
+</div>
+
+<!-- SECTION 3 — LUỒNG VẬN HÀNH CHI TIẾT (REWRITTEN) -->
+<style>
+/* PERSONA CARDS */
+.persona-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 36px; }
+.persona-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 20px; position: relative; overflow: hidden; }
+.persona-card.green { border-top: 4px solid var(--success); }
+.persona-card.blue  { border-top: 4px solid var(--accent); }
+.persona-card.amber { border-top: 4px solid var(--warning); }
+.persona-icon { font-size: 32px; margin-bottom: 10px; }
+.persona-name { font-size: 14px; font-weight: 800; margin-bottom: 6px; }
+.persona-pct { font-size: 24px; font-weight: 900; letter-spacing: -1px; margin-bottom: 4px; }
+.persona-pct.green { color: var(--success); }
+.persona-pct.blue  { color: var(--accent); }
+.persona-pct.amber { color: var(--warning); }
+.persona-pct-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+.persona-traits { font-size: 12px; color: var(--muted); line-height: 1.6; }
+.persona-traits strong { color: var(--text); font-weight: 600; }
+
+/* JOURNEY BLOCK */
+.journey-block { margin-bottom: 40px; border-radius: var(--radius); overflow: hidden; border: 0.5px solid var(--border); }
+.journey-header { padding: 18px 24px; display: flex; align-items: center; gap: 14px; }
+.journey-header.green { background: var(--success-bg); border-bottom: 0.5px solid rgba(59,109,17,.2); }
+.journey-header.blue  { background: var(--accent-bg);  border-bottom: 0.5px solid rgba(24,95,165,.2); }
+.journey-header.amber { background: var(--warning-bg); border-bottom: 0.5px solid rgba(133,79,11,.2); }
+.journey-num { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; flex-shrink: 0; color: #fff; }
+.journey-num.green { background: var(--success); }
+.journey-num.blue  { background: var(--accent); }
+.journey-num.amber { background: var(--warning); }
+.journey-title { font-size: 16px; font-weight: 800; }
+.journey-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+.journey-body { background: var(--surface); padding: 24px; }
+.journey-phase { margin-bottom: 18px; }
+.journey-phase:last-child { margin-bottom: 0; }
+.phase-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 0.5px solid var(--border); }
+.phase-label .phase-clock { color: var(--accent); font-weight: 800; }
+
+.step-line { display: grid; grid-template-columns: 24px 1fr; gap: 12px; padding: 8px 0; align-items: start; }
+.step-num { background: var(--surface2); border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--text); flex-shrink: 0; margin-top: 1px; }
+.step-content { flex: 1; }
+.step-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.step-detail { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.step-tag { display: inline-block; font-size: 10px; padding: 1px 8px; border-radius: 20px; font-weight: 700; margin-left: 6px; vertical-align: middle; }
+.tag-app    { background: var(--success-bg); color: var(--success); }
+.tag-web    { background: var(--accent-bg);  color: var(--accent); }
+.tag-zalo   { background: #e6f9f0; color: #0a7d3f; }
+.tag-staff  { background: var(--warning-bg); color: var(--warning); }
+.tag-tv     { background: #1a1a1a; color: #ffd764; }
+.tag-skip   { background: var(--success-bg); color: var(--success); }
+
+/* COMPARE TABLE */
+.diff-table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--surface); border-radius: var(--radius); overflow: hidden; border: 0.5px solid var(--border); }
+.diff-table th { background: var(--surface2); padding: 12px 14px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 700; text-align: left; }
+.diff-table th.col-green { color: var(--success); }
+.diff-table th.col-blue  { color: var(--accent); }
+.diff-table th.col-amber { color: var(--warning); }
+.diff-table td { padding: 10px 14px; border-top: 0.5px solid var(--border); vertical-align: top; }
+.diff-table td.feature { font-weight: 600; color: var(--text); width: 25%; }
+.diff-table .ico-yes { color: var(--success); font-weight: 700; }
+.diff-table .ico-no { color: var(--danger); font-weight: 700; }
+.diff-table .ico-mid { color: var(--warning); font-weight: 700; }
+</style>
+
+<div id="s3">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">03 · Luồng vận hành chi tiết</div>
+  <div class="section-title">3 Nhóm Khách — 3 Đường Trải Nghiệm Khác Nhau</div>
+  <div class="section-lead">Hệ thống được thiết kế để xử lý 3 nhóm khách: (1) Khách thân thiết có sẵn App CSKH → trải nghiệm "siêu mượt" skip OTP; (2) Khách mời chưa có app → dùng Web qua Zalo/Email; (3) Khách vãng lai → đăng ký ngay tại venue. Mỗi nhóm có đường đi riêng nhưng đều dồn về cùng một hệ thống quản lý.</div>
+
+  <!-- SƠ ĐỒ LUỒNG VẬN HÀNH TRỰC QUAN -->
+  <div style="background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 30px; text-align: center;">
+    <div style="font-size: 13px; font-weight: 700; margin-bottom: 14px; text-transform: uppercase; color: var(--muted); letter-spacing: 1px;">Sơ đồ: So Sánh Hành Trình Khách App vs Khách Web</div>
+    <div class="mermaid">
+      flowchart TD
+      Start(["Khách nhận lời mời"])
+      HasApp{"Đã cài App CSKH?"}
+      
+      %% LUỒNG APP
+      HasApp -- "CÓ APP" --> AppNoti["Nhận thông báo Push trực tiếp trên App"]
+      AppNoti --> AppReg["Mở Form: Tự động điền 100%, BỎ QUA OTP"]
+      AppReg --> AppPic["Chụp ảnh khuôn mặt"]
+      AppPic --> AppCard["Nhận Thiệp & QR lưu ngay trong App"]
+      
+      %% LUỒNG WEB
+      HasApp -- "CHƯA CÓ APP" --> ZaloNoti["Nhận thiệp mời qua Zalo OA / Email / Giấy"]
+      ZaloNoti --> WebScan["Quét QR trên thiệp / Bấm Link mở Web Landing"]
+      WebScan --> WebOTP["Nhập Số điện thoại & Nhận mã xác thực OTP"]
+      WebOTP --> WebReg["Mở Form Web: Xác thực thành công, điền thông tin"]
+      WebReg --> WebPic["Chụp ảnh khuôn mặt qua Web"]
+      WebPic --> WebCard["Nhận Thiệp & QR gửi về Zalo OA / Tải về máy"]
+      
+      %% TẠI SỰ KIỆN
+      AppCard --> Venue(["Đến quầy Check-in Sự Kiện"])
+      WebCard --> Venue
+      
+      Venue --> StaffScan["Nhân viên quét QR (hoặc Face ID tự nhận diện)"]
+      
+      StaffScan --> AppReward["App: Popup chúc mừng Full màn hình + Cộng điểm trực tiếp"]
+      StaffScan --> WebReward["Zalo: Tin nhắn chúc mừng + Mời tải App để nhận điểm"]
+      
+      classDef appNode fill:#eaf3de,stroke:#3b6d11,stroke-width:1px,color:#3b6d11,font-weight:bold
+      classDef webNode fill:#e6f1fb,stroke:#185fa5,stroke-width:1px,color:#185fa5,font-weight:bold
+      classDef startNode fill:#f1efe8,stroke:#6b6b6b,stroke-width:1px
+      
+      class AppNoti,AppReg,AppPic,AppCard,AppReward appNode
+      class ZaloNoti,WebScan,WebOTP,WebReg,WebPic,WebCard,WebReward webNode
+      class Start,Venue,StaffScan startNode
+    </div>
+  </div>
+
+  <!-- 3 PERSONA SUMMARY CARDS -->
+  <div class="persona-row">
+    <div class="persona-card green">
+      <div class="persona-icon">📱</div>
+      <div class="persona-name">Khách Có App CSKH</div>
+      <div class="persona-pct green">~40-60%</div>
+      <div class="persona-pct-label">Khách thân thiết</div>
+      <div class="persona-traits">
+        <strong>Đặc điểm:</strong> Đã đăng nhập app từ trước, có lịch sử tương tác với DSS. Là VIP, đối tác lâu năm.<br><br>
+        <strong>Trải nghiệm:</strong> Bỏ qua OTP, mọi thứ in-app, nhận điểm trực tiếp vào loyalty.
+      </div>
+    </div>
+    <div class="persona-card blue">
+      <div class="persona-icon">🌐</div>
+      <div class="persona-name">Khách Dùng Web</div>
+      <div class="persona-pct blue">~30-50%</div>
+      <div class="persona-pct-label">Khách mời chưa có app</div>
+      <div class="persona-traits">
+        <strong>Đặc điểm:</strong> Có trong danh sách mời nhưng chưa cài app. Nhận thiệp qua Zalo/Email/giấy.<br><br>
+        <strong>Trải nghiệm:</strong> Dùng web (browser), cần OTP xác thực, nhận thiệp qua Zalo OA.
+      </div>
+    </div>
+    <div class="persona-card amber">
+      <div class="persona-icon">🚶</div>
+      <div class="persona-name">Khách Vãng Lai</div>
+      <div class="persona-pct amber">~5-10%</div>
+      <div class="persona-pct-label">Đăng ký tại chỗ</div>
+      <div class="persona-traits">
+        <strong>Đặc điểm:</strong> Không trong danh sách mời. Đến tại sự kiện rồi mới đăng ký (Workshop mở).<br><br>
+        <strong>Trải nghiệm:</strong> Quét QR standee tại venue, điền form đầy đủ, check-in luôn.
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- JOURNEY 1: APP USER -->
+  <!-- ============================================ -->
+  <div class="journey-block">
+    <div class="journey-header green">
+      <div class="journey-num green">1</div>
+      <div>
+        <div class="journey-title">📱 Khách Có App CSKH — Luồng "Siêu Mượt"</div>
+        <div class="journey-sub">Toàn bộ trải nghiệm trong app. Bỏ qua OTP. Điểm thưởng vào loyalty hiện có.</div>
+      </div>
+    </div>
+    <div class="journey-body">
+      <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; padding-bottom: 6px; border-bottom: 0.5px solid var(--border);">TRƯỚC SỰ KIỆN</div>
+      <div class="flow-step-row">
+        <div class="flow-node green">
+          <div class="fn-icon">📱</div>
+          <div class="fn-label">Nhận thông báo In-app</div>
+        </div>
+        <div class="flow-arrow-cell">➔</div>
+        <div class="flow-node green">
+          <div class="fn-icon">📝</div>
+          <div class="fn-label">Form điền sẵn 100%</div>
+          <div class="fn-sub">Không cần nhập OTP</div>
+        </div>
+        <div class="flow-arrow-cell">➔</div>
+        <div class="flow-node green">
+          <div class="fn-icon">🎟</div>
+          <div class="fn-label">Nhận QR trong App</div>
+        </div>
+      </div>
+      
+      <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 24px; margin-bottom: 14px; padding-bottom: 6px; border-bottom: 0.5px solid var(--border);">TẠI SỰ KIỆN</div>
+      <div class="flow-step-row">
+        <div class="flow-node green">
+          <div class="fn-icon">📷</div>
+          <div class="fn-label">Quét QR tại quầy</div>
+        </div>
+        <div class="flow-arrow-cell">➔</div>
+        <div class="flow-node green">
+          <div class="fn-icon">🎉</div>
+          <div class="fn-label">App thưởng +500 điểm</div>
+          <div class="fn-sub">Đồng thời TV Welcome Screen</div>
+        </div>
+        <div class="flow-arrow-cell">➔</div>
+        <div class="flow-node green">
+          <div class="fn-icon">🎁</div>
+          <div class="fn-label">Trúng thưởng Mini-game</div>
+          <div class="fn-sub">Popup full màn hình</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- JOURNEY 2: WEB USER -->
+  <!-- ============================================ -->
+  <div class="journey-block">
+    <div class="journey-header blue">
+      <div class="journey-num blue">2</div>
+      <div>
+        <div class="journey-title">🌐 Khách Dùng Web (Qua Zalo/Email) — Luồng Truyền Thống</div>
+        <div class="journey-sub">Cần OTP xác thực vì chưa có app. Thiệp gửi qua Zalo OA. Điểm "giữ chỗ" chờ tải app.</div>
+      </div>
+    </div>
+    <div class="journey-body">
+      <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; padding-bottom: 6px; border-bottom: 0.5px solid var(--border);">TRƯỚC SỰ KIỆN</div>
+      <div class="flow-step-row">
+        <div class="flow-node blue">
+          <div class="fn-icon">💬</div>
+          <div class="fn-label">Nhận thiệp Zalo/Email</div>
+        </div>
+        <div class="flow-arrow-cell">➔</div>
+        <div class="flow-node blue">
+          <div class="fn-icon">🔐</div>
+          <div class="fn-label">Nhập SĐT & OTP</div>
+          <div class="fn-sub">Để xác thực danh tính</div>
+        </div>
+        <div class="flow-arrow-cell">➔</div>
+        <div class="flow-node blue">
+          <div class="fn-icon">📸</div>
+          <div class="fn-label">Điền Form & Chụp ảnh</div>
+        </div>
+      </div>
+      
+      <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 24px; margin-bottom: 14px; padding-bottom: 6px; border-bottom: 0.5px solid var(--border);">TẠI SỰ KIỆN</div>
+      <div class="flow-step-row">
+        <div class="flow-node blue">
+          <div class="fn-icon">🎟</div>
+          <div class="fn-label">Nhận QR qua Zalo OA</div>
+        </div>
+        <div class="flow-arrow-cell">➔</div>
+        <div class="flow-node blue">
+          <div class="fn-icon">📷</div>
+          <div class="fn-label">Quét QR tại quầy</div>
+        </div>
+        <div class="flow-arrow-cell">➔</div>
+        <div class="flow-node blue">
+          <div class="fn-icon">📺</div>
+          <div class="fn-label">TV Welcome Screen</div>
+          <div class="fn-sub">Zalo mời tải App nhận điểm</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- JOURNEY 3: WALK-IN -->
+  <!-- ============================================ -->
+  <div class="journey-block">
+    <div class="journey-header amber">
+      <div class="journey-num amber">3</div>
+      <div>
+        <div class="journey-title">🚶 Khách Vãng Lai — Đăng Ký Tại Venue (Workshop Mở)</div>
+        <div class="journey-sub">Không có trong danh sách mời. Quét QR standee ngay tại sự kiện. Đăng ký + check-in trong 1 phút.</div>
+      </div>
+    </div>
+    <div class="journey-body">
+      <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; padding-bottom: 6px; border-bottom: 0.5px solid var(--border);">ĐĂNG KÝ TẠI CHỖ</div>
+      <div class="flow-step-row">
+        <div class="flow-node amber">
+          <div class="fn-icon">📍</div>
+          <div class="fn-label">Quét QR Standee</div>
+          <div class="fn-sub">Tại cửa sự kiện</div>
+        </div>
+        <div class="flow-arrow-cell">➔</div>
+        <div class="flow-node amber">
+          <div class="fn-icon">✍️</div>
+          <div class="fn-label">Điền Thông Tin</div>
+          <div class="fn-sub">Chụp ảnh khuôn mặt</div>
+        </div>
+        <div class="flow-arrow-cell">➔</div>
+        <div class="flow-node amber">
+          <div class="fn-icon">🎟</div>
+          <div class="fn-label">Hiện QR cá nhân</div>
+          <div class="fn-sub">Ngay trên màn hình Web</div>
+        </div>
+      </div>
+      
+      <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 24px; margin-bottom: 14px; padding-bottom: 6px; border-bottom: 0.5px solid var(--border);">CHECK-IN</div>
+      <div class="flow-step-row">
+        <div class="flow-node amber">
+          <div class="fn-icon">📷</div>
+          <div class="fn-label">Quét QR tại quầy</div>
+        </div>
+        <div class="flow-arrow-cell">➔</div>
+        <div class="flow-node amber">
+          <div class="fn-icon">📺</div>
+          <div class="fn-label">TV Welcome Screen</div>
+        </div>
+        <div class="flow-arrow-cell">➔</div>
+        <div class="flow-node amber">
+          <div class="fn-icon">📲</div>
+          <div class="fn-label">Sau sự kiện</div>
+          <div class="fn-sub">Zalo OA mời tải App</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- COMPARISON TABLE -->
+  <!-- ============================================ -->
+  <div style="font-size: 13px; font-weight: 700; margin: 8px 0 14px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted);">📊 Bảng so sánh nhanh — App vs Web vs Vãng lai</div>
+  <table class="diff-table">
+    <thead>
+      <tr>
+        <th style="width: 28%;">Tiêu chí</th>
+        <th class="col-green">📱 Khách App</th>
+        <th class="col-blue">🌐 Khách Web</th>
+        <th class="col-amber">🚶 Vãng lai</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="feature">Cần nhập SĐT?</td>
+        <td><span class="ico-yes">✓ Không</span> (auto)</td>
+        <td><span class="ico-no">✗ Có</span></td>
+        <td><span class="ico-no">✗ Có</span></td>
+      </tr>
+      <tr>
+        <td class="feature">Cần OTP?</td>
+        <td><span class="ico-yes">✓ Skip</span></td>
+        <td><span class="ico-no">✗ Có</span></td>
+        <td><span class="ico-no">✗ Có</span></td>
+      </tr>
+      <tr>
+        <td class="feature">Form pre-fill?</td>
+        <td><span class="ico-yes">✓ 100%</span></td>
+        <td><span class="ico-mid">⚡ 70%</span> (tên, công ty)</td>
+        <td><span class="ico-no">✗ Tự điền hết</span></td>
+      </tr>
+      <tr>
+        <td class="feature">Nhận thiệp + QR qua</td>
+        <td>In-app</td>
+        <td>Zalo OA + Email</td>
+        <td>Hiện ngay trên web</td>
+      </tr>
+      <tr>
+        <td class="feature">Thông báo check-in OK</td>
+        <td>Push noti + Popup in-app</td>
+        <td>Zalo OA</td>
+        <td>Welcome Screen + Zalo</td>
+      </tr>
+      <tr>
+        <td class="feature">Nhận điểm thưởng</td>
+        <td><span class="ico-yes">✓ Vào loyalty ngay</span></td>
+        <td><span class="ico-mid">⏳ Pending → tải app</span></td>
+        <td><span class="ico-mid">⏳ Pending → tải app</span></td>
+      </tr>
+      <tr>
+        <td class="feature">Trúng mini-game báo qua</td>
+        <td>Popup full màn hình + âm thanh</td>
+        <td>Zalo OA + SMS (kép)</td>
+        <td>Zalo OA + SMS (kép)</td>
+      </tr>
+      <tr>
+        <td class="feature">Tổng số bước</td>
+        <td><span class="ico-yes">3 bước</span> (cực gọn)</td>
+        <td><span class="ico-mid">5 bước</span></td>
+        <td><span class="ico-mid">4 bước</span> (gộp đăng ký + check-in)</td>
+      </tr>
+      <tr>
+        <td class="feature">Thời gian đăng ký</td>
+        <td><strong>~30 giây</strong></td>
+        <td>~2 phút</td>
+        <td>~3 phút</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="info-box" style="margin-top: 24px;">
+    <strong>Mục tiêu chính:</strong> Khuyến khích khách chuyển từ Web → App. Mỗi sự kiện là một cơ hội — khách chưa có app sẽ thấy <em>"500 điểm đang chờ, tải app để nhận"</em> qua Zalo OA. Sau 2-3 sự kiện, tỷ lệ khách dùng app tăng dần → giảm chi phí Zalo OA + tăng gắn kết với DSS.
+  </div>
+</div>
+</div>
+</div>
+
+<!-- SECTION 4 — HẠ TẦNG -->
+<div id="s4" style="background: var(--surface);">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">04 · Hạ tầng venue</div>
+  <div class="section-title">Chỉ Cần 4 Máy Tính Cho Sự Kiện 3 Cửa — Phương Án Gọn Nhất</div>
+  <div class="section-lead">1 Laptop làm "đầu não" điều phối + 3 PC tại mỗi cửa (mỗi PC nối 2 màn hình: 1 cho Staff thao tác, 1 là TV Welcome Screen). Không cần Mini PC riêng — tiết kiệm 5 triệu so với thiết kế cũ.</div>
+
+  <div class="infra-diagram">
+    <div class="infra-router">📡 Router WiFi (TP-Link AX55)<div class="infra-router-sub">Phủ toàn venue · Tách SSID riêng</div></div>
+    <div class="infra-line"></div>
+    <div class="infra-bus"></div>
+    <div class="infra-pcs">
+      <div class="infra-pc special">
+        <div class="infra-pc-icon">💻</div>
+        <div class="infra-pc-name">Laptop Đầu Não</div>
+        <div class="infra-pc-sub">DB SQLite local · Điều phối tất cả thiết bị</div>
+      </div>
+      <div class="infra-pc">
+        <div class="infra-pc-icon">🖥</div>
+        <div class="infra-pc-name">PC Cửa A</div>
+        <div class="infra-pc-sub">Webcam + 2 màn hình</div>
+        <div class="infra-tv-arrow">↓ HDMI</div>
+        <div class="infra-tv">📺 TV Cửa A (Welcome)</div>
+      </div>
+      <div class="infra-pc">
+        <div class="infra-pc-icon">🖥</div>
+        <div class="infra-pc-name">PC Cửa B</div>
+        <div class="infra-pc-sub">Webcam + 2 màn hình</div>
+        <div class="infra-tv-arrow">↓ HDMI</div>
+        <div class="infra-tv">📺 TV Cửa B (Welcome)</div>
+      </div>
+      <div class="infra-pc">
+        <div class="infra-pc-icon">🖥</div>
+        <div class="infra-pc-name">PC Cửa C</div>
+        <div class="infra-pc-sub">Webcam + 2 màn hình</div>
+        <div class="infra-tv-arrow">↓ HDMI</div>
+        <div class="infra-tv">📺 TV Cửa C (Welcome)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box" style="margin-top: 24px;">
+    <strong>Cách PC quầy "2 trong 1" hoạt động:</strong> Mỗi PC mở 2 cửa sổ Chrome — Cửa sổ 1 là Staff App (trên màn hình PC để Staff quét QR), Cửa sổ 2 là Welcome Screen (kéo sang TV, bấm F11 full-screen cho khách xem). PC i5 + 8GB RAM là đủ.
+  </div>
+</div>
+</div>
+</div>
+
+<!-- SECTION 5 — ĐIỂM & GAME -->
+<div id="s5">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">05 · Điểm thưởng & Mini-game</div>
+  <div class="section-title">Mỗi Khách Check-in = Một Phần Thưởng Cụ Thể</div>
+  <div class="section-lead">Hai cơ chế song song: điểm thưởng cộng vào loyalty hiện có của App CSKH (cố định theo loại sự kiện) + bốc thăm Mini-game nhiều vòng với đối tượng khác nhau.</div>
+
+  <!-- POINTS TABLE -->
+  <div style="font-size: 13px; font-weight: 700; margin-bottom: 14px; color: var(--accent);">🎁 Bảng điểm thưởng cố định theo loại sự kiện</div>
+  <div class="points-grid">
+    <div class="points-card">
+      <div class="points-event">Gala lớn</div>
+      <div class="points-val">500</div>
+      <div class="points-unit">điểm/khách</div>
+    </div>
+    <div class="points-card">
+      <div class="points-event">Hội nghị KH</div>
+      <div class="points-val">300</div>
+      <div class="points-unit">điểm/khách</div>
+    </div>
+    <div class="points-card">
+      <div class="points-event">Workshop</div>
+      <div class="points-val">100</div>
+      <div class="points-unit">điểm/khách</div>
+    </div>
+    <div class="points-card">
+      <div class="points-event">Triển lãm</div>
+      <div class="points-val">50</div>
+      <div class="points-unit">điểm/khách</div>
+    </div>
+  </div>
+
+  <div class="info-box" style="margin-top: 18px; margin-bottom: 32px;">
+    <strong>Quy tắc:</strong> Chỉ cộng 1 lần duy nhất (re-scan không cộng thêm). Plus-one không nhận điểm (chỉ chủ vé). Khách chưa có app → điểm "giữ chỗ", khi tạo account = SĐT này sẽ tự merge. Tích hợp với module Loyalty hiện có của App CSKH qua API.
+  </div>
+
+  <!-- MINI-GAME WHEELS -->
+  <div style="font-size: 13px; font-weight: 700; margin-bottom: 14px; color: var(--warning);">🎰 Mini-game Multi-wheel — Phân nhóm khách theo vòng</div>
+  <div class="wheels-row">
+    <div class="wheel-card">
+      <div class="wheel-num">VÒNG 1</div>
+      <div class="wheel-icon">🎁</div>
+      <div class="wheel-name">Khởi động</div>
+      <div class="wheel-target">Tất cả khách đã check-in<br>→ 10 phần quà nhỏ</div>
+    </div>
+    <div class="wheel-card">
+      <div class="wheel-num">VÒNG 2</div>
+      <div class="wheel-icon">⭐</div>
+      <div class="wheel-name">Dành riêng VIP</div>
+      <div class="wheel-target">Tag "VIP" · Đối tác lâu năm<br>→ 3 phần quà lớn</div>
+    </div>
+    <div class="wheel-card">
+      <div class="wheel-num">VÒNG 3</div>
+      <div class="wheel-icon">⏰</div>
+      <div class="wheel-name">Đúng giờ</div>
+      <div class="wheel-target">Check-in trước 19:00<br>→ 1 giải đặc biệt</div>
+    </div>
+    <div class="wheel-card">
+      <div class="wheel-num">VÒNG 4</div>
+      <div class="wheel-icon">🏆</div>
+      <div class="wheel-name">Grand Prize</div>
+      <div class="wheel-target">Khách chưa trúng gì<br>→ 1 giải lớn nhất</div>
+    </div>
+  </div>
+
+  <div class="info-box" style="margin-top: 18px;">
+    <strong>Minh bạch:</strong> MC nhập PIN xác nhận trước khi quay · Random seed cryptographically secure · Audit log không sửa được · Nhân viên DSS/BTC tự động loại khỏi pool.
+  </div>
+</div>
+</div>
+</div>
+
+<!-- SECTION 6 — OFFLINE -->
+<div id="s6" style="background: var(--surface);">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">06 · Offline-first</div>
+  <div class="section-title">Mất Internet? Hệ Thống Vẫn Chạy Như Thường</div>
+  <div class="section-lead">Thiết kế dựa trên tiền đề internet sẽ mất hoặc chập chờn tại venue. Toàn bộ hoạt động quan trọng chạy qua mạng nội bộ WiFi, laptop "đầu não" là trung tâm xử lý ngay tại chỗ. Cloud chỉ là nơi lưu trữ và báo cáo từ xa.</div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 40%;">Tính năng</th>
+          <th>Khi có Internet</th>
+          <th>Khi MẤT Internet</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Khách quét QR check-in tại quầy</strong></td>
+          <td class="chk-yes">✓ Bình thường</td>
+          <td class="chk-yes">✓ Bình thường</td>
+        </tr>
+        <tr>
+          <td><strong>Hiển thị Welcome Screen trên TV</strong></td>
+          <td class="chk-yes">✓ Bình thường</td>
+          <td class="chk-yes">✓ Bình thường</td>
+        </tr>
+        <tr>
+          <td><strong>MC bốc thăm Mini-game trên sân khấu</strong></td>
+          <td class="chk-yes">✓ Bình thường</td>
+          <td class="chk-yes">✓ Bình thường</td>
+        </tr>
+        <tr>
+          <td><strong>Face ID (nếu bật)</strong></td>
+          <td class="chk-yes">✓ Bình thường</td>
+          <td class="chk-warn">⚠ Phụ thuộc vendor</td>
+        </tr>
+        <tr>
+          <td><strong>Admin xem dashboard từ văn phòng</strong></td>
+          <td class="chk-yes">✓ Real-time</td>
+          <td class="chk-no">✗ Chờ sync sau</td>
+        </tr>
+        <tr>
+          <td><strong>Gửi Zalo/SMS thông báo cho khách</strong></td>
+          <td class="chk-yes">✓ Gửi ngay</td>
+          <td class="chk-warn">⏸ Delay, gửi sau</td>
+        </tr>
+        <tr>
+          <td><strong>Popup +500 điểm trên app khách</strong></td>
+          <td class="chk-yes">✓ Ngay lập tức</td>
+          <td class="chk-warn">⏸ Delay vài phút</td>
+        </tr>
+        <tr>
+          <td><strong>Khách vãng lai đăng ký mới tại chỗ</strong></td>
+          <td class="chk-yes">✓ OK</td>
+          <td class="chk-no">✗ Cần form giấy</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="info-box" style="margin-top: 20px;">
+    <strong>Phép so sánh dễ hình dung:</strong> Tưởng tượng DSS có "trụ sở chính" ở Hà Nội (Cloud) và "chi nhánh tạm" dựng tại venue (Laptop Đầu Não). Nhân viên tại sự kiện chỉ giao dịch với chi nhánh tạm. Không cần biết internet có hay không. Chi nhánh báo cáo về trụ sở khi có internet.
+  </div>
+</div>
+</div>
+</div>
+
+<!-- SECTION 7 — LỘ TRÌNH -->
+<div id="s7">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">07 · Lộ trình triển khai</div>
+  <div class="section-title">4 Giai Đoạn · Tổng 13-17 Tuần</div>
+  <div class="section-lead">Làm từ nhỏ đến lớn. MVP chạy Workshop nhỏ trong 4-6 tuần đầu. Mỗi giai đoạn đều có bản chạy thật để kiểm nghiệm trước khi đầu tư giai đoạn tiếp theo.</div>
+
+  <div class="roadmap-row">
+    <div class="roadmap-card">
+      <div class="roadmap-phase">GIAI ĐOẠN 1</div>
+      <div class="roadmap-title">Core MVP</div>
+      <div class="roadmap-duration">4-6 tuần</div>
+      <ul class="roadmap-items">
+        <li>Web đăng ký Phase 1</li>
+        <li>Staff App + QR webcam</li>
+        <li>Welcome Screen cơ bản</li>
+        <li>Admin CMS cơ bản</li>
+        <li>1 template thiệp mặc định</li>
+      </ul>
+      <div class="info-box" style="margin-top: 14px; font-size: 11px; padding: 10px 12px;">
+        🎯 Test: Workshop 30-50 khách
+      </div>
+    </div>
+    <div class="roadmap-card">
+      <div class="roadmap-phase">GIAI ĐOẠN 2</div>
+      <div class="roadmap-title">Mở Rộng</div>
+      <div class="roadmap-duration">3-4 tuần</div>
+      <ul class="roadmap-items">
+        <li>Plus-one + quota</li>
+        <li>Template HTML tùy biến</li>
+        <li>Mini-game multi-wheel</li>
+        <li>Dashboard real-time</li>
+        <li>Notification Zalo/SMS/Email</li>
+      </ul>
+      <div class="info-box" style="margin-top: 14px; font-size: 11px; padding: 10px 12px;">
+        🎯 Test: Gala 200-300 khách
+      </div>
+    </div>
+    <div class="roadmap-card">
+      <div class="roadmap-phase">GIAI ĐOẠN 3</div>
+      <div class="roadmap-title">Plug-in Face ID</div>
+      <div class="roadmap-duration">2-3 tuần</div>
+      <ul class="roadmap-items">
+        <li>API contract cho vendor</li>
+        <li>Tích hợp vendor đầu tiên</li>
+        <li>Test tải + SLA</li>
+        <li>Fallback QR khi Face ID lỗi</li>
+      </ul>
+      <div class="info-box" style="margin-top: 14px; font-size: 11px; padding: 10px 12px;">
+        🎯 Test: Gala 500+ VIP
+      </div>
+    </div>
+    <div class="roadmap-card">
+      <div class="roadmap-phase">GIAI ĐOẠN 4</div>
+      <div class="roadmap-title">Tối Ưu</div>
+      <div class="roadmap-duration">Ongoing</div>
+      <ul class="roadmap-items">
+        <li>Validate đa vendor Face ID</li>
+        <li>A/B test UI thiệp</li>
+        <li>Phân tích hành vi khách</li>
+        <li>Cho phòng ban khác dùng</li>
+      </ul>
+      <div class="info-box" style="margin-top: 14px; font-size: 11px; padding: 10px 12px;">
+        🎯 Multi-tenant ready
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- SECTION 8 — CHI PHÍ -->
+<div id="s8" style="background: var(--surface);">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">08 · Đầu tư hạ tầng</div>
+  <div class="section-title">Chi Phí Thiết Bị — ~32 Triệu Cho Tất Cả Sự Kiện</div>
+  <div class="section-lead">Đầu tư 1 lần cho thiết bị, dùng được hàng chục sự kiện. So với thiết kế cũ (7 thiết bị ~37tr), Phương án A gộp PC quầy với Welcome Screen tiết kiệm được ~5 triệu.</div>
+
+  <div class="grid-2">
+    <div class="cost-card">
+      <div class="cost-total-label">Tổng đầu tư 1 lần</div>
+      <div class="cost-total">~32 triệu</div>
+      <ul class="cost-items">
+        <li><span class="cost-name">Router WiFi (TP-Link AX55) × 2</span><span class="cost-val">3.0 tr</span></li>
+        <li><span class="cost-name">PC quầy Staff (i5, 2 cổng HDMI) × 3</span><span class="cost-val">18.0 tr</span></li>
+        <li><span class="cost-name">Webcam Logitech C920 × 3</span><span class="cost-val">4.5 tr</span></li>
+        <li><span class="cost-name">Máy quét QR cầm tay × 3 (tuỳ chọn)</span><span class="cost-val">3.0 tr</span></li>
+        <li><span class="cost-name">WiFi 4G dự phòng + UPS + HDMI</span><span class="cost-val">3.5 tr</span></li>
+        <li><span class="cost-name">Laptop Đầu Não + dự phòng</span><span class="cost-val">Tận dụng</span></li>
+      </ul>
+    </div>
+    <div>
+      <div style="font-size: 13px; font-weight: 700; margin-bottom: 14px;">📦 Lựa chọn theo quy mô sự kiện</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Quy mô</th>
+              <th>Khách</th>
+              <th>PC cần</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Workshop nhỏ</strong></td><td>30-100</td><td><strong style="color:var(--success);">2 PC</strong></td></tr>
+            <tr><td><strong>Hội thảo</strong></td><td>100-300</td><td><strong style="color:var(--accent);">3 PC</strong></td></tr>
+            <tr><td><strong>Gala vừa</strong></td><td>300-500</td><td><strong style="color:var(--accent);">4 PC</strong></td></tr>
+            <tr><td><strong>Gala VIP lớn</strong></td><td>500-1000</td><td><strong style="color:var(--warning);">7 PC*</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="font-size: 11px; color: var(--muted); margin-top: 12px; line-height: 1.5;">
+        * Với Gala 1000 khách VIP, có thể nâng cấp lên Phương án D — tách Mini PC riêng cho Welcome Screen để chạy hiệu ứng mượt hơn.
+      </div>
+      <div style="font-size: 13px; font-weight: 700; margin: 20px 0 12px;">🏢 Đồ thuê tại venue</div>
+      <ul style="list-style: none; padding-left: 0;">
+        <li style="padding: 6px 0; font-size: 12px; color: var(--muted);">• TV 55" × 3 (1 cho mỗi cửa)</li>
+        <li style="padding: 6px 0; font-size: 12px; color: var(--muted);">• Máy chiếu + màn hình lớn cho MC bốc thăm</li>
+        <li style="padding: 6px 0; font-size: 12px; color: var(--muted);">• Loa kết nối cho Welcome Screen (tuỳ chọn)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- SECTION 9 — RỦI RO -->
+<div id="s9">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">09 · Rủi ro & giải pháp</div>
+  <div class="section-title">5 Rủi Ro Lớn Nhất — Đã Có Phương Án Giảm Thiểu</div>
+  <div class="section-lead">Rút kinh nghiệm từ sự kiện vừa qua, đây là 5 điểm có thể gãy và cách chúng ta xử lý trước.</div>
+
+  <div class="grid-2" style="gap: 14px;">
+    <div class="risk-card">
+      <div class="risk-title">🌐 Mạng WiFi venue chập chờn</div>
+      <div class="risk-solution">→ <strong>Offline-first architecture</strong>. Router riêng + laptop đầu não chạy local. Mất internet vẫn check-in ngon. Cục phát 4G dự phòng.</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-title">👁 Vendor Face ID không ổn định</div>
+      <div class="risk-solution">→ <strong>QR luôn sẵn sàng làm fallback</strong>. Face ID chỉ là "tăng tốc". Vendor lỗi → toàn bộ chuyển sang QR, không gián đoạn. SLA penalty trong hợp đồng.</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-title">⚡ Cúp điện đột ngột</div>
+      <div class="risk-solution">→ <strong>UPS lưu điện 30-60 phút</strong> cho router + laptop đầu não. Đủ thời gian xử lý sự cố hoặc di chuyển sang nguồn dự phòng.</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-title">👤 Khách VIP không quen quét QR</div>
+      <div class="risk-solution">→ <strong>Gửi video hướng dẫn 30s</strong> qua Zalo trước sự kiện. Hotline hỗ trợ. Tại quầy có tra cứu thủ công theo SĐT nếu cần.</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-title">🔐 QR cá nhân lộ lên mạng xã hội</div>
+      <div class="risk-solution">→ <strong>2 nút Tải về vs Chia sẻ</strong> — bản chia sẻ tự strip QR. Watermark + cảnh báo screenshot + one-time-use + nút regenerate QR.</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-title">💻 Laptop đầu não hỏng giữa sự kiện</div>
+      <div class="risk-solution">→ <strong>Laptop dự phòng cài sẵn</strong>. Mỗi PC quầy có bản copy data offline → fallback độc lập cho đến khi đầu não được thay thế.</div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <strong>DSS CLUB</strong> · Event Check-in System V2.3 · Tài liệu trình bày<br>
+  <span style="font-size: 12px;">Dựa trên Spec-03 v2.3 · Soạn bởi AI DSSCLUB · 23/04/2026</span>
+</div>
+
+<script>
+function scrollTo2(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.querySelectorAll('.nav-pill').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+}
+const sections = ['s1','s2','s3','s4','s5','s6','s7','s8','s9'];
+const pills = document.querySelectorAll('.nav-pill');
+window.addEventListener('scroll', () => {
+  let current = 0;
+  sections.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 100) current = i;
+  });
+  pills.forEach((p, i) => p.classList.toggle('active', i === current));
+});
+</script>
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { fontFamily: 'Be Vietnam Pro' } });
+</script>
+
+</body>
+</html>

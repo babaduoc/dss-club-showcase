@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cộng Đồng DSS Club — Pitch for Leadership</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f8f7f4;
+  --surface: #ffffff;
+  --surface2: #f1efe8;
+  --border: rgba(0,0,0,0.1);
+  --text: #1a1a1a;
+  --muted: #6b6b6b;
+  --accent: #185fa5;    --accent-bg: #e6f1fb;
+  --success: #3b6d11;   --success-bg: #eaf3de;
+  --danger: #a32d2d;    --danger-bg: #fcebeb;
+  --warning: #854f0b;   --warning-bg: #faeeda;
+  --info: #185fa5;      --info-bg: #e6f1fb;
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Be Vietnam Pro', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+/* NAV */
+.nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-bottom: 0.5px solid var(--border); padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+.nav-brand { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: -0.3px; display: flex; align-items: center; gap: 8px; }
+.nav-pills { display: flex; gap: 4px; flex-wrap: wrap; }
+.nav-pill { font-size: 12px; padding: 5px 12px; border-radius: 20px; cursor: pointer; color: var(--muted); border: none; background: transparent; font-family: inherit; transition: all .15s; white-space: nowrap; }
+.nav-pill:hover { background: var(--surface2); color: var(--text); }
+.nav-pill.active { background: var(--accent-bg); color: var(--accent); font-weight: 600; }
+
+/* HERO */
+.hero { background: var(--surface); padding: 72px 60px 64px; border-bottom: 0.5px solid var(--border); position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: -80px; right: -80px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(24,95,165,0.07) 0%, transparent 70%); pointer-events: none; }
+.hero-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-tag { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); background: var(--accent-bg); border-radius: 20px; padding: 5px 14px; margin-bottom: 20px; }
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: #3b6d11; animation: blink 1.5s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+.hero h1 { font-size: clamp(34px, 5vw, 58px); font-weight: 900; line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 16px; }
+.hero-sub { font-size: 17px; color: var(--muted); max-width: 600px; margin-bottom: 32px; line-height: 1.7; }
+.hero-meta { display: flex; flex-wrap: wrap; gap: 10px; }
+.meta-chip { background: var(--surface2); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 7px 14px; font-size: 12px; color: var(--muted); }
+.meta-chip strong { color: var(--text); font-weight: 600; }
+
+/* LAYOUT */
+.container { max-width: 1060px; margin: 0 auto; padding: 0 32px; }
+.section { padding: 64px 0; border-bottom: 0.5px solid var(--border); }
+.section:last-child { border-bottom: none; }
+.section-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+.section-eyebrow::after { content: ''; flex: 1; max-width: 40px; height: 0.5px; background: var(--border); }
+.section-title { font-size: clamp(22px, 3vw, 30px); font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; }
+.section-lead { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 32px; max-width: 620px; }
+
+/* GRID */
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+
+/* GOAL CARDS */
+.goal-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 22px; }
+.goal-icon { font-size: 28px; margin-bottom: 12px; }
+.goal-label { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+.goal-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* PHONE MOCK-UP */
+.phone-frame { background: var(--surface); border: 0.5px solid var(--border); border-radius: 20px; overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.07); }
+.phone-bar { background: var(--surface); border-bottom: 0.5px solid var(--border); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; }
+.phone-bar .app-name { font-size: 14px; font-weight: 700; }
+.icon-row { display: flex; gap: 8px; }
+.icon-btn { width: 28px; height: 28px; border-radius: 50%; background: var(--surface2); border: 0.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 13px; cursor: pointer; }
+
+/* FEED CARD */
+.feed-card { background: var(--surface); border-bottom: 0.5px solid var(--border); padding: 14px 16px; }
+.feed-card:last-child { border-bottom: none; }
+.user-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.avatar { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.av-blue   { background: var(--accent-bg);  color: var(--accent); }
+.av-green  { background: var(--success-bg); color: var(--success); }
+.av-amber  { background: var(--warning-bg); color: var(--warning); }
+.av-red    { background: var(--danger-bg);  color: var(--danger); }
+.user-name { font-size: 13px; font-weight: 700; }
+.user-meta { font-size: 11px; color: var(--muted); }
+.verified { display: inline-flex; align-items: center; gap: 3px; font-size: 9px; color: var(--accent); background: var(--accent-bg); border-radius: 20px; padding: 1px 6px; margin-left: 4px; font-weight: 700; }
+.post-img { width: 100%; height: 82px; background: linear-gradient(135deg, #dce8f2, #b8cfe0); border-radius: 8px; margin: 8px 0; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #5070a0; border: 0.5px solid rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+.post-img::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(255,255,255,.2) 8px, rgba(255,255,255,.2) 16px); }
+.post-img span { position: relative; z-index: 1; }
+.post-text { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 10px; }
+.action-row { display: flex; align-items: center; gap: 12px; }
+.action-btn { font-size: 11px; color: var(--muted); cursor: pointer; }
+.action-btn.liked { color: #e24b4a; }
+.point-badge { margin-left: auto; font-size: 10px; color: var(--warning); background: var(--warning-bg); border-radius: 20px; padding: 2px 8px; font-weight: 700; }
+
+/* LEADERBOARD */
+.lb-frame { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.lb-header { background: var(--surface); border-bottom: 0.5px solid var(--border); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; }
+.lb-title { font-size: 13px; font-weight: 700; }
+.tab-row { display: flex; gap: 4px; }
+.tab { font-size: 11px; padding: 4px 10px; border-radius: 20px; cursor: pointer; color: var(--muted); border: none; background: transparent; font-family: inherit; }
+.tab.active { background: var(--accent-bg); color: var(--accent); font-weight: 700; }
+.lb-row { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 0.5px solid var(--border); cursor: pointer; transition: background .1s; }
+.lb-row:hover { background: var(--surface2); }
+.lb-row:last-child { border-bottom: none; }
+.rank { font-size: 14px; font-weight: 700; width: 24px; text-align: center; flex-shrink: 0; }
+.rank-1 { color: #f59e0b; }
+.rank-2 { color: #94a3b8; }
+.rank-3 { color: #b45309; }
+.lb-info { flex: 1; }
+.lb-name { font-size: 13px; font-weight: 600; }
+.badge-chips { display: flex; gap: 4px; margin-top: 3px; flex-wrap: wrap; }
+.badge-chip { font-size: 9px; padding: 1px 6px; border-radius: 20px; font-weight: 700; }
+.bc-top    { background: var(--warning-bg); color: var(--warning); }
+.bc-expert { background: var(--accent-bg);  color: var(--accent); }
+.bc-pro    { background: var(--success-bg); color: var(--success); }
+.lb-pts { font-size: 14px; font-weight: 700; color: var(--warning); }
+
+/* FORMULA */
+.formula-section { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 28px; }
+.formula-eq { font-family: 'JetBrains Mono', monospace; font-size: 15px; color: var(--accent); background: var(--surface2); border-radius: var(--radius-sm); padding: 16px 20px; margin-bottom: 20px; line-height: 1.8; }
+.coeff-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.coeff { background: var(--surface2); border: 0.5px solid var(--border); border-radius: 10px; padding: 14px 12px; text-align: center; }
+.coeff-letter { font-size: 22px; font-weight: 700; margin-bottom: 4px; font-family: 'JetBrains Mono', monospace; }
+.coeff-val { font-size: 12px; font-weight: 700; margin-bottom: 2px; }
+.coeff-desc { font-size: 11px; color: var(--muted); }
+.letter-a { color: var(--accent); }
+.letter-b { color: #e24b4a; }
+.letter-c { color: var(--success); }
+.letter-d { color: var(--warning); }
+
+/* SPAM / METRIC CARDS */
+.spam-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
+.spam-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 18px 16px; }
+.spam-num { font-size: 26px; font-weight: 800; color: var(--danger); margin-bottom: 4px; }
+.spam-label { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.spam-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* ROLE CARDS */
+.role-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.role-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 20px; }
+.role-icon { font-size: 26px; margin-bottom: 10px; }
+.role-name { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.role-level { font-size: 10px; padding: 3px 10px; border-radius: 20px; display: inline-block; margin-bottom: 12px; font-weight: 700; }
+.rl-1     { background: var(--surface2); color: var(--muted); }
+.rl-2     { background: var(--accent-bg); color: var(--accent); }
+.rl-admin { background: var(--warning-bg); color: var(--warning); }
+.role-perms { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.role-perms li { font-size: 12px; color: var(--muted); display: flex; gap: 6px; align-items: flex-start; }
+.perm-y { color: var(--success); font-weight: 700; }
+.perm-n { color: var(--danger); font-weight: 700; }
+
+/* MODERATION CARDS */
+.mod-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+.mod-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: center; }
+.mod-mode { font-size: 11px; font-weight: 700; border-radius: 20px; padding: 4px 12px; margin-bottom: 12px; display: inline-block; }
+.mm-auto   { background: var(--success-bg); color: var(--success); }
+.mm-manual { background: var(--warning-bg); color: var(--warning); }
+.mm-smart  { background: var(--accent-bg);  color: var(--accent); }
+.mod-icon  { font-size: 28px; margin-bottom: 8px; }
+.mod-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.mod-desc  { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* CMS MOCK-UP */
+.cms-frame { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,.05); }
+.cms-toolbar { background: var(--surface2); border-bottom: 0.5px solid var(--border); padding: 12px 18px; display: flex; align-items: center; gap: 12px; }
+.cms-title { font-size: 13px; font-weight: 700; flex: 1; }
+.cms-badge { font-size: 10px; background: var(--danger-bg); color: var(--danger); border-radius: 20px; padding: 3px 10px; font-weight: 700; }
+.cms-row { display: flex; align-items: center; gap: 12px; padding: 12px 18px; border-bottom: 0.5px solid var(--border); background: var(--surface); }
+.cms-row:last-child { border-bottom: none; }
+.cms-thumb { width: 44px; height: 44px; border-radius: 8px; background: linear-gradient(135deg, #d0e4f0, #b0c8e0); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.cms-info { flex: 1; min-width: 0; }
+.cms-poster  { font-size: 12px; font-weight: 700; }
+.cms-preview { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cms-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.btn-approve { font-size: 11px; background: var(--success-bg); color: var(--success); border: 0.5px solid rgba(59,109,17,.3); border-radius: 6px; padding: 5px 12px; cursor: pointer; font-family: inherit; font-weight: 700; }
+.btn-reject  { font-size: 11px; background: var(--danger-bg);  color: var(--danger);  border: 0.5px solid rgba(163,45,45,.3);  border-radius: 6px; padding: 5px 12px; cursor: pointer; font-family: inherit; font-weight: 700; }
+
+/* FLOW DIAGRAM */
+.flow-step-row { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 0; align-items: center; margin-bottom: 10px; }
+.flow-node { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 18px 14px; text-align: center; }
+.flow-node.blue  { border-color: rgba(24,95,165,.3);  background: var(--accent-bg); }
+.flow-node.green { border-color: rgba(59,109,17,.3);  background: var(--success-bg); }
+.fn-icon  { font-size: 26px; margin-bottom: 8px; }
+.fn-label { font-size: 13px; font-weight: 700; }
+.fn-sub   { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+.fn-label-blue  { color: var(--accent); }
+.fn-label-green { color: var(--success); }
+.flow-arrow-cell { font-size: 22px; color: var(--muted); text-align: center; padding: 0 6px; }
+
+/* INFO BOX */
+.info-box { background: var(--accent-bg); border: 0.5px solid rgba(24,95,165,.2); border-radius: var(--radius); padding: 16px 20px; margin-top: 12px; font-size: 13px; line-height: 1.7; color: #0c447c; }
+.info-box strong { font-weight: 700; }
+
+/* RISK CARD */
+.risk-card { background: var(--surface); border: 0.5px solid var(--border); border-left: 3px solid var(--danger); border-radius: var(--radius); padding: 18px 20px; }
+.risk-title { font-size: 14px; font-weight: 700; color: var(--danger); margin-bottom: 6px; }
+.risk-solution { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.risk-solution strong { color: var(--success); }
+
+/* TABLE */
+.table-wrap { overflow-x: auto; border-radius: var(--radius); border: 0.5px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead { background: var(--surface2); }
+th { padding: 12px 16px; text-align: left; font-weight: 700; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+td { padding: 12px 16px; border-top: 0.5px solid var(--border); color: var(--text); vertical-align: top; }
+tr:hover td { background: rgba(24,95,165,0.03); }
+
+/* Architecture diagram */
+.arch-diagram { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; align-items: stretch; margin-top: 10px; }
+.arch-box { background: var(--surface); border: 1px dashed var(--accent); border-radius: var(--radius); padding: 22px 16px; text-align: center; position: relative; }
+.arch-box.solid { border-style: solid; background: var(--accent-bg); }
+.arch-icon { font-size: 32px; margin-bottom: 8px; }
+.arch-title { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+.arch-sub { font-size: 11px; color: var(--muted); line-height: 1.5; }
+.arrow-between { display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--accent); font-weight: 700; }
+
+/* Cost savings highlight */
+.save-highlight { background: linear-gradient(135deg, var(--success-bg) 0%, #dbf0c6 100%); border: 0.5px solid rgba(59,109,17,.3); border-radius: var(--radius); padding: 24px 28px; margin-top: 20px; display: flex; align-items: center; gap: 24px; }
+.save-num { font-size: 56px; font-weight: 900; color: var(--success); letter-spacing: -2px; line-height: 1; font-family: 'JetBrains Mono', monospace; }
+.save-text { flex: 1; }
+.save-title { font-size: 16px; font-weight: 800; margin-bottom: 6px; color: var(--success); }
+.save-desc { font-size: 13px; color: #3d4f2d; line-height: 1.6; }
+
+/* Storage strategy */
+.stage-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: stretch; margin-top: 12px; }
+.stage-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 22px; position: relative; }
+.stage-card.active { border: 2px solid var(--success); background: var(--success-bg); }
+.stage-badge { font-size: 10px; font-weight: 800; letter-spacing: 1px; padding: 3px 10px; border-radius: 20px; display: inline-block; margin-bottom: 10px; background: var(--surface2); color: var(--muted); }
+.stage-badge.now { background: var(--success); color: white; }
+.stage-badge.later { background: var(--warning-bg); color: var(--warning); }
+.stage-title { font-size: 15px; font-weight: 800; margin-bottom: 10px; }
+.stage-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.stage-desc strong { color: var(--text); }
+.stage-arrow { display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--muted); }
+
+/* Media limit cards */
+.media-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 12px; }
+.media-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 18px; }
+.media-icon { font-size: 28px; margin-bottom: 8px; }
+.media-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+.media-limit { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent); background: var(--surface2); padding: 8px 12px; border-radius: 6px; margin-bottom: 8px; }
+.media-note { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+/* FOOTER */
+.footer { background: var(--surface); border-top: 0.5px solid var(--border); padding: 32px 60px; text-align: center; font-size: 13px; color: var(--muted); }
+.footer strong { color: var(--accent); }
+
+/* RESPONSIVE */
+@media (max-width: 720px) {
+  .hero { padding: 40px 24px; }
+  .grid-3, .role-cards, .coeff-row, .spam-grid, .mod-row, .arch-diagram, .media-grid { grid-template-columns: 1fr; }
+  .grid-2, .stage-row { grid-template-columns: 1fr; }
+  .flow-step-row { grid-template-columns: 1fr; }
+  .flow-arrow-cell, .arrow-between, .stage-arrow { transform: rotate(90deg); padding: 8px 0; }
+  .save-highlight { flex-direction: column; text-align: center; }
+  .nav { padding: 0 16px; }
+  .nav-pills { display: none; }
+  .container { padding: 0 16px; }
+  .section { padding: 40px 0; }
+}
+@media print {
+  .nav { display: none; }
+  .section { page-break-inside: avoid; }
+  body { background: white; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-brand">🏠 DSS Club · Community Pitch</div>
+  <div class="nav-pills">
+    <button class="nav-pill active" onclick="goTo(event,'s1')">Mục tiêu</button>
+    <button class="nav-pill" onclick="goTo(event,'s2')">Kiến trúc</button>
+    <button class="nav-pill" onclick="goTo(event,'s3')">Giao diện</button>
+    <button class="nav-pill" onclick="goTo(event,'s4')">Vai trò</button>
+    <button class="nav-pill" onclick="goTo(event,'s5')">Điểm</button>
+    <button class="nav-pill" onclick="goTo(event,'s6')">Xếp hạng</button>
+    <button class="nav-pill" onclick="goTo(event,'s7')">Vận hành</button>
+    <button class="nav-pill" onclick="goTo(event,'s8')">Tiết kiệm</button>
+    <button class="nav-pill" onclick="goTo(event,'s9')">Rủi ro</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag"><span class="live-dot"></span>FEAT-SOCIAL-GAMIFY · v1.1</div>
+    <h1>Cộng Đồng DSS Club<br>& <span style="color:var(--accent)">Điểm Cống Hiến</span></h1>
+    <p class="hero-sub">Một không gian để Kỹ thuật viên và Đại lý cùng chia sẻ kinh nghiệm, ghi nhận đóng góp và gắn kết — nằm gọn trong App Chăm Sóc Khách Hàng, triển khai theo hướng Web-first để tiết kiệm chi phí.</p>
+    <div class="hero-meta">
+      <div class="meta-chip">📅 Cập nhật: <strong>22/04/2026</strong></div>
+      <div class="meta-chip">👥 Đội nhận: <strong>Dev Team · Marketing</strong></div>
+      <div class="meta-chip">🚦 Trạng thái: <strong>Draft / Review</strong></div>
+      <div class="meta-chip">🧩 Nền tảng: <strong>Web + Mobile WebView + CMS</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- 01 MỤC TIÊU -->
+<div id="s1">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">01 · Tại sao làm?</div>
+  <div class="section-title">Ba lý do Cộng đồng là bước đi đáng đầu tư</div>
+  <div class="section-lead">Đây là tính năng phụ của App DSS Club — không kỳ vọng thay thế mạng xã hội bên ngoài, mà tập trung gắn kết người trong ngành và tạo giá trị lâu dài cho hệ sinh thái.</div>
+  <div class="grid-3">
+    <div class="goal-card">
+      <div class="goal-icon">📈</div>
+      <div class="goal-label">Tăng Retention & Time-spent</div>
+      <div class="goal-desc">User có thêm lý do để quay lại App mỗi ngày — không chỉ để tra cứu sản phẩm, mà để kết nối với cộng đồng KTV cả nước.</div>
+    </div>
+    <div class="goal-card">
+      <div class="goal-icon">📚</div>
+      <div class="goal-label">Kho nội dung từ thực chiến</div>
+      <div class="goal-desc">Mỗi bài đăng là một ca lắp đặt, một mẹo xử lý khó — tài liệu đào tạo chéo miễn phí, do chính người trong nghề tạo ra.</div>
+    </div>
+    <div class="goal-card">
+      <div class="goal-icon">🏆</div>
+      <div class="goal-label">Vinh danh cá nhân uy tín</div>
+      <div class="goal-desc">Sân chơi công bằng — ai đóng góp nhiều, được ghi nhận bằng điểm, huy hiệu và thứ hạng. Xây dựng hình ảnh chuyên gia trong ngành.</div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- 02 KIẾN TRÚC -->
+<div id="s2" style="background: var(--surface);">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">02 · Kiến trúc triển khai</div>
+  <div class="section-title">Web-first + Nhúng App qua WebView</div>
+  <div class="section-lead">Thay vì làm native 2 lần cho iOS và Android, chúng tôi build 1 website duy nhất rồi nhúng vào App. Cảm giác người dùng giống native, nhưng chi phí giảm mạnh và cập nhật không cần qua store.</div>
+
+  <div class="arch-diagram">
+    <div class="arch-box">
+      <div class="arch-icon">📱</div>
+      <div class="arch-title">App DSS Club</div>
+      <div class="arch-sub">Mobile iOS/Android<br>Tab "Cộng đồng" mở WebView</div>
+    </div>
+    <div class="arch-box solid">
+      <div class="arch-icon">🌐</div>
+      <div class="arch-title">community.dssclub.vn</div>
+      <div class="arch-sub">Frontend Web duy nhất<br>Dùng chung cho Mobile + Desktop</div>
+    </div>
+    <div class="arch-box">
+      <div class="arch-icon">⚙️</div>
+      <div class="arch-title">Admin CMS</div>
+      <div class="arch-sub">Cùng codebase với Web<br>Chỉ khác phân quyền</div>
+    </div>
+  </div>
+
+  <div class="save-highlight">
+    <div class="save-num">-45%</div>
+    <div class="save-text">
+      <div class="save-title">Chi phí phát triển dự kiến tiết kiệm</div>
+      <div class="save-desc">So với làm native riêng cho iOS + Android. Thêm lợi ích: cập nhật tức thì không cần duyệt store, dễ mở rộng cho user truy cập qua laptop. Admin CMS tái sử dụng ~30% codebase với Web Community.</div>
+    </div>
+  </div>
+
+  <div class="info-box" style="margin-top:20px;">
+    <strong>🔐 SSO mượt là điều kiện tiên quyết:</strong> User đã đăng nhập App DSS Club → tự động vào Web Community, <strong>tuyệt đối không bắt login lần 2</strong>. App tạo Token ngắn hạn (TTL 60s, dùng 1 lần), Web xác thực xong sinh Session Cookie HttpOnly riêng.
+  </div>
+</div>
+</div>
+</div>
+
+<!-- 03 GIAO DIỆN -->
+<div id="s3">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">03 · Giao diện người dùng</div>
+  <div class="section-title">Feed Cộng đồng — quen thuộc, đơn giản</div>
+  <div class="section-lead">User bấm tab "Cộng đồng" trong App là thấy ngay Feed các bài đăng mới. Mỗi bài có ảnh/video, số like, comment và điểm cống hiến — không rối rắm.</div>
+
+  <div class="grid-2">
+    <div class="phone-frame">
+      <div class="phone-bar">
+        <div class="app-name">🏠 Cộng đồng DSS</div>
+        <div class="icon-row">
+          <div class="icon-btn">🔔</div>
+          <div class="icon-btn">✍️</div>
+        </div>
+      </div>
+
+      <div class="feed-card">
+        <div class="user-row">
+          <div class="avatar av-amber">NM</div>
+          <div>
+            <div class="user-name">Nguyễn Minh <span class="verified">✓ KTV</span></div>
+            <div class="user-meta">TP.HCM · 2 giờ trước</div>
+          </div>
+        </div>
+        <div class="post-text">Hôm nay lắp 4 camera IP cho kho 200m², gặp ca kéo dây qua trần thạch cao khó nhằn. Mình chia sẻ cách luồn dây không cần tháo trần...</div>
+        <div class="post-img"><span>📷 Ảnh công trình lắp camera kho</span></div>
+        <div class="action-row">
+          <div class="action-btn liked">❤️ 84</div>
+          <div class="action-btn">💬 23</div>
+          <div class="action-btn">📤</div>
+          <div class="point-badge">+124 điểm</div>
+        </div>
+      </div>
+
+      <div class="feed-card">
+        <div class="user-row">
+          <div class="avatar av-green">TH</div>
+          <div>
+            <div class="user-name">Trần Hùng <span class="verified">✓ Đại lý</span></div>
+            <div class="user-meta">Hà Nội · 5 giờ trước</div>
+          </div>
+        </div>
+        <div class="post-text">Mẹo cài đặt Alarm hub cho nhà phố 4 tầng: nên đặt repeater ở tầng 2 thay vì tầng trệt để tín hiệu phủ đều hơn...</div>
+        <div class="action-row">
+          <div class="action-btn">❤️ 41</div>
+          <div class="action-btn">💬 12</div>
+          <div class="action-btn">📤</div>
+          <div class="point-badge">+56 điểm</div>
+        </div>
+      </div>
+
+      <div class="feed-card">
+        <div class="user-row">
+          <div class="avatar av-blue">PL</div>
+          <div>
+            <div class="user-name">Phạm Linh <span class="verified">✓ KTV</span></div>
+            <div class="user-meta">Đà Nẵng · hôm qua</div>
+          </div>
+        </div>
+        <div class="post-text">Hỏi anh em: camera đặt ngoài trời mùa mưa hay bị đọng nước, có cách nào xử lý triệt để không?</div>
+        <div class="action-row">
+          <div class="action-btn liked">❤️ 29</div>
+          <div class="action-btn">💬 38</div>
+          <div class="point-badge">+67 điểm</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-size:14px;font-weight:800;margin-bottom:14px;">Điểm cốt lõi trên Feed</div>
+      <div class="goal-card" style="margin-bottom:10px;">
+        <div class="goal-label" style="font-size:13px;">🏷️ Tích xanh cho user xác thực</div>
+        <div class="goal-desc">Chỉ KTV/Đại lý đã định danh (Level 2+) mới được đăng bài và hiển thị tích xanh bên tên.</div>
+      </div>
+      <div class="goal-card" style="margin-bottom:10px;">
+        <div class="goal-label" style="font-size:13px;">⭐ Điểm cống hiến hiện công khai</div>
+        <div class="goal-desc">Mỗi bài hiển thị điểm đang tích lũy — tạo động lực bằng sự minh bạch, không giấu giếm.</div>
+      </div>
+      <div class="goal-card" style="margin-bottom:10px;">
+        <div class="goal-label" style="font-size:13px;">🎯 Feed "Mới nhất" và "Hot"</div>
+        <div class="goal-desc">User chọn xem bài mới đăng, hoặc bài có tương tác cao nhất trong tuần. Thuật toán Hot dựa trên View + Like + Comment.</div>
+      </div>
+      <div class="goal-card">
+        <div class="goal-label" style="font-size:13px;">🚩 Nút Báo cáo ẩn nhẹ</div>
+        <div class="goal-desc">Trên mỗi bài có nút "Báo cáo". Khi ≥ 5 user khác nhau báo cáo → tự động ẩn và chuyển Admin duyệt.</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- 04 VAI TRÒ -->
+<div id="s4" style="background: var(--surface);">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">04 · Phân quyền</div>
+  <div class="section-title">Ba cấp vai trò, rõ ràng và công bằng</div>
+  <div class="section-lead">Người mới vẫn xem được Feed, nhưng phải định danh Level 2 mới được đăng bài và tích điểm — tránh spam và đảm bảo uy tín người đóng góp.</div>
+
+  <div class="role-cards">
+    <div class="role-card">
+      <div class="role-icon">👤</div>
+      <div class="role-name">Thành viên Level 1</div>
+      <div class="role-level rl-1">Chưa xác thực</div>
+      <ul class="role-perms">
+        <li><span class="perm-y">✓</span> Xem bài viết công khai</li>
+        <li><span class="perm-y">✓</span> Bình luận ẩn danh (nickname đen)</li>
+        <li><span class="perm-n">✗</span> Đăng bài viết</li>
+        <li><span class="perm-n">✗</span> Tích điểm cống hiến</li>
+      </ul>
+    </div>
+
+    <div class="role-card">
+      <div class="role-icon">🔧</div>
+      <div class="role-name">KTV / Đại lý (Level 2+)</div>
+      <div class="role-level rl-2">Đã eKYC · Tích xanh</div>
+      <ul class="role-perms">
+        <li><span class="perm-y">✓</span> Đăng bài Ảnh / Video / Text</li>
+        <li><span class="perm-y">✓</span> Tương tác Like · Comment · Share</li>
+        <li><span class="perm-y">✓</span> Tích điểm & lên Bảng xếp hạng</li>
+        <li><span class="perm-y">✓</span> Nhận huy hiệu vinh danh</li>
+      </ul>
+    </div>
+
+    <div class="role-card">
+      <div class="role-icon">⚙️</div>
+      <div class="role-name">Admin / Moderator</div>
+      <div class="role-level rl-admin">Ban quản trị DSS</div>
+      <ul class="role-perms">
+        <li><span class="perm-y">✓</span> Cấu hình công thức điểm</li>
+        <li><span class="perm-y">✓</span> Phê duyệt / gỡ bài</li>
+        <li><span class="perm-y">✓</span> Chuyển chế độ kiểm duyệt</li>
+        <li><span class="perm-y">✓</span> Quản lý Leaderboard & huy hiệu</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- 05 ĐIỂM CỐNG HIẾN -->
+<div id="s5">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">05 · Điểm cống hiến</div>
+  <div class="section-title">Công thức đơn giản, minh bạch và điều chỉnh được</div>
+  <div class="section-lead">Điểm tự động cộng dựa trên lượng tương tác thực tế. Admin có thể đổi hệ số nhân trên CMS khi cần đẩy mạnh một loại tương tác trong chiến dịch Marketing.</div>
+
+  <div class="formula-section">
+    <div class="formula-eq">Tổng điểm = (Lượt xem × A) + (Lượt thích × B) + (Bình luận × C) + (Bài đăng × D)</div>
+    <div class="coeff-row">
+      <div class="coeff">
+        <div class="coeff-letter letter-a">A</div>
+        <div class="coeff-val">0.1 điểm</div>
+        <div class="coeff-desc">mỗi lượt Xem (unique/24h)</div>
+      </div>
+      <div class="coeff">
+        <div class="coeff-letter letter-b">B</div>
+        <div class="coeff-val">1 điểm</div>
+        <div class="coeff-desc">mỗi lượt Thích</div>
+      </div>
+      <div class="coeff">
+        <div class="coeff-letter letter-c">C</div>
+        <div class="coeff-val">2 điểm</div>
+        <div class="coeff-desc">mỗi Bình luận (user khác)</div>
+      </div>
+      <div class="coeff">
+        <div class="coeff-letter letter-d">D</div>
+        <div class="coeff-val">5 điểm</div>
+        <div class="coeff-desc">mỗi Bài đăng được duyệt</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:28px;font-size:14px;font-weight:800;">Chống gian lận ngay từ thiết kế</div>
+  <div class="spam-grid">
+    <div class="spam-card">
+      <div class="spam-num">500</div>
+      <div class="spam-label">điểm tối đa / bài</div>
+      <div class="spam-desc">Trần điểm cho 1 bài đăng, tránh 1 bài "cày" hết bảng xếp hạng.</div>
+    </div>
+    <div class="spam-card">
+      <div class="spam-num">200</div>
+      <div class="spam-label">điểm tối đa / user / ngày</div>
+      <div class="spam-desc">Giới hạn theo ngày, khuyến khích đều đặn thay vì spam ngắn hạn.</div>
+    </div>
+    <div class="spam-card">
+      <div class="spam-num">24h</div>
+      <div class="spam-label">Unique View / IP / Device</div>
+      <div class="spam-desc">Cùng user xem lại trong 24h không cộng thêm điểm. Chống "botnet" tương tác chéo.</div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- 06 BẢNG XẾP HẠNG -->
+<div id="s6" style="background: var(--surface);">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">06 · Bảng xếp hạng & Vinh danh</div>
+  <div class="section-title">Top tuần · Top tháng · Top năm</div>
+  <div class="section-lead">Mỗi user có thể xem hạng của chính mình và so sánh với những người đóng góp tích cực nhất. Top 3 hàng tháng nhận thông báo vinh danh đẩy (Push Notification).</div>
+
+  <div class="grid-2" style="align-items: stretch;">
+    <div class="lb-frame">
+      <div class="lb-header">
+        <div class="lb-title">🏆 Bảng xếp hạng</div>
+        <div class="tab-row">
+          <button class="tab">Tuần</button>
+          <button class="tab active">Tháng</button>
+          <button class="tab">Năm</button>
+        </div>
+      </div>
+      <div class="lb-row">
+        <div class="rank rank-1">🥇</div>
+        <div class="lb-info">
+          <div class="lb-name">Lê Văn Cường</div>
+          <div class="badge-chips">
+            <span class="badge-chip bc-top">Top Tháng</span>
+            <span class="badge-chip bc-expert">Chuyên gia Camera</span>
+          </div>
+        </div>
+        <div class="lb-pts">4,870</div>
+      </div>
+      <div class="lb-row">
+        <div class="rank rank-2">🥈</div>
+        <div class="lb-info">
+          <div class="lb-name">Nguyễn Minh</div>
+          <div class="badge-chips">
+            <span class="badge-chip bc-expert">Chuyên gia</span>
+          </div>
+        </div>
+        <div class="lb-pts">3,642</div>
+      </div>
+      <div class="lb-row">
+        <div class="rank rank-3">🥉</div>
+        <div class="lb-info">
+          <div class="lb-name">Trần Hùng</div>
+          <div class="badge-chips">
+            <span class="badge-chip bc-pro">Pro Alarm</span>
+          </div>
+        </div>
+        <div class="lb-pts">3,128</div>
+      </div>
+      <div class="lb-row">
+        <div class="rank">4</div>
+        <div class="lb-info"><div class="lb-name">Phạm Linh</div></div>
+        <div class="lb-pts">2,805</div>
+      </div>
+      <div class="lb-row">
+        <div class="rank">5</div>
+        <div class="lb-info"><div class="lb-name">Vũ Quang Đạt</div></div>
+        <div class="lb-pts">2,540</div>
+      </div>
+      <div class="lb-row" style="background: var(--accent-bg);">
+        <div class="rank" style="color:var(--accent);">12</div>
+        <div class="lb-info"><div class="lb-name" style="color:var(--accent);">Bạn (Hạng của tôi)</div></div>
+        <div class="lb-pts" style="color:var(--accent);">1,204</div>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-size:14px;font-weight:800;margin-bottom:14px;">Quy tắc reset & vinh danh</div>
+      <div class="goal-card" style="margin-bottom:10px;">
+        <div class="goal-label" style="font-size:13px;">🕛 Reset tự động</div>
+        <div class="goal-desc">Leaderboard Tuần reset lúc 00:00 sáng Thứ Hai. Tháng và Năm reset đầu kỳ. Lịch sử các kỳ trước được lưu snapshot để truy vấn lại.</div>
+      </div>
+      <div class="goal-card" style="margin-bottom:10px;">
+        <div class="goal-label" style="font-size:13px;">🏅 Huy hiệu tự động</div>
+        <div class="goal-desc">Top 3 tháng nhận huy hiệu "Top Tháng". User có ≥ 10.000 điểm tích luỹ được gắn huy hiệu "Chuyên gia" vĩnh viễn trên Profile.</div>
+      </div>
+      <div class="goal-card">
+        <div class="goal-label" style="font-size:13px;">📲 Push vinh danh</div>
+        <div class="goal-desc">User đạt Top 3 tháng nhận notification đẩy chúc mừng từ App. Marketing có thể dùng cho campaign tặng quà.</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- 07 VẬN HÀNH -->
+<div id="s7">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">07 · Luồng vận hành</div>
+  <div class="section-title">Từ viết bài đến lên Bảng xếp hạng</div>
+  <div class="section-lead">Admin có thể chuyển giữa 3 chế độ kiểm duyệt. Mỗi chế độ phù hợp với từng giai đoạn của cộng đồng — mở đầu duyệt chặt, sau đó nới dần khi cộng đồng đã ổn định.</div>
+
+  <!-- Flow -->
+  <div class="flow-step-row">
+    <div class="flow-node blue">
+      <div class="fn-icon">✍️</div>
+      <div class="fn-label fn-label-blue">Đăng bài</div>
+      <div class="fn-sub">User L2+ viết bài<br>(nén ảnh client)</div>
+    </div>
+    <div class="flow-arrow-cell">→</div>
+    <div class="flow-node blue">
+      <div class="fn-icon">🔍</div>
+      <div class="fn-label fn-label-blue">Kiểm duyệt</div>
+      <div class="fn-sub">Auto / Manual /<br>Lọc từ khóa</div>
+    </div>
+    <div class="flow-arrow-cell">→</div>
+    <div class="flow-node green">
+      <div class="fn-icon">📢</div>
+      <div class="fn-label fn-label-green">Lên Feed</div>
+      <div class="fn-sub">Hiển thị cho<br>cộng đồng tương tác</div>
+    </div>
+  </div>
+
+  <div class="flow-step-row">
+    <div class="flow-node green">
+      <div class="fn-icon">❤️</div>
+      <div class="fn-label fn-label-green">Tương tác</div>
+      <div class="fn-sub">View · Like ·<br>Comment · Share</div>
+    </div>
+    <div class="flow-arrow-cell">→</div>
+    <div class="flow-node green">
+      <div class="fn-icon">🧮</div>
+      <div class="fn-label fn-label-green">Tính điểm</div>
+      <div class="fn-sub">Background Job<br>áp công thức A·B·C·D</div>
+    </div>
+    <div class="flow-arrow-cell">→</div>
+    <div class="flow-node green">
+      <div class="fn-icon">🏆</div>
+      <div class="fn-label fn-label-green">Xếp hạng</div>
+      <div class="fn-sub">Cập nhật Top<br>Tuần · Tháng · Năm</div>
+    </div>
+  </div>
+
+  <!-- Moderation modes -->
+  <div style="margin-top:36px;font-size:14px;font-weight:800;margin-bottom:14px;">3 chế độ kiểm duyệt — Admin tự chuyển đổi</div>
+  <div class="mod-row">
+    <div class="mod-card">
+      <span class="mod-mode mm-auto">MODE 1 · AUTO</span>
+      <div class="mod-icon">⚡</div>
+      <div class="mod-title">Đăng ngay</div>
+      <div class="mod-desc">Bài lên Feed tức thì. Dùng khi cộng đồng đã đủ trưởng thành, ít spam.</div>
+    </div>
+    <div class="mod-card">
+      <span class="mod-mode mm-manual">MODE 2 · MANUAL</span>
+      <div class="mod-icon">🛡️</div>
+      <div class="mod-title">Duyệt trước khi đăng</div>
+      <div class="mod-desc">Mỗi bài phải qua Admin CMS review. An toàn tối đa, phù hợp giai đoạn khởi động.</div>
+    </div>
+    <div class="mod-card">
+      <span class="mod-mode mm-smart">MODE 3 · SMART</span>
+      <div class="mod-icon">🤖</div>
+      <div class="mod-title">Chỉ duyệt bài nhạy cảm</div>
+      <div class="mod-desc">Bài sạch đăng ngay, bài dính từ khóa cấm mới chuyển duyệt. Cân bằng tốc độ & an toàn.</div>
+    </div>
+  </div>
+
+  <!-- CMS mock -->
+  <div style="margin-top:28px;font-size:14px;font-weight:800;margin-bottom:14px;">Màn hình Admin CMS — Duyệt bài</div>
+  <div class="cms-frame">
+    <div class="cms-toolbar">
+      <div class="cms-title">🛡️ Hàng chờ kiểm duyệt</div>
+      <div class="cms-badge">7 đang chờ</div>
+    </div>
+    <div class="cms-row">
+      <div class="cms-thumb">📷</div>
+      <div class="cms-info">
+        <div class="cms-poster">Nguyễn Minh · KTV · TP.HCM · 10 phút trước</div>
+        <div class="cms-preview">Hôm nay lắp 4 camera IP cho kho 200m², gặp ca kéo dây qua trần thạch cao khó nhằn. Mình chia sẻ cách luồn dây...</div>
+      </div>
+      <div class="cms-actions">
+        <button class="btn-approve">✓ Duyệt</button>
+        <button class="btn-reject">✗ Từ chối</button>
+      </div>
+    </div>
+    <div class="cms-row">
+      <div class="cms-thumb">🎬</div>
+      <div class="cms-info">
+        <div class="cms-poster">Trần Hùng · Đại lý · Hà Nội · 25 phút trước</div>
+        <div class="cms-preview">Video hướng dẫn cài Alarm hub cho nhà phố 4 tầng — lưu ý đặt repeater ở tầng 2...</div>
+      </div>
+      <div class="cms-actions">
+        <button class="btn-approve">✓ Duyệt</button>
+        <button class="btn-reject">✗ Từ chối</button>
+      </div>
+    </div>
+    <div class="cms-row">
+      <div class="cms-thumb">⚠️</div>
+      <div class="cms-info">
+        <div class="cms-poster">Phạm Quân · KTV · Cần Thơ · 1 giờ trước</div>
+        <div class="cms-preview">[Bài tự động ẩn do bị 6 user báo cáo — dính từ khoá nghi ngờ quảng cáo]</div>
+      </div>
+      <div class="cms-actions">
+        <button class="btn-approve">✓ Duyệt</button>
+        <button class="btn-reject">✗ Gỡ</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- 08 TIẾT KIỆM -->
+<div id="s8" style="background: var(--surface);">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">08 · Chiến lược lưu trữ & tối ưu tốc độ</div>
+  <div class="section-title">Tiết kiệm trước, scale sau khi cần</div>
+  <div class="section-lead">Ưu tiên dùng server nội bộ DSS Club ở giai đoạn đầu — kiểm soát chi phí tốt. Chỉ chuyển CDN khi số liệu thực tế cho thấy cần thiết. Tốc độ load trên mobile vẫn nhanh nhờ 4 kỹ thuật tối ưu ngay từ v1.</div>
+
+  <div class="stage-row">
+    <div class="stage-card active">
+      <span class="stage-badge now">▶ ĐANG DÙNG</span>
+      <div class="stage-title">🏢 Giai đoạn 1 — Server nội bộ</div>
+      <div class="stage-desc">
+        Lưu ảnh/video trên <strong>server DSS Club</strong>, phục vụ qua <strong>Nginx + Cache 1 năm</strong>.
+        Chi phí cận 0, kiểm soát hoàn toàn. Thiết kế hệ thống dùng <strong>base URL cấu hình</strong>, sẵn sàng chuyển CDN chỉ bằng đổi cấu hình.
+      </div>
+    </div>
+    <div class="stage-arrow">→</div>
+    <div class="stage-card">
+      <span class="stage-badge later">KÍCH HOẠT KHI CẦN</span>
+      <div class="stage-title">☁️ Giai đoạn 2 — CDN giá rẻ</div>
+      <div class="stage-desc">
+        Chỉ chuyển khi đo được: <strong>load mobile 4G &gt; 3 giây</strong> HOẶC <strong>băng thông server &gt; 70%</strong> giờ cao điểm.
+        Dự kiến dùng <strong>Cloudflare Free / Bunny.net</strong> — chi phí khởi đầu ~1–5 USD/tháng.
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:32px;font-size:14px;font-weight:800;margin-bottom:14px;">4 kỹ thuật tối ưu tốc độ load — bắt buộc từ v1</div>
+  <div class="grid-3">
+    <div class="goal-card">
+      <div class="goal-icon">🗜️</div>
+      <div class="goal-label">Nén ảnh ở trình duyệt</div>
+      <div class="goal-desc">Trước khi upload, browser tự nén ảnh xuống ≤1MB, resize dài 1600px. Giảm mạnh băng thông.</div>
+    </div>
+    <div class="goal-card">
+      <div class="goal-icon">🖼️</div>
+      <div class="goal-label">WebP + 2 kích thước</div>
+      <div class="goal-desc">Ảnh chuyển WebP nếu trình duyệt hỗ trợ. Mỗi ảnh lưu 2 bản: thumbnail nhẹ cho Feed và full khi user bấm phóng to.</div>
+    </div>
+    <div class="goal-card">
+      <div class="goal-icon">⏬</div>
+      <div class="goal-label">Lazy load theo scroll</div>
+      <div class="goal-desc">Chỉ load ảnh khi user cuộn tới. Tiết kiệm data cho KTV dùng 4G ngoài công trình.</div>
+    </div>
+  </div>
+
+  <div style="margin-top:32px;font-size:14px;font-weight:800;margin-bottom:14px;">Ràng buộc Media khi upload — chống quá tải server</div>
+  <div class="media-grid">
+    <div class="media-card">
+      <div class="media-icon">📸</div>
+      <div class="media-title">Ảnh</div>
+      <div class="media-limit">≤ 5MB · 9 ảnh/bài</div>
+      <div class="media-note">Định dạng JPG · PNG · WebP. Nén về ≤1MB trước khi rời máy user.</div>
+    </div>
+    <div class="media-card">
+      <div class="media-icon">🎬</div>
+      <div class="media-title">Video</div>
+      <div class="media-limit">≤ 50MB · 60 giây</div>
+      <div class="media-note">Định dạng MP4 H.264. Tự động tạo thumbnail ở server. Có thanh tiến trình & nút hủy.</div>
+    </div>
+    <div class="media-card">
+      <div class="media-icon">📦</div>
+      <div class="media-title">Tổng / bài</div>
+      <div class="media-limit">≤ 100MB</div>
+      <div class="media-note">Chặn ngay ở client nếu vượt — không tốn băng thông server cho upload lỗi.</div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- 09 RỦI RO -->
+<div id="s9">
+<div class="container">
+<div class="section">
+  <div class="section-eyebrow">09 · Rủi ro & Giải pháp</div>
+  <div class="section-title">Đã lường trước, đã có cách chặn</div>
+  <div class="section-lead">Mỗi rủi ro được gán một giải pháp kỹ thuật cụ thể. Tất cả đều có trong kế hoạch triển khai v1.1.</div>
+
+  <div class="grid-2">
+    <div class="risk-card">
+      <div class="risk-title">⚠️ Point Farming — bot tương tác chéo</div>
+      <div class="risk-solution">Nhóm user ảo like/comment lẫn nhau để đẩy điểm. <strong>→ Giải pháp:</strong> Unique IP/Device khi đếm View, giới hạn trần 500 điểm/bài và 200 điểm/user/ngày.</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-title">⚠️ Nội dung độc hại, spam quảng cáo</div>
+      <div class="risk-solution">Bài chứa nội dung vi phạm hoặc quảng cáo trá hình. <strong>→ Giải pháp:</strong> Bộ lọc từ khoá cấm + nút "Báo cáo" cho cộng đồng (FR-08). Bị ≥5 report tự động ẩn chờ Admin.</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-title">⚠️ Server nội bộ quá tải video HD</div>
+      <div class="risk-solution">Nhiều video cùng stream sẽ nghẽn băng thông. <strong>→ Giải pháp:</strong> Giới hạn 50MB/60s ngay từ đầu. Giám sát băng thông hàng tuần, vượt ngưỡng thì kích hoạt CDN theo Giai đoạn 2.</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-title">⚠️ SSO Token bị rò rỉ trong log WebView</div>
+      <div class="risk-solution">Token lộ có thể bị giả mạo danh tính. <strong>→ Giải pháp:</strong> Token TTL 60s, dùng 1 lần. Sau xác thực Web tạo Session Cookie HttpOnly riêng, không dùng lại Token.</div>
+    </div>
+  </div>
+
+  <div class="info-box" style="margin-top:28px;">
+    <strong>🎯 Đã giữ nguyên toàn bộ ý tưởng cốt lõi v1.0 của bạn:</strong> Feed, Tương tác, Công thức điểm, Leaderboard Tuần/Tháng/Năm, 3 chế độ kiểm duyệt, Huy hiệu. v1.1 chỉ bổ sung Kiến trúc Web-first, Báo cáo bài, Giới hạn Media và Chiến lược lưu trữ tiết kiệm.
+  </div>
+</div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <strong>DSS Club · Cộng đồng &amp; Điểm Cống Hiến</strong> · v1.1 · 22/04/2026<br>
+  Tài liệu trình bày cho Leadership · Đội nhận: Dev Team · Marketing Team
+</div>
+
+<script>
+function goTo(e, id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.querySelectorAll('.nav-pill').forEach(p => p.classList.remove('active'));
+  e.currentTarget.classList.add('active');
+}
+const sections = ['s1','s2','s3','s4','s5','s6','s7','s8','s9'];
+const pills = document.querySelectorAll('.nav-pill');
+window.addEventListener('scroll', () => {
+  let current = 0;
+  sections.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 100) current = i;
+  });
+  pills.forEach((p, i) => p.classList.toggle('active', i === current));
+});
+</script>
+
+</body>
+</html>
