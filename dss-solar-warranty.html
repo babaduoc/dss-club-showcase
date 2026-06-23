@@ -431,6 +431,50 @@
       object-fit: cover;
     }
 
+    .scan-cover {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      background: rgba(10, 25, 17, .92);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 28px;
+      text-align: center;
+      color: #fff;
+    }
+
+    .scan-cover[hidden] {
+      display: none;
+    }
+
+    .scan-cover svg {
+      width: 42px;
+      height: 42px;
+      color: var(--solar-gold-soft);
+    }
+
+    .scan-cover p {
+      font-size: .92rem;
+      line-height: 1.5;
+      max-width: 26em;
+      color: rgba(255, 255, 255, .9);
+    }
+
+    .btn-cover {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: .9rem;
+      cursor: pointer;
+      border: none;
+      padding: 12px 22px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--solar-green-bright), var(--solar-green));
+      color: #fff;
+    }
+
     .scan-frame {
       position: absolute;
       inset: 0;
@@ -1208,6 +1252,15 @@
         padding: 0 18px;
       }
 
+      /* Ẩn khối hình minh hoạ ở hero trên mobile cho gọn, tập trung vào ô tra cứu */
+      .hero-visual {
+        display: none;
+      }
+
+      .hero {
+        padding: 32px 0 8px;
+      }
+
       .search-row {
         flex-direction: column;
       }
@@ -1513,11 +1566,20 @@
         </button>
       </div>
       <div class="scanner-stage">
-        <video id="scannerVideo" muted playsinline></video>
+        <video id="scannerVideo" autoplay muted playsinline></video>
         <div class="scan-frame">
           <div class="corners"></div>
         </div>
         <div class="scan-line"></div>
+        <div class="scan-cover" id="scanCover" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+            <line x1="1" y1="1" x2="23" y2="23" />
+          </svg>
+          <p id="scanCoverText">Không mở được camera.</p>
+          <button class="btn-cover" id="scanManual" type="button">Nhập serial thủ công</button>
+        </div>
       </div>
       <div class="scanner-foot">
         <div class="scanner-status" id="scannerStatus">
@@ -1755,17 +1817,37 @@
       var video = document.getElementById("scannerVideo");
       var statusEl = document.getElementById("scannerStatus");
       var statusText = document.getElementById("scannerStatusText");
+      var scanCover = document.getElementById("scanCover");
+      var scanCoverText = document.getElementById("scanCoverText");
+      var scanManual = document.getElementById("scanManual");
+      var camWatchdog = null;
+
+      // Trình duyệt trong ứng dụng (Zalo, Facebook, Messenger…) thường chặn camera
+      function isInAppBrowser() {
+        var ua = navigator.userAgent || "";
+        return /FBAN|FBAV|FB_IAB|Instagram|Zalo|Line\/|MicroMessenger|Messenger|TikTok|Snapchat/i.test(ua);
+      }
 
       function setScanStatus(msg, isErr) {
         statusText.textContent = msg;
         statusEl.classList.toggle("err", !!isErr);
       }
 
+      function showCover(msg) {
+        scanCoverText.textContent = msg;
+        scanCover.hidden = false;
+      }
+      function hideCover() {
+        scanCover.hidden = true;
+      }
+
       function openScanner() {
         overlay.classList.add("open");
         document.body.style.overflow = "hidden";
+        hideCover();
         if (!ZX || !ZX.BrowserMultiFormatReader) {
-          setScanStatus("Không tải được bộ quét mã. Kiểm tra kết nối mạng rồi thử lại.", true);
+          setScanStatus("Không tải được bộ quét mã.", true);
+          showCover("Chưa tải được bộ quét mã. Hãy kiểm tra kết nối mạng rồi mở lại.");
           return;
         }
         setScanStatus("Đang mở camera…", false);
@@ -1783,6 +1865,17 @@
           // Bỏ qua lỗi NotFound: mỗi khung hình chưa thấy mã là chuyện bình thường
         };
         var constraints = { video: { facingMode: { ideal: "environment" } } };
+
+        // Watchdog: nếu sau 4.5s camera vẫn chưa lên hình -> nhiều khả năng bị webview chặn (màn hình đen)
+        clearTimeout(camWatchdog);
+        camWatchdog = setTimeout(function () {
+          if (scanning && (!video.videoWidth || video.readyState < 2)) {
+            showCover(isInAppBrowser()
+              ? "Trình duyệt trong ứng dụng (Zalo / Facebook / Messenger…) thường chặn camera. Hãy mở trang này bằng Chrome hoặc Safari, hoặc nhập serial thủ công."
+              : "Camera chưa phản hồi. Hãy kiểm tra quyền truy cập camera của trình duyệt, hoặc nhập serial thủ công.");
+          }
+        }, 4500);
+
         var p = codeReader.decodeFromConstraints
           ? codeReader.decodeFromConstraints(constraints, video, onResult)
           : codeReader.decodeFromVideoDevice(null, video, onResult);
@@ -1790,19 +1883,31 @@
         Promise.resolve(p).then(function () {
           if (scanning) setScanStatus("Đưa mã QR hoặc mã vạch serial vào khung hình…", false);
         }).catch(function (e) {
+          clearTimeout(camWatchdog);
           console.error("Lỗi camera:", e);
           var name = e && e.name;
           if (name === "NotAllowedError" || name === "PermissionDeniedError") {
-            setScanStatus("Camera bị từ chối. Hãy cấp quyền camera cho trang rồi thử lại.", true);
+            setScanStatus("Camera bị từ chối.", true);
+            showCover(isInAppBrowser()
+              ? "Camera bị chặn. Trình duyệt trong ứng dụng thường không cho phép camera — hãy mở bằng Chrome / Safari, hoặc nhập serial thủ công."
+              : "Camera bị từ chối. Hãy cấp quyền camera cho trang trong cài đặt trình duyệt, hoặc nhập serial thủ công.");
           } else if (name === "NotFoundError" || name === "DevicesNotFoundError") {
-            setScanStatus("Không tìm thấy camera trên thiết bị này.", true);
+            setScanStatus("Không tìm thấy camera.", true);
+            showCover("Không tìm thấy camera trên thiết bị này. Bạn có thể nhập serial thủ công.");
           } else if (location.protocol === "file:") {
-            setScanStatus("Để dùng camera, trang cần chạy qua HTTPS hoặc localhost (không mở trực tiếp bằng file). Bạn vẫn có thể nhập serial thủ công.", true);
+            setScanStatus("Cần HTTPS để dùng camera.", true);
+            showCover("Để dùng camera, hãy mở trang qua HTTPS (không mở trực tiếp bằng file). Bạn vẫn có thể nhập serial thủ công.");
           } else {
-            setScanStatus("Không mở được camera. Vui lòng kiểm tra quyền truy cập, hoặc nhập serial thủ công.", true);
+            setScanStatus("Không mở được camera.", true);
+            showCover("Không mở được camera. Hãy kiểm tra quyền truy cập, hoặc nhập serial thủ công.");
           }
         });
       }
+
+      // Khi video bắt đầu phát thật (có khung hình) -> tắt cảnh báo
+      video.addEventListener("playing", function () {
+        if (video.videoWidth) { clearTimeout(camWatchdog); hideCover(); }
+      });
 
       function handleScanned(text) {
         closeScanner();
@@ -1812,16 +1917,19 @@
 
       function closeScanner() {
         scanning = false;
+        clearTimeout(camWatchdog);
         if (codeReader) {
           try { codeReader.reset(); } catch (e) { }
           codeReader = null;
         }
+        hideCover();
         overlay.classList.remove("open");
         document.body.style.overflow = "";
       }
 
       scanBtn.addEventListener("click", openScanner);
       closeBtn.addEventListener("click", closeScanner);
+      scanManual.addEventListener("click", function () { closeScanner(); input.focus(); });
       overlay.addEventListener("click", function (e) { if (e.target === overlay) closeScanner(); });
       document.addEventListener("keydown", function (e) {
         if (e.key === "Escape" && overlay.classList.contains("open")) closeScanner();
