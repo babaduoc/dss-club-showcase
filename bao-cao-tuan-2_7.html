@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Báo cáo công việc tuần</title>
+  <style>
+    :root {
+      --navy: #12294a;
+      --navy2: #1c3d6e;
+      --accent: #2f80ed;
+      --green: #1f9d55;
+      --green-bg: #e9f7ef;
+      --amber: #c77700;
+      --amber-bg: #fdf3e2;
+      --ink: #1c2430;
+      --muted: #5a6673;
+      --line: #e6ebf1;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", -apple-system, Roboto, Arial, sans-serif;
+      background: #e9eef5;
+      color: var(--ink);
+      padding: 32px 20px;
+      display: flex;
+      justify-content: center;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      width: 880px;
+      max-width: 100%;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 12px 40px rgba(18, 41, 74, .14);
+      overflow: hidden;
+    }
+
+    /* ---------- HEADER ---------- */
+    .header {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
+      color: #fff;
+      padding: 26px 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .header .title {
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: .3px;
+    }
+
+    .header .sub {
+      margin-top: 4px;
+      font-size: 14px;
+      color: #b9cbe6;
+      font-weight: 500;
+    }
+
+    .header .badge {
+      background: rgba(255, 255, 255, .12);
+      border: 1px solid rgba(255, 255, 255, .28);
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .body {
+      padding: 26px 34px 30px;
+    }
+
+    /* ---------- SECTION ---------- */
+    .section+.section {
+      margin-top: 26px;
+    }
+
+    .sec-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: .4px;
+      padding-bottom: 10px;
+      margin-bottom: 16px;
+      border-bottom: 2px solid var(--line);
+    }
+
+    .sec-head .dot {
+      font-size: 18px;
+    }
+
+    .sec-head.done {
+      color: var(--green);
+    }
+
+    .sec-head.next {
+      color: var(--accent);
+    }
+
+    .sec-head.note {
+      color: var(--amber);
+    }
+
+    /* ---------- DONE ITEMS ---------- */
+    .item {
+      display: flex;
+      gap: 14px;
+      padding: 11px 0;
+    }
+
+    .item+.item {
+      border-top: 1px dashed var(--line);
+    }
+
+    .num {
+      flex: 0 0 30px;
+      height: 30px;
+      width: 30px;
+      border-radius: 9px;
+      background: var(--green-bg);
+      color: var(--green);
+      font-weight: 800;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .item .txt h3 {
+      font-size: 15.5px;
+      font-weight: 750;
+      color: var(--ink);
+      margin-bottom: 3px;
+    }
+
+    .item .txt p {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .item .txt b {
+      color: #243044;
+      font-weight: 700;
+    }
+
+    /* ---------- BULLET GROUPS ---------- */
+    .group {
+      margin-top: 6px;
+    }
+
+    .group h4 {
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--muted);
+      margin: 12px 0 8px;
+    }
+
+    ul.clean {
+      list-style: none;
+    }
+
+    ul.clean li {
+      position: relative;
+      padding: 7px 0 7px 26px;
+      font-size: 14.5px;
+      color: #2b3542;
+      border-top: 1px dashed var(--line);
+    }
+
+    ul.clean li:first-child {
+      border-top: none;
+    }
+
+    ul.clean li::before {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: 14px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    ul.next li::before {
+      background: var(--accent);
+    }
+
+    ul.note li::before {
+      background: var(--amber);
+    }
+
+    ul.clean li b {
+      font-weight: 750;
+      color: #1c2430;
+    }
+
+    .note-box {
+      background: var(--amber-bg);
+      border: 1px solid #f2ddb6;
+      border-radius: 12px;
+      padding: 6px 16px 10px;
+    }
+
+    /* ---------- FOOTER ---------- */
+    .footer {
+      padding: 16px 34px;
+      background: #f6f8fb;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .footer b {
+      color: var(--navy);
+    }
+
+    /* ---------- STATS ---------- */
+    .stats {
+      display: flex;
+      gap: 12px;
+      padding: 18px 34px 2px;
+    }
+
+    .stat {
+      flex: 1;
+      background: #f3f7fc;
+      border: 1px solid #e3ebf5;
+      border-radius: 12px;
+      padding: 12px 10px;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1.1;
+    }
+
+    .stat-lbl {
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-top: 5px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    /* ---------- PHASES ---------- */
+    .phase {
+      display: flex;
+      gap: 14px;
+      padding: 14px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .phase:first-of-type {
+      border-top: none;
+      padding-top: 4px;
+    }
+
+    .phase-tag {
+      flex: 0 0 52px;
+      height: -webkit-fit-content;
+      height: fit-content;
+      text-align: center;
+      background: #eef3fb;
+      color: var(--accent);
+      border-radius: 10px;
+      padding: 8px 4px 9px;
+      font-weight: 800;
+      font-size: 11px;
+      letter-spacing: .5px;
+    }
+
+    .phase-tag small {
+      display: block;
+      font-size: 21px;
+      font-weight: 800;
+      margin-top: 1px;
+      letter-spacing: 0;
+    }
+
+    .phase-tag.key {
+      background: #fbe9e7;
+      color: #c0392b;
+    }
+
+    .phase-body {
+      flex: 1;
+    }
+
+    .phase-name {
+      font-size: 15.5px;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 999px;
+      letter-spacing: .4px;
+    }
+
+    .pill.now {
+      background: var(--green-bg);
+      color: var(--green);
+    }
+
+    .pill.key {
+      background: #c0392b;
+      color: #fff;
+    }
+
+    .pill.plan {
+      background: #eae6fb;
+      color: #6c4bd8;
+    }
+
+    .key-box {
+      background: #fdf6f5;
+      border: 1px solid #f3d9d5;
+      border-left: 4px solid #c0392b;
+      border-radius: 10px;
+      padding: 12px 16px;
+    }
+
+    .key-box>p {
+      font-size: 14px;
+      color: #2b3542;
+    }
+
+    .key-box .scope {
+      margin-top: 9px;
+      font-size: 12.5px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .key-box ul.clean {
+      margin-top: 8px;
+    }
+
+    .key-box ul.clean li {
+      border-color: #f0dcd8;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+
+    <div class="header">
+      <div>
+        <div class="title">BÁO CÁO CÔNG VIỆC TUẦN</div>
+        <div class="sub">Dự án DSS Club &nbsp;•&nbsp; App mobile · Web quản lý · Hệ thống thử nghiệm</div>
+      </div>
+      <div class="badge">21/6 – 2/7/2026</div>
+    </div>
+
+    <div class="body">
+
+      <!-- ĐÃ HOÀN THÀNH -->
+      <div class="section">
+        <div class="sec-head done"><span class="dot">✅</span> ĐÃ HOÀN THÀNH</div>
+
+        <div class="item">
+          <div class="num">1</div>
+          <div class="txt">
+            <h3>App mobile — nâng cấp &amp; sẵn sàng phát hành</h3>
+            <p>Khắc phục <b>dứt điểm</b> lỗi từng khiến app bị Google Play từ chối. Kiểm thử xong trên cả <b>iPhone và
+                Android</b> (máy thật) → app ổn định, sẵn sàng lên store.</p>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="num">2</div>
+          <div class="txt">
+            <h3>Tách 3 phiên bản app riêng biệt</h3>
+            <p>Bản <b>nội bộ / thử nghiệm / bản thật</b> chạy riêng, cài chung 1 máy được — loại bỏ rủi ro thao tác nhầm
+              lên dữ liệu khách hàng thật.</p>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="num">3</div>
+          <div class="txt">
+            <h3>Dựng xong hệ thống thử nghiệm (đã chạy)</h3>
+            <p>Bản nội bộ giống hệt bản thật cho <b>~30 người</b> test cả app lẫn web quản trị trước khi phát hành; dùng
+              dữ liệu mẫu riêng, không đụng dữ liệu thật.</p>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="num">4</div>
+          <div class="txt">
+            <h3>Web "Đăng ký &amp; Bảo vệ Dự án" — xong khối tính năng lớn, đã cho dùng thử</h3>
+            <p>Quản lý khách hàng tập trung, tự động phát hiện <b>dự án đăng ký trùng</b>, báo cáo doanh thu – lợi
+              nhuận, chấm <b>KPI nhân viên</b>, phân quyền đội ngũ. Đã kiểm thử kỹ (<b>115 bài test đạt</b>).</p>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="num">5</div>
+          <div class="txt">
+            <h3>Đồng bộ &amp; hiển thị biến động số dư điểm khách hàng</h3>
+            <p>Mỗi giao dịch hiển thị rõ <b>số điểm trước &amp; sau</b> → kiểm soát việc cộng điểm có chính xác không;
+              khách hàng hết thắc mắc <b>"quét mã sao không thấy cộng điểm"</b>. Đã đưa vào vận hành.</p>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="num">6</div>
+          <div class="txt">
+            <h3>Hệ thống popup thông minh + thúc người dùng cập nhật</h3>
+            <p>Chạm popup <b>mở link trực tiếp</b>; popup có thể tùy chỉnh <b>chỉ hiển thị cho người dùng bản cũ</b> để
+              thúc lên bản mới. Kèm cơ chế <b>khóa tài khoản còn dùng app cũ</b> (đã xây xong, sẽ bật sau khi cho người
+              dùng thời gian tự cập nhật).</p>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="num">7</div>
+          <div class="txt">
+            <h3>Công cụ kiểm tra &amp; cập nhật mã lỗi serial (web quản trị)</h3>
+            <p>Tự động rà soát &amp; cập nhật mã lỗi serial <b>hàng loạt</b>, giảm thao tác thủ công. Đã đưa vào <b>vận
+                hành thực tế</b>.</p>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="num">8</div>
+          <div class="txt">
+            <h3>Dashboard theo dõi triển khai ứng dụng</h3>
+            <p>Trên web quản trị: nắm nhanh tình hình phát hành &amp; cập nhật app trên cả <b>Android và iOS</b>.</p>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="num">9</div>
+          <div class="txt">
+            <h3>Xử lý các lỗi hiển thị</h3>
+            <p>Sửa lỗi <b>"điểm đổi quà không hiển thị"</b> và lỗi <b>xuất file Excel</b>; đã đưa lên vận hành.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ĐANG LÀM TIẾP -->
+      <div class="section">
+        <div class="sec-head next"><span class="dot">🔜</span> LỘ TRÌNH SẮP TỚI <span
+            style="font-weight:600;color:var(--muted);font-size:13px;">(chia theo từng giai đoạn)</span></div>
+
+        <!-- GĐ 0 -->
+        <div class="phase">
+          <div class="phase-tag">GĐ<small>0</small></div>
+          <div class="phase-body">
+            <div class="phase-name">Củng cố nền tảng &amp; Bảo mật <span class="pill now">ĐANG LÀM</span></div>
+            <ul class="clean next">
+              <li>Rà soát &amp; thay mới toàn bộ khóa / mật khẩu cũ, đưa cấu hình nhạy cảm ra khỏi mã nguồn.</li>
+              <li>Bật hệ thống <b>theo dõi lỗi app khách theo thời gian thực</b> để xử lý sự cố sớm.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- GĐ 1 — TRỌNG ĐIỂM -->
+        <div class="phase">
+          <div class="phase-tag key">GĐ<small>1</small></div>
+          <div class="phase-body">
+            <div class="phase-name">Đại tu nền tảng kỹ thuật backend <span class="pill key">TRỌNG ĐIỂM</span></div>
+            <div class="key-box">
+              <p>Nâng cấp nền tảng từ <b>.NET Core 3.1</b> (ra mắt 2019 — <b>đã hết hạn hỗ trợ &amp; ngừng vá bảo mật từ
+                  2022</b>) lên <b>.NET 10</b> (bản mới nhất, hỗ trợ dài hạn) — <b>nhảy 7 bậc phiên bản</b>.</p>
+              <ul class="clean next">
+                <li><b>Vá lỗ hổng bảo mật</b> do nền tảng cũ không còn được cập nhật.</li>
+                <li><b>Tăng tốc độ &amp; độ ổn định</b>, giảm chi phí vận hành về lâu dài.</li>
+                <li>Tạo <b>nền móng vững chắc</b> cho toàn bộ tính năng lớn sắp phát triển.</li>
+                <li>Kèm cơ chế <b>tự kiểm tra sức khỏe hệ thống</b> sau mỗi lần cập nhật.</li>
+              </ul>
+              <p class="scope">⏱ Quy mô: chuyển đổi toàn bộ thành phần backend · ước lượng ~1–2 tuần.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- GĐ 2 -->
+        <div class="phase">
+          <div class="phase-tag">GĐ<small>2</small></div>
+          <div class="phase-body">
+            <div class="phase-name">Cải tạo bộ game trong app</div>
+            <ul class="clean next">
+              <li>Thêm game mới, sửa lỗi cộng điểm, đồng bộ điểm thưởng &amp; bảng xếp hạng.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- GĐ 3 -->
+        <div class="phase">
+          <div class="phase-tag">GĐ<small>3</small></div>
+          <div class="phase-body">
+            <div class="phase-name">Làm mới toàn bộ giao diện app</div>
+            <ul class="clean next">
+              <li>Thiết kế lại theo hướng cao cấp, hiện đại — đồng bộ toàn bộ màn hình.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- GĐ 4 -->
+        <div class="phase">
+          <div class="phase-tag">GĐ<small>4</small></div>
+          <div class="phase-body">
+            <div class="phase-name">Lộ trình 5 nhóm tính năng lớn <span class="pill plan">TẦM NHÌN</span></div>
+            <ul class="clean next">
+              <li><b>1. Xác thực cấp độ đại lý</b> — phân quyền theo cấp, điểm uy tín.</li>
+              <li><b>2. Chống gian lận</b> — phát hiện &amp; chặn hành vi gian lận tích điểm.</li>
+              <li><b>3. Cộng đồng</b> — kết nối, tương tác giữa đại lý &amp; khách hàng.</li>
+              <li><b>4. Check-in sự kiện</b> — điểm danh tại sự kiện, hội thảo.</li>
+              <li><b>5. Bản đồ "đối tác quanh đây"</b> — tìm đại lý / đối tác theo vị trí.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <span>Người thực hiện: <b>Bộ phận Kỹ thuật</b></span>
+      <span>Trân trọng.</span>
+    </div>
+
+  </div>
+</body>
+
+</html>
