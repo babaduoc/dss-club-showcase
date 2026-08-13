@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DSS Club — Tổng kết 26/07 → 13/08/2026</title>
+  <style>
+    :root {
+      --navy: #12294a;
+      --navy2: #1c3d6e;
+      --accent: #2f80ed;
+      --green: #1f9d55;
+      --green-bg: #e9f7ef;
+      --amber: #c77700;
+      --amber-bg: #fdf3e2;
+      --ink: #1c2430;
+      --muted: #5a6673;
+      --line: #e6ebf1;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Segoe UI", -apple-system, Roboto, Arial, sans-serif;
+      background: #e9eef5;
+      color: var(--ink);
+      padding: 32px 20px;
+      display: flex;
+      justify-content: center;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      width: 980px;
+      max-width: 100%;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 12px 40px rgba(18, 41, 74, .14);
+      overflow: hidden;
+    }
+
+    /* ---------- HEADER ---------- */
+    .header {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
+      color: #fff;
+      padding: 26px 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .header .title { font-size: 25px; font-weight: 800; letter-spacing: .3px; }
+    .header .sub { margin-top: 4px; font-size: 14px; color: #b9cbe6; font-weight: 500; }
+    .header .badge {
+      background: rgba(255, 255, 255, .12);
+      border: 1px solid rgba(255, 255, 255, .28);
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .body { padding: 26px 34px 30px; }
+
+    /* ---------- TỔNG QUAN ---------- */
+    .stats { display: flex; gap: 12px; margin-bottom: 26px; }
+    .stat {
+      flex: 1; background: #f6f8fb; border: 1px solid var(--line);
+      border-radius: 12px; padding: 13px 16px;
+    }
+    .stat .n { font-size: 24px; font-weight: 800; color: var(--navy); line-height: 1.2; }
+    .stat .l { font-size: 12.5px; color: var(--muted); font-weight: 600; margin-top: 2px; }
+    .stat.ok .n { color: var(--green); }
+    .stat.wait .n { color: var(--amber); }
+
+    /* ---------- SECTION ---------- */
+    .section + .section { margin-top: 30px; }
+    .sec-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: .4px;
+      padding-bottom: 10px;
+      margin-bottom: 16px;
+      border-bottom: 2px solid var(--line);
+    }
+    .sec-head .dot { font-size: 18px; }
+    .sec-head.done { color: var(--green); }
+    .sec-head.next { color: var(--accent); }
+    .sec-head.note { color: var(--amber); }
+    .sec-head .cnt { font-weight: 600; color: var(--muted); font-size: 13px; }
+
+    /* ---------- BẢNG ---------- */
+    table.tbl { width: 100%; border-collapse: collapse; font-size: 14px; }
+    table.tbl thead th {
+      background: #f6f8fb; color: var(--muted);
+      font-size: 11.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px;
+      text-align: left; padding: 9px 10px; border-bottom: 2px solid var(--line);
+    }
+    table.tbl td { padding: 10px; border-bottom: 1px dashed var(--line); vertical-align: top; }
+    table.tbl tbody tr:last-child td { border-bottom: none; }
+    table.tbl td.n {
+      width: 30px; text-align: center; font-weight: 800; color: var(--muted); font-size: 13px;
+    }
+    table.tbl td.what { color: #2b3542; }
+    table.tbl td.what b { font-weight: 750; color: #1c2430; }
+    table.tbl td.num-col { width: 210px; color: var(--muted); font-size: 13.5px; }
+    table.tbl td.num-col b { color: var(--green); font-weight: 800; }
+    table.tbl td.when { width: 74px; color: var(--muted); font-size: 13px; white-space: nowrap; }
+    table.tbl td.st { width: 132px; }
+
+    .pill { font-size: 10.5px; font-weight: 800; padding: 4px 10px; border-radius: 999px; letter-spacing: .3px; white-space: nowrap; display: inline-block; }
+    .pill.ok { background: var(--green-bg); color: var(--green); }
+    .pill.wait { background: var(--amber-bg); color: var(--amber); }
+    .pill.info { background: #eef3fb; color: var(--accent); }
+    .pill.plan { background: #eae6fb; color: #6c4bd8; }
+    .sub-note { display: block; font-size: 11.5px; color: var(--muted); margin-top: 4px; font-weight: 600; }
+
+    /* ---------- CẦN LƯU Ý ---------- */
+    ul.clean { list-style: none; }
+    ul.clean li {
+      position: relative; padding: 7px 0 7px 26px;
+      font-size: 14.5px; color: #2b3542;
+      border-top: 1px dashed var(--line);
+    }
+    ul.clean li:first-child { border-top: none; }
+    ul.clean li::before {
+      content: ""; position: absolute; left: 4px; top: 14px;
+      width: 8px; height: 8px; border-radius: 50%;
+    }
+    ul.note li::before { background: var(--amber); }
+    ul.clean li b { font-weight: 750; color: #1c2430; }
+    .note-box {
+      background: var(--amber-bg); border: 1px solid #f2ddb6;
+      border-radius: 12px; padding: 6px 16px 10px;
+    }
+    .note-box ul.clean li { border-color: #f2ddb6; }
+
+    /* ---------- FOOTER ---------- */
+    .footer {
+      padding: 16px 34px; background: #f6f8fb; border-top: 1px solid var(--line);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 13px; color: var(--muted);
+    }
+    .footer b { color: var(--navy); }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+
+    <div class="header">
+      <div>
+        <div class="title">DSS CLUB — TỔNG KẾT ĐỢT LÀM VIỆC</div>
+        <div class="sub">App mobile &nbsp;·&nbsp; Web quản lý &nbsp;·&nbsp; Hệ thống thử nghiệm</div>
+      </div>
+      <div class="badge">26/07 – 13/08/2026</div>
+    </div>
+
+    <div class="body">
+
+      <div class="stats">
+        <div class="stat"><div class="n">34</div><div class="l">Hạng mục đã xử lý</div></div>
+        <div class="stat ok"><div class="n">18</div><div class="l">Đã chạy trên hệ thống thật</div></div>
+        <div class="stat wait"><div class="n">15</div><div class="l">Xong code, chờ đưa lên</div></div>
+        <div class="stat"><div class="n">3</div><div class="l">Đã tìm ra nguyên nhân</div></div>
+      </div>
+
+      <!-- ===== TÍNH NĂNG MỚI ===== -->
+      <div class="section">
+        <div class="sec-head done"><span class="dot">✨</span> TÍNH NĂNG MỚI <span class="cnt">(13 hạng mục)</span></div>
+
+        <table class="tbl">
+          <thead>
+            <tr><th></th><th>Tính năng</th><th>Ngày</th><th>Trạng thái</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="n">1</td>
+              <td class="what"><b>Danh sách khiếu nại kiểu mới</b> — xem ảnh ngay trên bảng, chọn nhiều đơn xử một lượt, 3 ô tìm riêng, thêm cột người bị khiếu nại và ngày kích hoạt đầu tiên</td>
+              <td class="when">29/07</td>
+              <td class="st"><span class="pill ok">✅ ĐANG CHẠY</span></td>
+            </tr>
+            <tr>
+              <td class="n">2</td>
+              <td class="what"><b>Màn “Chấm nhanh” khiếu nại</b> — lưới ảnh cỡ lớn, chấm thắng/thua hàng loạt thay vì mở từng đơn</td>
+              <td class="when">30/07</td>
+              <td class="st"><span class="pill ok">✅ ĐANG CHẠY</span></td>
+            </tr>
+            <tr>
+              <td class="n">3</td>
+              <td class="what"><b>AI soi ảnh khiếu nại</b> — phát hiện ảnh chụp lại từ màn hình và đối chiếu mã trên tem; máy soi chạy tại chỗ, không phải mở thêm đường mạng vào hệ thống thật</td>
+              <td class="when">31/07</td>
+              <td class="st"><span class="pill ok">✅ ĐANG CHẠY</span><span class="sub-note">công tắc AI vẫn để tắt</span></td>
+            </tr>
+            <tr>
+              <td class="n">4</td>
+              <td class="what"><b>Tín hiệu hỗ trợ chấm đơn</b> — cảnh báo tuổi mã, số lần mã từng bị kiện, bảng tiền lệ; ngưỡng chỉnh được ngay trên web</td>
+              <td class="when">31/07</td>
+              <td class="st"><span class="pill ok">✅ ĐANG CHẠY</span></td>
+            </tr>
+            <tr>
+              <td class="n">5</td>
+              <td class="what"><b>Ô lý do khi chấm đơn</b> + đánh dấu rõ nhãn nào máy tự điền, nhãn nào người ghi — để về sau đủ căn cứ chốt luật một lần cho cả trăm ca</td>
+              <td class="when">03/08</td>
+              <td class="st"><span class="pill ok">✅ ĐANG CHẠY</span></td>
+            </tr>
+            <tr>
+              <td class="n">6</td>
+              <td class="what"><b>App tự báo lỗi về web quản lý</b> — phủ 89 lệnh gọi, kèm màn nhật ký lỗi và chấm đỏ trên menu. Trước đây khách gặp lỗi thì không ai biết cho tới lúc họ gọi phàn nàn</td>
+              <td class="when">08/08</td>
+              <td class="st"><span class="pill wait">⏳ CHỜ ĐƯA LÊN</span><span class="sub-note">app 1.3.4 chưa phát hành</span></td>
+            </tr>
+            <tr>
+              <td class="n">7</td>
+              <td class="what"><b>Icon màn Điểm danh đổi được từ xa</b> — không cần phát hành lại app trên store</td>
+              <td class="when">09/08</td>
+              <td class="st"><span class="pill wait">⏳ CHỜ ĐƯA LÊN</span></td>
+            </tr>
+            <tr>
+              <td class="n">8</td>
+              <td class="what"><b>Trang chủ trả ảnh nhẹ</b> (600px) và giới hạn 12 tin mỗi lần tải</td>
+              <td class="when">09/08</td>
+              <td class="st"><span class="pill wait">⏳ CHỜ ĐƯA LÊN</span></td>
+            </tr>
+            <tr>
+              <td class="n">9</td>
+              <td class="what"><b>Popup nâng cấp</b> — chạy nhiều popup cùng lúc, đặt trần số lần hiện mỗi ngày, khoảng nghỉ giữa 2 lần hiện, và nút “con mắt” xem popup này tiếp cận được những ai</td>
+              <td class="when">10–13/08</td>
+              <td class="st"><span class="pill wait">⏳ CHỜ ĐƯA LÊN</span></td>
+            </tr>
+            <tr>
+              <td class="n">10</td>
+              <td class="what"><b>Catalogue nhiều quyền</b> + màn quản lý “Quyền catalogue”</td>
+              <td class="when">10/08</td>
+              <td class="st"><span class="pill wait">⏳ CHỜ ĐƯA LÊN</span></td>
+            </tr>
+            <tr>
+              <td class="n">11</td>
+              <td class="what"><b>Nút “Tải lên gói sách lật”</b> — nhân viên tự đưa catalogue lật trang lên, hệ thống tự bung và tự điền đường dẫn</td>
+              <td class="when">12/08</td>
+              <td class="st"><span class="pill wait">⏳ CHỜ ĐƯA LÊN</span></td>
+            </tr>
+            <tr>
+              <td class="n">12</td>
+              <td class="what"><b>Hạn cho nhãn HOT</b> + đồng bộ mốc “hàng quá 2 năm” (đếm theo ngày thay vì mốc năm cứng)</td>
+              <td class="when">10/08</td>
+              <td class="st"><span class="pill wait">⏳ CHỜ ĐƯA LÊN</span></td>
+            </tr>
+            <tr>
+              <td class="n">13</td>
+              <td class="what"><b>Vòng chạy thử tại chỗ bằng 1 lệnh</b> — dựng sẵn môi trường lập trình để làm tính năng nối app với máy chủ mà không phải đưa lên server mỗi vòng</td>
+              <td class="when">13/08</td>
+              <td class="st"><span class="pill info">🛠 DÙNG NỘI BỘ</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ===== SỬA LỖI & CẢI THIỆN ===== -->
+      <div class="section">
+        <div class="sec-head next"><span class="dot">🛠</span> SỬA LỖI &amp; CẢI THIỆN <span class="cnt">(21 hạng mục)</span></div>
+
+        <table class="tbl">
+          <thead>
+            <tr><th></th><th>Vấn đề đã xử lý</th><th>Kết quả đo được</th><th>Ngày</th><th>Trạng thái</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="n">1</td>
+              <td class="what"><b>Kích hoạt mã chậm dần</b> — mỗi lần tra 1 mã là quét cả 5,1 triệu dòng dữ liệu</td>
+              <td class="num-col"><b>3.064ms → 0,1ms</b> (nhanh ~47.000 lần), hết 1,14 GB đọc ổ đĩa mỗi lượt</td>
+              <td class="when">06/08</td>
+              <td class="st"><span class="pill ok">✅ ĐANG CHẠY</span></td>
+            </tr>
+            <tr>
+              <td class="n">2</td>
+              <td class="what"><b>Ô tìm mã trên trang báo cáo</b> chậm</td>
+              <td class="num-col"><b>241.853 → 5</b> lượt đọc dữ liệu</td>
+              <td class="when">06/08</td>
+              <td class="st"><span class="pill ok">✅ ĐANG CHẠY</span></td>
+            </tr>
+            <tr>
+              <td class="n">3</td>
+              <td class="what"><b>2 trang báo cáo gọi sang hệ thống Dahua quá nhiều lần</b></td>
+              <td class="num-col"><b>40 → 7</b> lần/trang; <b>3.283 → 743ms</b></td>
+              <td class="when">31/07</td>
+              <td class="st"><span class="pill ok">✅ ĐANG CHẠY</span></td>
+            </tr>
+            <tr>
+              <td class="n">4</td>
+              <td class="what"><b>Xử khiếu nại hàng loạt cộng/trừ điểm nhầm người</b></td>
+              <td class="num-col">Tách đúng người thắng/thua từng đơn, kèm 5 bài kiểm tự động</td>
+              <td class="when">29/07</td>
+              <td class="st"><span class="pill ok">✅ ĐANG CHẠY</span></td>
+            </tr>
+            <tr>
+              <td class="n">5</td>
+              <td class="what"><b>Luật điểm sau khiếu nại lệch nhau giữa 4 đường xử lý</b></td>
+              <td class="num-col">Thống nhất một luật duy nhất cho cả 4 đường</td>
+              <td class="when">29/07</td>
+              <td class="st"><span class="pill ok">✅ ĐANG CHẠY</span></td>
+            </tr>
+            <tr>
+              <td class="n">6</td>
+              <td class="what"><b>Sổ điểm người thắng kiện ghi thiếu dòng</b> — 2 đường xử lý hỏng ngược nhau</td>
+              <td class="num-col">Ghi đủ 2 dòng, đúng số dư từng loại điểm</td>
+              <td class="when">03/08</td>
+              <td class="st"><span class="pill ok">✅ ĐANG CHẠY</span></td>
+            </tr>
+            <tr>
+              <td class="n">7</td>
+              <td class="what"><b>Lỗ hổng bảo mật</b> ở trang chi tiết khiếu nại (chèn mã độc qua nội dung)</td>
+              <td class="num-col">Đã bịt, kèm 8 bài kiểm tự động</td>
+              <td class="when">29/07</td>
+              <td class="st"><span class="pill ok">✅ ĐANG CHẠY</span></td>
+            </tr>
+            <tr>
+              <td class="n">8</td>
+              <td class="what"><b>Gian lận chèn ký tự ẩn vào mã</b> để kích hoạt lại cùng một mã</td>
+              <td class="num-col">Quy mô đã đo: <b>2.957 mã / 984.045 điểm</b> (2018–2025). Siết bộ lọc + <b>71 bài kiểm</b> khoá lại</td>
+              <td class="when">06/08</td>
+              <td class="st"><span class="pill ok">✅ ĐANG CHẠY</span></td>
+            </tr>
+            <tr>
+              <td class="n">9</td>
+              <td class="what"><b>Bộ chặn tần suất đá oan khách</b> khi bấm kích hoạt</td>
+              <td class="num-col"><b>44 → 0–2 lượt/ngày</b> (đo 10 ngày nhật ký thật)</td>
+              <td class="when">06/08</td>
+              <td class="st"><span class="pill ok">✅ ĐANG CHẠY</span></td>
+            </tr>
+            <tr>
+              <td class="n">10</td>
+              <td class="what"><b>Lỗi “Không có serial để kích hoạt”</b> — đeo bám nhiều tuần</td>
+              <td class="num-col">Đã chỉ đúng gốc: màn hình <b>đứng 11,1 giây</b> → khách bấm lại → sinh 4 lệnh</td>
+              <td class="when">09/08</td>
+              <td class="st"><span class="pill plan">🔍 ĐÃ RÕ NGUYÊN NHÂN</span><span class="sub-note">bản vá app chưa phát hành</span></td>
+            </tr>
+            <tr>
+              <td class="n">11</td>
+              <td class="what"><b>Một mã hỏng làm chết cả lô kích hoạt</b>, khách không thấy màn Kết quả</td>
+              <td class="num-col">“Được ăn cả ngã về không” + luôn ra màn Kết quả</td>
+              <td class="when">09/08</td>
+              <td class="st"><span class="pill wait">⏳ CHỜ ĐƯA LÊN</span></td>
+            </tr>
+            <tr>
+              <td class="n">12</td>
+              <td class="what"><b>6 đường cộng điểm lệch nhau</b> — cộng cho hàng “không tích điểm”, cộng cho người thứ ba khi mã đã đổi chủ, bỏ qua miền của chương trình ưu đãi</td>
+              <td class="num-col">Gom luật về một nơi cho cả 6 đường + bộ kiểm canh chống tái phát</td>
+              <td class="when">11/08</td>
+              <td class="st"><span class="pill wait">⏳ CHỜ ĐƯA LÊN</span></td>
+            </tr>
+            <tr>
+              <td class="n">13</td>
+              <td class="what"><b>Ảnh tải lên bị lưu sai định dạng</b> khiến kho ảnh phình to</td>
+              <td class="num-col">Kho ảnh <b>130,71 → 20,39 GB</b> (thu về 110 GB = 84,4%)</td>
+              <td class="when">10–11/08</td>
+              <td class="st"><span class="pill wait">⏳ CHỜ ĐƯA LÊN</span><span class="sub-note">kho đã nén xong</span></td>
+            </tr>
+            <tr>
+              <td class="n">14</td>
+              <td class="what"><b>Một nhóm chức năng quản trị không kiểm tra đăng nhập</b> — ai biết đường dẫn cũng gọi được</td>
+              <td class="num-col">Đã khoá lại</td>
+              <td class="when">11/08</td>
+              <td class="st"><span class="pill wait">⏳ CHỜ ĐƯA LÊN</span></td>
+            </tr>
+            <tr>
+              <td class="n">15</td>
+              <td class="what"><b>Tải ảnh hỏng vẫn báo thành công</b> trên web quản lý + 9 chỗ giao diện lỗi</td>
+              <td class="num-col">—</td>
+              <td class="when">10/08</td>
+              <td class="st"><span class="pill wait">⏳ CHỜ ĐƯA LÊN</span></td>
+            </tr>
+            <tr>
+              <td class="n">16</td>
+              <td class="what"><b>2 nút “Xem thêm” ở trang chủ app trả về rỗng</b></td>
+              <td class="num-col">—</td>
+              <td class="when">12/08</td>
+              <td class="st"><span class="pill wait">⏳ CHỜ ĐƯA LÊN</span></td>
+            </tr>
+            <tr>
+              <td class="n">17</td>
+              <td class="what"><b>Dữ liệu ngày từ Dahua trả về lạ làm chết cả lô quét</b></td>
+              <td class="num-col">Kèm 5 đường tra mã ngầm chuyển sang dùng chỉ mục nhanh + đếm giới hạn quét chuyển sang máy chủ dữ liệu</td>
+              <td class="when">12/08</td>
+              <td class="st"><span class="pill wait">⏳ CHỜ ĐƯA LÊN</span></td>
+            </tr>
+            <tr>
+              <td class="n">18</td>
+              <td class="what"><b>Icon nền trong suốt bị hoá đen</b> khi tải lên</td>
+              <td class="num-col">—</td>
+              <td class="when">11/08</td>
+              <td class="st"><span class="pill wait">⏳ CHỜ ĐƯA LÊN</span></td>
+            </tr>
+            <tr>
+              <td class="n">19</td>
+              <td class="what"><b>Màn Điểm danh</b>: thiếu nút gỡ ảnh, dấu tích sai kích thước, trang đen hiển thị sai ngày</td>
+              <td class="num-col">—</td>
+              <td class="when">11/08</td>
+              <td class="st"><span class="pill wait">⏳ CHỜ ĐƯA LÊN</span></td>
+            </tr>
+            <tr>
+              <td class="n">20</td>
+              <td class="what"><b>App khởi động chậm, ảnh trang chủ tải lâu</b></td>
+              <td class="num-col">Máy chủ vô can (chỉ 0,12 giây). Gốc: <b>41 ảnh / 53,1 MB</b> mỗi lần vào + app không lưu ảnh lại + chờ cứng 3 giây</td>
+              <td class="when">09/08</td>
+              <td class="st"><span class="pill plan">🔍 ĐÃ RÕ NGUYÊN NHÂN</span></td>
+            </tr>
+            <tr>
+              <td class="n">21</td>
+              <td class="what"><b>Mở form sửa popup đã bị xoá làm vỡ trang</b></td>
+              <td class="num-col">—</td>
+              <td class="when">11/08</td>
+              <td class="st"><span class="pill wait">⏳ CHỜ ĐƯA LÊN</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ===== CẦN LƯU Ý ===== -->
+      <div class="section">
+        <div class="sec-head note"><span class="dot">⚠️</span> CẦN LƯU Ý</div>
+        <div class="note-box">
+          <ul class="clean note">
+            <li><b>Hệ thống thật đang dừng ở mốc 06/08.</b> Toàn bộ 15 hạng mục ghi “chờ đưa lên” đã xong và đã kiểm, nhưng chưa được cập nhật lên máy chủ chính thức.</li>
+            <li><b>3 hạng mục nên ưu tiên đưa lên sớm:</b> vá 6 đường cộng điểm (đang ảnh hưởng điểm thật của khách) · khoá nhóm chức năng quản trị thiếu kiểm tra đăng nhập · vá cách lưu ảnh (chưa vá thì kho ảnh lại phình thêm khoảng 2 GB mỗi tháng).</li>
+            <li>Việc đưa lên cần chạy phần cập nhật cơ sở dữ liệu <b>trước</b>, rồi mới cập nhật mã nguồn — đã có hướng dẫn từng bước sẵn.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      <span>Người thực hiện: <b>Bộ phận Kỹ thuật</b> &nbsp;•&nbsp; Kỳ báo cáo: 26/07 – 13/08/2026</span>
+      <span>Trân trọng.</span>
+    </div>
+
+  </div>
+</body>
+
+</html>
